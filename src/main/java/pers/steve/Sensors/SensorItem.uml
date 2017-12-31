@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="157.0">pers.steve.Sensors.SensorAbstract</node>
+    <node x="0.0" y="81.0">pers.steve.Sensors.UWBDataElement</node>
+    <node x="84.25" y="0.0">pers.steve.Sensors.SensorsDataElement</node>
+    <node x="192.0" y="81.0">pers.steve.Sensors.IMUDataElement</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pers.steve.Sensors.UWBDataElement" target="pers.steve.Sensors.SensorsDataElement">
+      <point x="0.0" y="-15.5" />
+      <point x="86.0" y="56.0" />
+      <point x="132.25" y="56.0" />
+      <point x="-48.0" y="15.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.IMUDataElement" target="pers.steve.Sensors.SensorsDataElement">
+      <point x="0.0" y="-15.5" />
+      <point x="274.5" y="56.0" />
+      <point x="228.25" y="56.0" />
+      <point x="48.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0680473372781063" x="1283.9642962484984" y="410.93698589914635" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
