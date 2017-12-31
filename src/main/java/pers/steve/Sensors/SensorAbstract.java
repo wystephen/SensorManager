@@ -1,5 +1,9 @@
 package pers.steve.Sensors;
 
-public class SensorAbstract {
-    private java.util.concurrent.SynchronousQueue<SensorsDataElement> data_queue;
+import javafx.scene.chart.PieChart;
+
+import java.util.concurrent.SynchronousQueue;
+
+public class SensorAbstract<DataElementType> {
+    private final java.util.concurrent.SynchronousQueue<DataElementType> data_queue = new SynchronousQueue<DataElementType>();
 }
