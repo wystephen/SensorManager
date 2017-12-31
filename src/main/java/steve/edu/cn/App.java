@@ -1,5 +1,7 @@
 package steve.edu.cn;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import pers.steve.Sensors.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -38,10 +40,22 @@ public class App extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
 
+
+            Button btn = (Button) root.lookup("#buttonconnect");
+            btn.setOnAction(
+                    new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent event) {
+                            System.out.print("clicked button");
+                        }
+                    }
+            );
+
+
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args)
     {

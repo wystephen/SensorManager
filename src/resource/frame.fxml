@@ -33,7 +33,7 @@
                   <ChoiceBox prefWidth="150.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Connect" />
+                        <Button fx:id="buttonconnect" mnemonicParsing="false" text="Connect" />
                         <Button mnemonicParsing="false" text="Button" />
                      </children>
                   </HBox>
