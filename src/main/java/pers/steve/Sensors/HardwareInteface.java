@@ -1,18 +1,12 @@
 package pers.steve.Sensors;
 
-public abstract class HardwareInteface <OutPutData>{
-    /**
-     * Read data as more as possible
-     * @return
-     */
-    public abstract OutPutData ReadData();
+public abstract class HardwareInteface<T> {
 
-    /**
-     * Read data according to param n.
-     * @param n
-     * @return
-     */
-    public abstract OutPutData ReadData(int n);
+    public abstract boolean StartInterface();
+
+    public abstract boolean StopInterface();
+
+    public abstract boolean RestartInterface();
 
 
 }
