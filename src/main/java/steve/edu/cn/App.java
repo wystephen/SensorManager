@@ -1,5 +1,6 @@
 package steve.edu.cn;
 
+import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import pers.steve.Sensors.*;
@@ -45,7 +46,11 @@ public class App extends Application {
             btn.setOnAction(
                     new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent event) {
-                            System.out.print("clicked button");
+                            System.out.println("clicked button");
+                            SerialInterface si = new SerialInterface();
+                            si.addListener(new SEL());
+                            si.StartInterface();
+
                         }
                     }
             );
@@ -53,6 +58,13 @@ public class App extends Application {
 
         } catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public class SEL implements SensorDataListener{
+        @Override
+        public void SensorDataEvent(SensorDataEvent event) {
+            System.out.print(new String(((SensorOriginalStringEvent) event).getStringData()));
         }
     }
 
