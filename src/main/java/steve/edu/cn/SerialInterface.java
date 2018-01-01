@@ -92,19 +92,26 @@ public class SerialInterface<T> extends HardwareInteface<T> {
             if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                 try {
 
-                    if (in == null) {
-
+                    if (null == in) {
+                        // initial input stream once.
                         in = serialPort_local.getInputStream();
                     }
-                    int bufflenth = in.available();
 
-                    while (bufflenth > 0) {
+                    int buflength = in.available();
 
-                        bytes = new byte[bufflenth];
+                    while (buflength > 0) {
+
+                        bytes = new byte[buflength];
                         in.read(bytes);
 
+                        if(data_buffer.remaining()<buflength){
+                            byte[] t_b = new byte[buflength];
+
+                            data_buffer.get(t_b);
+                        }
                         data_buffer.put(bytes);
-                        bufflenth = in.available();
+
+                        buflength = in.available();
                     }
 
                 } catch (IOException e) {
@@ -114,7 +121,7 @@ public class SerialInterface<T> extends HardwareInteface<T> {
         }
     }
 
-    ByteBuffer data_buffer;
+    public ByteBuffer data_buffer;
 
     public T ReadData() {
         return null;
