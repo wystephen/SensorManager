@@ -53,7 +53,7 @@ public abstract class HardwareInteface {
     }
 
     /**
-     *
+     * create threads run listern.SensorDataEvent
      * @param event
      * @return
      */
@@ -64,7 +64,12 @@ public abstract class HardwareInteface {
         Iterator iter = listeners.iterator();
         while (iter.hasNext()) {
             SensorDataListener listener = (SensorDataListener) iter.next();
-            listener.SensorDataEvent(event);
+            Runnable task = ()->{
+                listener.SensorDataEvent(event);
+            };
+//            listener.SensorDataEvent(event);
+            Thread t = new Thread(task);
+            t.start();
         }
         return true;
     }

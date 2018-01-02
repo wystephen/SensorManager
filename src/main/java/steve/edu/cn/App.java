@@ -47,6 +47,7 @@ public class App extends Application {
             btn.setOnAction(
                     new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent event) {
+
 //                            System.out.println("clicked button");
 //                            SerialInterface si = new SerialInterface();
 //                            si.addListener(new SEL());
@@ -62,14 +63,13 @@ public class App extends Application {
         }
     }
 
-//    public class SEL implements SensorDataListener{
-//        @Override
-//        public void SensorDataEvent(SensorDataEvent event) {
-//            System.out.print("Recieved data");
-////            System.out.print(((SensorOriginalStringEvent) event).getStringData());
-//            System.out.println(new String(event.get_bytes()));
-//        }
-//    }
+    public class SEL implements SensorDataListener{
+        @Override
+        public void SensorDataEvent(SensorDataEvent event) {
+            System.out.print("Recieved data");
+            System.out.println(new String(event.get_bytes()));
+        }
+    }
 
 
     public static void main(String[] args)
