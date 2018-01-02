@@ -12,7 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.TooManyListenersException;
 
-public class SerialInterface<DT extends SensorDataEvent> extends HardwareInteface<DT> {
+public class SerialInterface extends HardwareInteface {
     /**
      * How to use rxtx library in Ubuntu:
      * sudo apt-get install librxtx-java

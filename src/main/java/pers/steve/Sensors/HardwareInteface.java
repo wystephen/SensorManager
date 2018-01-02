@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public abstract class HardwareInteface<T extends SensorDataEvent> {
+public abstract class HardwareInteface{
     //    protected SensorDataListener sensorDataListener = null;
     protected Collection listeners;
     protected String TName = "pers.steve.Sensors.SensorDataEvent";
