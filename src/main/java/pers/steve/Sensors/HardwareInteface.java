@@ -76,7 +76,12 @@ public abstract class HardwareInteface{
         while (iter.hasNext()) {
             SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
             Runnable task = ()->{
-                listener.SensorDataEvent(event);
+                try{
+
+                    listener.SensorDataEvent(event);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
             };
 //            listener.SensorOriginalDataEvent(event);
             Thread t = new Thread(task);

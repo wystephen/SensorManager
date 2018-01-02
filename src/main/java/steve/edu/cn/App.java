@@ -36,8 +36,12 @@ public class App extends Application {
 
                             System.out.println("clicked button");
                             SerialInterface si = new SerialInterface();
-                            si.addListener(new SEL());
-                            si.StartInterface();
+//                            si.addListener(new SEL());
+//                            si.StartInterface();
+                            SensorJY901 sj = new SensorJY901();
+                            sj.setInterface(si);
+                            sj.StartFileOutput(1);
+                            sj.StartSensor(1);
                         }
                     }
             );
