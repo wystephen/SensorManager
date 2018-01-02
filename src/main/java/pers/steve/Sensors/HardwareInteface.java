@@ -1,5 +1,7 @@
 package pers.steve.Sensors;
 
+import jssc.SerialPortException;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,9 +16,9 @@ public abstract class HardwareInteface {
      */
     public abstract boolean StartInterface();
 
-    public abstract boolean StopInterface();
+    public abstract boolean StopInterface() throws SerialPortException;
 
-    public abstract boolean RestartInterface();
+    public abstract boolean RestartInterface() throws SerialPortException;
 
     /**
      * @param listener

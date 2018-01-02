@@ -12,4 +12,8 @@ public class SensorDataEvent extends EventObject {
         this.b_data = b_data;
     }
 
+    public byte[] get_bytes(){
+        return this.b_data;
+    }
+
 }

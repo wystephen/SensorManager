@@ -2,6 +2,7 @@ package pers.steve.Sensors;
 
 
 import jssc.SerialPort;
+import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
@@ -13,9 +14,8 @@ public class SerialInterface extends HardwareInteface {
     /**
      * How to use rxtx library in Ubuntu:
      * sudo apt-get install librxtx-java
-     *
+     * <p>
      * sudo cp *rxtx*.so /usr/lib/jvm/java-8-oracle/jre/lib/amd64/
-     *
      */
 
     private String serialname = "/dev/ttyUSB0";
@@ -90,20 +90,14 @@ public class SerialInterface extends HardwareInteface {
 
             this.serialPort_local = new SerialPort(serialname);
 
-            //
-//            this.serialPort_local.setSerialPortParams(
-//                    nspeed,
-//                    SerialPort.DATABITS_8,
-//                    SerialPort.STOPBITS_1,
-//                    SerialPort.PARITY_NONE
-//            );
-            this.serialPort_local.setParams(nspeed,nbits,nstop,SerialPort.PARITY_NONE);
-            this.serialPort_local.addEventListener( SerialEventListener());
+            if(!this.serialPort_local.isOpened())
+            {
 
+                this.serialPort_local.openPort();
+            }
+            this.serialPort_local.setParams(nspeed, nbits, nstop, SerialPort.PARITY_NONE);
+            this.serialPort_local.addEventListener(new SerialEventListener());
 
-        } catch (TooManyListenersException e) {
-            e.printStackTrace();
-            return false;
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
@@ -123,15 +117,15 @@ public class SerialInterface extends HardwareInteface {
     }
 
     @Override
-    public boolean StopInterface() {
-        serialPort_local.close();
+    public boolean StopInterface() throws SerialPortException {
+        serialPort_local.closePort();
         super.clearListeners();
         return false;
     }
 
     @Override
-    public boolean RestartInterface() {
-        serialPort_local.close();
+    public boolean RestartInterface() throws SerialPortException {
+        serialPort_local.closePort();
         serialPort_local = null;
         startSerialPara(serialname, nspeed, nbits, nevent, nstop);
         return false;
@@ -140,32 +134,28 @@ public class SerialInterface extends HardwareInteface {
 
     public class SerialEventListener implements SerialPortEventListener {
 
-        public InputStream in = null;
         public byte[] bytes = null;
 
         public void serialEvent(SerialPortEvent serialPortEvent) {
-            if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+            if (serialPortEvent.getEventType() == SerialPortEvent.RXCHAR) {
                 try {
 
-                    if (null == in) {
-                        // initial input stream once.
-                        in = serialPort_local.getInputStream();
-                    }
 
-                    int buflength = in.available();
+                    int buflength = serialPortEvent.getEventValue();
 
                     while (buflength > 0) {
 
                         bytes = new byte[buflength];
-                        in.read(bytes);
+                        bytes = serialPort_local.readBytes(buflength);
 //                        SensorDataEvent event = new SensorDataEvent(this,bytes);
                         notifyListeners(new SensorDataEvent(this, bytes));
 
 
-                        buflength = in.available();
+                        buflength = 0;
+
                     }
 
-                } catch (IOException e) {
+                } catch (SerialPortException e) {
                     e.printStackTrace();
                 }
             }
