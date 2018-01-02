@@ -14,17 +14,13 @@ import java.util.TooManyListenersException;
 
 public class SerialInterface extends HardwareInteface {
     /**
-     * How to use rxtx library in Ubuntu:
-     * sudo apt-get install librxtx-java
-     * <p>
-     * sudo cp *rxtx*.so /usr/lib/jvm/java-8-oracle/jre/lib/amd64/
+     * Use
      */
 
-    protected String serialname = "/dev/ttyUSB0";
-    protected int nspeed = 460800;
-    protected int nbits = 8;
-    protected String nevent = "n";
-
+    protected String serialname = "/dev/ttyUSB0"; // serial port name
+    protected int nspeed = 460800; // band speed
+    protected int nbits = 8; // data bits.
+    protected String nevent = "n"; //
 
 
     public String getSerialname() {
@@ -120,50 +116,56 @@ public class SerialInterface extends HardwareInteface {
     }
 
     @Override
-    public boolean StopInterface() throws SerialPortException {
-        serialPort_local.closePort();
-        super.clearListeners();
+    public boolean StopInterface() {
+        try {
+            serialPort_local.closePort();
+            super.clearListeners();
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+            return false;
+        }
+
         return false;
     }
 
     @Override
-    public boolean RestartInterface() throws SerialPortException {
-        serialPort_local.closePort();
-        serialPort_local = null;
-        startSerialPara(serialname, nspeed, nbits, nevent, nstop);
+    public boolean RestartInterface() {
+        try {
+            serialPort_local.closePort();
+            serialPort_local = null;
+            startSerialPara(serialname, nspeed, nbits, nevent, nstop);
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+            return false;
+
+        }
+
         return false;
     }
 
 
     public class SerialEventListener implements SerialPortEventListener {
 
-        public byte[] bytes = null;
-
-        private Class<DT> stClass;
-        private DT tmp_event = null;
+        private byte[] bytes = null; // Save data here temporarily.
 
 
+        /**
+         * SerialPort ,call notifyListeners here.
+         *
+         * @param serialPortEvent
+         */
         public void serialEvent(SerialPortEvent serialPortEvent) {
 
             if (serialPortEvent.getEventType() == SerialPortEvent.RXCHAR) {
                 try {
-                    if (null == tmp_event) {
-//                        tmp_event = stClass.newInstance();
-                        stClass = (Class<DT>) Class.forName(TName);
-//                        Constructor<DT> constructor = stClass.getConstructor(Object.class,byte[].class);
-//                        tmp_event = (DT) constructor.newInstance(this,new byte[1]);
-                        tmp_event = stClass.newInstance();
-
-                    }
                     int buflength = serialPortEvent.getEventValue();
 
                     while (buflength > 0) {
 
                         bytes = new byte[buflength];
                         bytes = serialPort_local.readBytes(buflength);
-//                        SensorDataEvent event = new SensorDataEvent(this,bytes);
-                        tmp_event.setPara(this, bytes);
-                        notifyListeners(tmp_event);
+
+                        notifyListeners(new SensorDataEvent(this, bytes));
 
 
                         buflength = 0;
@@ -172,18 +174,7 @@ public class SerialInterface extends HardwareInteface {
 
                 } catch (SerialPortException e) {
                     e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
-//                } catch (NoSuchMethodException e) {
-//                    e.printStackTrace();
-//                } catch (InvocationTargetException e) {
-//                    e.printStackTrace();
-//                }
             }
         }
 

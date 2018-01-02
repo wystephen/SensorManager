@@ -7,9 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public abstract class HardwareInteface{
-    //    protected SensorDataListener sensorDataListener = null;
-    protected Collection listeners;
-    protected String TName = "pers.steve.Sensors.SensorDataEvent";
+    private Collection listeners; // Collection for all listener. (HashSet in default)
+//    protected String TName = "pers.steve.Sensors.SensorDataEvent";
 
     /**
      *  Start interface. Default parameters will be adopted without set Parameter before.
@@ -17,11 +16,22 @@ public abstract class HardwareInteface{
      */
     public abstract boolean StartInterface();
 
-    public abstract boolean StopInterface() throws SerialPortException;
-
-    public abstract boolean RestartInterface() throws SerialPortException;
+    /**
+     * Stop hardware and clear the listeners.
+     * @return
+     * @throws SerialPortException
+     */
+    public abstract boolean StopInterface() ;
 
     /**
+     *
+     * @return
+     * @throws SerialPortException
+     */
+    public abstract boolean RestartInterface() ;
+
+    /**
+     * Add a Listener for the SensorDataArrive Event.
      * @param listener
      * @return
      */
@@ -34,7 +44,7 @@ public abstract class HardwareInteface{
     }
 
     /**
-     * reamove listener from hashset. Becareful!!!
+     * Remove listener from HashSet. Be careful!!!
      *
      * @param listener
      * @return
@@ -54,11 +64,11 @@ public abstract class HardwareInteface{
     }
 
     /**
-     * create threads run listern.SensorDataEvent
+     * Create threads run listener.SensorDataEvent in listeners.
      * @param event
      * @return
      */
-    public boolean notifyListeners(T event) {
+    public boolean notifyListeners(SensorDataEvent event) {
         if (null == listeners) {
             return false;
         }

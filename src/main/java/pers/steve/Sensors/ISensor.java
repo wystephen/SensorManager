@@ -28,4 +28,18 @@ public interface ISensor {
      * @return
      */
     public abstract boolean StopFileOutput(int state);
+
+    /**
+     *
+     * @param state
+     * @return
+     */
+    public abstract boolean StartGUIOutput(int state);
+
+    /**
+     *
+     * @param state
+     * @return
+     */
+    public abstract boolean StopGUIOutput(int state);
 }
