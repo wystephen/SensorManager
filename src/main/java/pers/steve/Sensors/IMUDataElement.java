@@ -7,7 +7,17 @@ public class IMUDataElement extends SensorsDataElement {
     protected double[] mag = new double[3];
     protected double[] angle = new double[3];
     protected double[] pressure = new double[1];
+    protected double[] heigh = new double[1];
     protected double[] Temp = new double[1];
+
+
+    public double[] getHeigh() {
+        return heigh;
+    }
+
+    public void setHeigh(double[] heigh) {
+        this.heigh = heigh;
+    }
 
     public double[] getAcc() {
         return acc;
@@ -71,13 +81,14 @@ public class IMUDataElement extends SensorsDataElement {
     @Override
     public String convertDatatoString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("%15.03f", time_stamp));
+        stringBuilder.append(String.format("%15.03f,%15.03f", time_stamp,system_time_stamp));
         stringBuilder.append(",");
         stringBuilder.append(darray2String(acc, 3));
         stringBuilder.append(darray2String(gyr, 3));
         stringBuilder.append(darray2String(mag, 3));
         stringBuilder.append(darray2String(angle, 3));
         stringBuilder.append(darray2String(pressure, 1));
+        stringBuilder.append(darray2String(heigh, 1));
         stringBuilder.append(darray2String(Temp, 1));
         stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(","));
         stringBuilder.append("\n");
