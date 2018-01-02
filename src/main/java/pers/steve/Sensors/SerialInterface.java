@@ -9,6 +9,7 @@ import jssc.SerialPortException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.TooManyListenersException;
 
 public class SerialInterface<DT extends SensorDataEvent> extends HardwareInteface<DT> {
@@ -19,10 +20,12 @@ public class SerialInterface<DT extends SensorDataEvent> extends HardwareIntefac
      * sudo cp *rxtx*.so /usr/lib/jvm/java-8-oracle/jre/lib/amd64/
      */
 
-    private String serialname = "/dev/ttyUSB0";
-    private int nspeed = 460800;
-    private int nbits = 8;
-    private String nevent = "n";
+    protected String serialname = "/dev/ttyUSB0";
+    protected int nspeed = 460800;
+    protected int nbits = 8;
+    protected String nevent = "n";
+
+
 
     public String getSerialname() {
         return serialname;
@@ -145,7 +148,12 @@ public class SerialInterface<DT extends SensorDataEvent> extends HardwareIntefac
             if (serialPortEvent.getEventType() == SerialPortEvent.RXCHAR) {
                 try {
                     if (null == tmp_event) {
+//                        tmp_event = stClass.newInstance();
+                        stClass = (Class<DT>) Class.forName(TName);
+//                        Constructor<DT> constructor = stClass.getConstructor(Object.class,byte[].class);
+//                        tmp_event = (DT) constructor.newInstance(this,new byte[1]);
                         tmp_event = stClass.newInstance();
+
                     }
                     int buflength = serialPortEvent.getEventValue();
 
@@ -168,9 +176,17 @@ public class SerialInterface<DT extends SensorDataEvent> extends HardwareIntefac
                     e.printStackTrace();
                 } catch (InstantiationException e) {
                     e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
+//                } catch (NoSuchMethodException e) {
+//                    e.printStackTrace();
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
+
     }
 
 }

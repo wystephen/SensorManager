@@ -7,7 +7,7 @@ public class SensorDataEvent extends EventObject {
     protected byte[] b_data = null;
 
     SensorDataEvent(){
-        super(null);
+        super(new String());
         b_data = new byte[1];
     }
 

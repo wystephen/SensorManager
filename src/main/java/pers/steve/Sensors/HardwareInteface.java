@@ -9,6 +9,7 @@ import java.util.Iterator;
 public abstract class HardwareInteface<T extends SensorDataEvent> {
     //    protected SensorDataListener sensorDataListener = null;
     protected Collection listeners;
+    protected String TName = "pers.steve.Sensors.SensorDataEvent";
 
     /**
      *  Start interface. Default parameters will be adopted without set Parameter before.
