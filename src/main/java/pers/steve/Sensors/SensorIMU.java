@@ -8,4 +8,7 @@ public abstract class SensorIMU<DataInterfere>
     public SensorIMU() {
         setSensorName("GeneralIMU");
     }
+
+
+
 }

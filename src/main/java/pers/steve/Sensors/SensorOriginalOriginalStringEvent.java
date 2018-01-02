@@ -1,8 +1,8 @@
 package pers.steve.Sensors;
 
-public class SensorOriginalStringEvent extends SensorDataEvent {
+public class SensorOriginalOriginalStringEvent extends SensorOriginalDataEvent {
 
-    SensorOriginalStringEvent(Object source, byte[] b_data) {
+    SensorOriginalOriginalStringEvent(Object source, byte[] b_data) {
         super(source, b_data);
     }
 

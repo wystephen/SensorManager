@@ -2,17 +2,17 @@ package pers.steve.Sensors;
 
 import java.util.EventObject;
 
-public class SensorDataEvent extends EventObject {
+public class SensorOriginalDataEvent extends EventObject {
 
     protected byte[] b_data = null;
 
-    SensorDataEvent(){
+    SensorOriginalDataEvent(){
         super(new String());
         b_data = new byte[1];
     }
 
 
-    SensorDataEvent(Object source, byte[] b_data){
+    SensorOriginalDataEvent(Object source, byte[] b_data){
         super(source);
         this.b_data = b_data;
     }

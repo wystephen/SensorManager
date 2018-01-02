@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public abstract class HardwareInteface{
     private Collection listeners; // Collection for all listener. (HashSet in default)
-//    protected String TName = "pers.steve.Sensors.SensorDataEvent";
+//    protected String TName = "pers.steve.Sensors.SensorOriginalDataEvent";
 
     /**
      *  Start interface. Default parameters will be adopted without set Parameter before.
@@ -64,11 +64,11 @@ public abstract class HardwareInteface{
     }
 
     /**
-     * Create threads run listener.SensorDataEvent in listeners.
+     * Create threads run listener.SensorOriginalDataEvent in listeners.
      * @param event
      * @return
      */
-    public boolean notifyListeners(SensorDataEvent event) {
+    public boolean notifyListeners(SensorOriginalDataEvent event) {
         if (null == listeners) {
             return false;
         }
@@ -78,7 +78,7 @@ public abstract class HardwareInteface{
             Runnable task = ()->{
                 listener.SensorDataEvent(event);
             };
-//            listener.SensorDataEvent(event);
+//            listener.SensorOriginalDataEvent(event);
             Thread t = new Thread(task);
             t.start();
         }

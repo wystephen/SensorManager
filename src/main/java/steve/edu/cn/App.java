@@ -1,6 +1,5 @@
 package steve.edu.cn;
 
-import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import pers.steve.Sensors.*;
@@ -9,22 +8,9 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.layout.*;
 import javafx.scene.control.*;
-
-import java.net.URL;
-
-import java.io.*;
-import java.util.concurrent.SynchronousQueue;
 //import java.
 
 
@@ -65,7 +51,7 @@ public class App extends Application {
     public class SEL implements SensorDataListener{
 
         @Override
-        public void SensorDataEvent(SensorDataEvent event) {
+        public void SensorDataEvent(SensorOriginalDataEvent event) {
             System.out.print("Recieved data");
             System.out.println(new String(event.get_bytes()));
         }

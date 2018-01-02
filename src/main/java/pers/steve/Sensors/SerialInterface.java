@@ -6,12 +6,6 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.TooManyListenersException;
-
 public class SerialInterface extends HardwareInteface {
     /**
      * Use
@@ -165,7 +159,7 @@ public class SerialInterface extends HardwareInteface {
                         bytes = new byte[buflength];
                         bytes = serialPort_local.readBytes(buflength);
 
-                        notifyListeners(new SensorDataEvent(this, bytes));
+                        notifyListeners(new SensorOriginalDataEvent(this, bytes));
 
 
                         buflength = 0;
