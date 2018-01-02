@@ -6,6 +6,8 @@ import javafx.event.EventType;
 import java.util.EventObject;
 
 public class DataEvent<T> extends EventObject{
+
+
     public T sensorData;
 
 
@@ -18,6 +20,11 @@ public class DataEvent<T> extends EventObject{
     public DataEvent(Object source) {
         super(source);
     }
+
+    public T getSensorData() {
+        return sensorData;
+    }
+
 
     public void setSensorData(T sensorData) {
         this.sensorData = sensorData;

@@ -5,6 +5,7 @@ public class IMUDataElement extends SensorsDataElement {
     protected double[] acc = new double[3];
     protected double[] gyr = new double[3];
     protected double[] mag = new double[3];
+    protected double[] angle = new double[3];
     protected double[] pressure = new double[1];
     protected double[] Temp = new double[1];
 
@@ -56,12 +57,10 @@ public class IMUDataElement extends SensorsDataElement {
         this.angle = angle;
     }
 
-    protected double[] angle = new double[3];
 
-    public void IMUDataElement(int index){
-        dataname="IMUData";
+    public void IMUDataElement(int index) {
+        dataname = "IMUData";
     }
-
 
 
     /**
@@ -71,6 +70,30 @@ public class IMUDataElement extends SensorsDataElement {
      */
     @Override
     public String convertDatatoString() {
-        return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(time_stamp);
+        stringBuilder.append(",");
+        stringBuilder.append(darray2String(acc, 3));
+        stringBuilder.append(darray2String(gyr, 3));
+        stringBuilder.append(darray2String(mag, 3));
+        stringBuilder.append(darray2String(angle, 3));
+        stringBuilder.append(darray2String(pressure, 1));
+        stringBuilder.append(darray2String(Temp, 1));
+        stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(","));
+        stringBuilder.append("\n");
+
+
+        return stringBuilder.toString();
+    }
+
+
+    private String darray2String(double[] a, int n) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; ++i) {
+            sb.append(a[i]);
+            sb.append(",");
+        }
+
+        return sb.toString();
     }
 }

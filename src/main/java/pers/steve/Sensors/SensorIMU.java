@@ -67,7 +67,10 @@ public abstract class SensorIMU<DataInterfere>
 
         @Override
         public void SensorDataEvent(DataEvent<IMUDataElement> event) {
-            System.out.print("Try to output file");
+//            System.out.print("Try to output file");
+            System.out.print(event.getSensorData().convertDatatoString());
+
+
         }
     }
 
