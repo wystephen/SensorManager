@@ -80,7 +80,6 @@ public abstract class SensorIMU<DataInterfere>
 //            System.out.print("Try to output file");
             System.out.print(event.getSensorData().convertDatatoString());
 
-
         }
     }
 

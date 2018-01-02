@@ -59,6 +59,8 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
         }
 
 
+
+
         /**
          * Process buf from serial port.
          */
@@ -101,38 +103,49 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
                             int sec = 0;
                             sec = (int) (buf[7] & 0xFF);
                             int ms = 0;
-                            ms = (int) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)) );
-//                            StringBuilder sb = new StringBuilder();
-//                            sb.append("20");
-//                            sb.append(year);
-//                            sb.append("-");
-//                            sb.append(mon);
-//                            sb.append("-");
-//                            sb.append(day);
-//                            sb.append("-");
-//                            sb.append(hour);
-//                            sb.append("-");
-//                            sb.append(min);
-//                            sb.append("-");
-//                            sb.append(sec);
-//                            ZonedDateTime zdt = ZonedDateTime.parse(
-//                                    String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec),
-//                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")
-//                            );
-//                            Timestamp ts = Timestamp.from(zdt.toInstant());
+                            ms = (int) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)));
                             Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec));
                             long time_int = ts.getTime();
-//                            System.out.print(String.format("20%02d-%02d-%02d %02d:%02d:%02d-%04d", year, mon, day, hour, min, sec,ms));
-
-                            imu_data.setTime_stamp( (double)time_int +  ((double) (ms)) / 1000.0);
+                            imu_data.setTime_stamp((double) time_int + ((double) (ms)) / 1000.0);
 
                             break;
 
                         case 0x51:
+                            /// Acc and temperature
+                            int ax_int = 0;
+                            int ay_int = 0;
+                            int az_int = 0;
+                            int temperature_int = 0;
+                            ax_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
+                            ay_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                            az_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+                            temperature_int = (int) ((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8));
+
+                            double[] acc_tmp = new double[3];
+                            double[] t = new double[1];
+                            acc_tmp[0] = ((double) ax_int)/32768.0*16.0;
+                            acc_tmp[1] = ((double) ay_int)/32768.0*16.0;
+                            acc_tmp[2] = ((double) az_int)/32768.0*16.0;
+                            imu_data.setAcc(acc_tmp);
+                            t[0] = ((double) temperature_int) /100.0;
+                            imu_data.setTemp(t);
 
                             break;
 
                         case 0x52:
+                            ///gyr
+                            int gx_int = 0;
+                            int gy_int = 0;
+                            int gz_int = 0;
+                            gx_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
+                            gy_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                            gz_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+
+                            double tmp_gyr[] = new double[3];
+                            tmp_gyr[0] = ((double)gx_int)/32768.0*2000.0;
+                            tmp_gyr[1] = ((double)gy_int)/32768.0*2000.0;
+                            tmp_gyr[2] = ((double)gz_int)/32768.0*2000.0;
+                            imu_data.setGyr(tmp_gyr);
 
                             break;
 

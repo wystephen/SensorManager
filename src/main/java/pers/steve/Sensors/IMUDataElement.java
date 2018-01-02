@@ -71,7 +71,7 @@ public class IMUDataElement extends SensorsDataElement {
     @Override
     public String convertDatatoString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("%015.04f",time_stamp));
+        stringBuilder.append(String.format("%15.03f", time_stamp));
         stringBuilder.append(",");
         stringBuilder.append(darray2String(acc, 3));
         stringBuilder.append(darray2String(gyr, 3));
