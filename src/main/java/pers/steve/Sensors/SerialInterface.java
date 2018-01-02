@@ -8,9 +8,10 @@ import jssc.SerialPortException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.util.TooManyListenersException;
 
-public class SerialInterface extends HardwareInteface {
+public class SerialInterface<DT extends SensorDataEvent> extends HardwareInteface<DT> {
     /**
      * How to use rxtx library in Ubuntu:
      * sudo apt-get install librxtx-java
@@ -90,8 +91,7 @@ public class SerialInterface extends HardwareInteface {
 
             this.serialPort_local = new SerialPort(serialname);
 
-            if(!this.serialPort_local.isOpened())
-            {
+            if (!this.serialPort_local.isOpened()) {
 
                 this.serialPort_local.openPort();
             }
@@ -136,11 +136,17 @@ public class SerialInterface extends HardwareInteface {
 
         public byte[] bytes = null;
 
+        private Class<DT> stClass;
+        private DT tmp_event = null;
+
+
         public void serialEvent(SerialPortEvent serialPortEvent) {
+
             if (serialPortEvent.getEventType() == SerialPortEvent.RXCHAR) {
                 try {
-
-
+                    if (null == tmp_event) {
+                        tmp_event = stClass.newInstance();
+                    }
                     int buflength = serialPortEvent.getEventValue();
 
                     while (buflength > 0) {
@@ -148,7 +154,8 @@ public class SerialInterface extends HardwareInteface {
                         bytes = new byte[buflength];
                         bytes = serialPort_local.readBytes(buflength);
 //                        SensorDataEvent event = new SensorDataEvent(this,bytes);
-                        notifyListeners(new SensorDataEvent(this, bytes));
+                        tmp_event.setPara(this, bytes);
+                        notifyListeners(tmp_event);
 
 
                         buflength = 0;
@@ -156,6 +163,10 @@ public class SerialInterface extends HardwareInteface {
                     }
 
                 } catch (SerialPortException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
                     e.printStackTrace();
                 }
             }

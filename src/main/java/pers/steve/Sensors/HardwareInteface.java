@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public abstract class HardwareInteface {
+public abstract class HardwareInteface<T extends SensorDataEvent> {
     //    protected SensorDataListener sensorDataListener = null;
     protected Collection listeners;
 
@@ -57,7 +57,7 @@ public abstract class HardwareInteface {
      * @param event
      * @return
      */
-    public boolean notifyListeners(SensorDataEvent event) {
+    public boolean notifyListeners(T event) {
         if (null == listeners) {
             return false;
         }
