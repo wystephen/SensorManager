@@ -55,6 +55,16 @@ public abstract class SensorIMU<DataInterfere>
         }
     }
 
+
+    @Override
+    public boolean StopFileOutput(int state) {
+        if(removeDataListener(fileListener)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     class VisualListener implements SensorDataListener<IMUDataElement> {
 
         @Override
