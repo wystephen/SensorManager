@@ -30,6 +30,36 @@ public abstract class SensorAbstract<DataElementType, DataInterface> {
 
     protected HashSet<SensorDataListener<DataElementType>> listenerHashSet = null;
 
+
+    protected boolean sensor_running_flag = false; // flag for sensor thread which read data from hardware.
+    protected boolean fileout_running_flag = false; // flag for file output thread which write data to file.
+    protected boolean gui_running_flag = false; // flag for gui thread which show the data online.
+
+
+    public boolean isSensor_running_flag() {
+        return sensor_running_flag;
+    }
+
+    public void setSensor_running_flag(boolean sensor_running_flag) {
+        this.sensor_running_flag = sensor_running_flag;
+    }
+
+    public boolean isFileout_running_flag() {
+        return fileout_running_flag;
+    }
+
+    public void setFileout_running_flag(boolean fileout_running_flag) {
+        this.fileout_running_flag = fileout_running_flag;
+    }
+
+    public boolean isGui_running_flag() {
+        return gui_running_flag;
+    }
+
+    public void setGui_running_flag(boolean gui_running_flag) {
+        this.gui_running_flag = gui_running_flag;
+    }
+
     protected boolean addDataListener(SensorDataListener<DataElementType> listener) {
         try {
             if (listenerHashSet == null) {

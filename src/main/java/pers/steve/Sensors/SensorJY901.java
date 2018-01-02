@@ -22,6 +22,11 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
             System.out.print("data interface tool is null");
             return false;
         }
+        if (sensor_running_flag == true) {
+            System.out.print("Sensor is running.");
+            return false;
+        }
+        sensor_running_flag = true;
         data_interface_tool.addListener(new SerialListener());
         data_interface_tool.StartInterface();
 
@@ -35,7 +40,16 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
      */
     @Override
     public boolean StopSensor(int State) {
-        return false;
+        if (sensor_running_flag) {
+            data_interface_tool.StopInterface();
+            sensor_running_flag = false;
+            return true;
+        } else {
+            System.out.print("Sensor is not running.");
+
+            return true;
+        }
+
     }
 
 
@@ -76,8 +90,8 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
                         if (i == 0 && buf[0] != 0x55) {
                             System.out.print("throw data");
                             throw new Exception("Throw data");
-                        }else if(i==1 && buf[1] == 0x50){
-                            current_system_time = ((double) System.currentTimeMillis())/1000.0;
+                        } else if (i == 1 && buf[1] == 0x50) {
+                            current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                         }
 
                     }
@@ -214,7 +228,7 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
                     }
 //                    System.out.print("after process");
                     //TODO:Adjust the sleep time auto.
-                    Thread.sleep(0,10);
+                    Thread.sleep(0, 10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     continue;
