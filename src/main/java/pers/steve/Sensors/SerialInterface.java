@@ -1,12 +1,22 @@
 package pers.steve.Sensors;
 
-import gnu.io.*;
+
+import jssc.SerialPort;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.TooManyListenersException;
 
 public class SerialInterface extends HardwareInteface {
+    /**
+     * How to use rxtx library in Ubuntu:
+     * sudo apt-get install librxtx-java
+     *
+     * sudo cp *rxtx*.so /usr/lib/jvm/java-8-oracle/jre/lib/amd64/
+     *
+     */
 
     private String serialname = "/dev/ttyUSB0";
     private int nspeed = 460800;
@@ -78,38 +88,24 @@ public class SerialInterface extends HardwareInteface {
 
         try {
 
-            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(serialname);
-            CommPort commPort = portIdentifier.open(serialname, 2000);
-            this.serialPort_local = (SerialPort) commPort;
+            this.serialPort_local = new SerialPort(serialname);
 
             //
-            this.serialPort_local.setSerialPortParams(
-                    nspeed,
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE
-            );
-            this.serialPort_local.addEventListener(new SerialEventListener());
+//            this.serialPort_local.setSerialPortParams(
+//                    nspeed,
+//                    SerialPort.DATABITS_8,
+//                    SerialPort.STOPBITS_1,
+//                    SerialPort.PARITY_NONE
+//            );
+            this.serialPort_local.setParams(nspeed,nbits,nstop,SerialPort.PARITY_NONE);
+            this.serialPort_local.addEventListener( SerialEventListener());
 
 
-        } catch (NoSuchPortException e) {
-            //TODO: Throw a new exception here.
-            System.out.print("Cannot find the serial port :" + serialname);
-            e.printStackTrace();
-            return false;
-        } catch (PortInUseException e) {
-            //TODO: Throw a new exception here.
-            System.out.print("Port in use: " + serialname);
-            e.printStackTrace();
-            return false;
-        } catch (UnsupportedCommOperationException e) {
-            //TODO: Output all parameters here.
-            System.out.print("UnsupportedCommOperatioin");
-            e.printStackTrace();
-            return false;
         } catch (TooManyListenersException e) {
             e.printStackTrace();
             return false;
+        } catch (SerialPortException e) {
+            e.printStackTrace();
         }
         return true;
 

@@ -24,6 +24,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 
 import java.io.*;
+import java.util.concurrent.SynchronousQueue;
 //import java.
 
 
@@ -64,7 +65,8 @@ public class App extends Application {
     public class SEL implements SensorDataListener{
         @Override
         public void SensorDataEvent(SensorDataEvent event) {
-            System.out.print(new String(((SensorOriginalStringEvent) event).getStringData()));
+            System.out.print("Recieved data");
+            System.out.print(((SensorOriginalStringEvent) event).getStringData());
         }
     }
 
