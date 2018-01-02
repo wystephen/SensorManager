@@ -3,31 +3,23 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="774.0" y="1047.0">pers.steve.Sensors.DataGUIEvent</node>
-    <node x="214.25" y="1047.0">pers.steve.Sensors.SensorDataEvent</node>
-    <node x="0.0" y="1351.0">pers.steve.Sensors.SensorDataListener</node>
-    <node x="0.0" y="1226.0">pers.steve.Sensors.SensorOriginalByteEvent</node>
+    <node x="0.0" y="1047.0">pers.steve.Sensors.SensorOriginalOriginalByteEvent</node>
+    <node x="450.0" y="1047.0">pers.steve.Sensors.SensorDataListener</node>
     <node x="446.0" y="722.0">pers.steve.Sensors.ISensor</node>
-    <node x="429.0" y="395.0">jssc</node>
-    <node x="0.0" y="274.0">pers.steve.Sensors.SerialInterface</node>
+    <node x="443.5" y="395.0">jssc</node>
+    <node x="14.5" y="274.0">pers.steve.Sensors.SerialInterface</node>
     <node x="0.0" y="745.5">pers.steve.Sensors.SensorAbstract</node>
-    <node x="13.5" y="0.0">pers.steve.Sensors.HardwareInteface</node>
-    <node x="369.0" y="1226.0">pers.steve.Sensors.SensorOriginalStringEvent</node>
-    <node x="591.0" y="262.5">pers.steve.Sensors.UWBDataElement</node>
-    <node x="734.5" y="0.0">pers.steve.Sensors.SensorsDataElement</node>
-    <node x="197.5" y="597.0">pers.steve.Sensors.SerialInterface.SerialEventListener</node>
+    <node x="0.0" y="0.0">pers.steve.Sensors.HardwareInteface</node>
+    <node x="605.5" y="262.5">pers.steve.Sensors.UWBDataElement</node>
+    <node x="757.0" y="722.0">pers.steve.Sensors.SensorOriginalOriginalStringEvent</node>
+    <node x="749.0" y="0.0">pers.steve.Sensors.SensorsDataElement</node>
+    <node x="212.0" y="597.0">pers.steve.Sensors.SerialInterface.SerialEventListener</node>
     <node x="318.0" y="947.0">pers.steve.Sensors.SensorIMU</node>
-    <node x="878.0" y="178.0">pers.steve.Sensors.IMUDataElement</node>
-    <node x="397.0" y="1351.0">libs</node>
+    <node x="892.5" y="178.0">pers.steve.Sensors.IMUDataElement</node>
+    <node x="679.0" y="1047.0">libs</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="pers.steve.Sensors.SensorOriginalStringEvent" target="pers.steve.Sensors.SensorDataEvent">
-      <point x="0.0" y="-40.0" />
-      <point x="549.0" y="1201.0" />
-      <point x="435.5" y="1201.0" />
-      <point x="73.75" y="64.5" />
-    </edge>
     <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.ISensor">
       <point x="39.0" y="-27.5" />
       <point x="435.0" y="922.0" />
@@ -42,8 +34,8 @@
     </edge>
     <edge source="pers.steve.Sensors.SerialInterface.SerialEventListener" target="jssc">
       <point x="74.25" y="-40.0" />
-      <point x="420.25" y="572.0" />
-      <point x="487.5" y="572.0" />
+      <point x="434.75" y="572.0" />
+      <point x="502.0" y="572.0" />
       <point x="0.0" y="15.5" />
     </edge>
     <edge source="pers.steve.Sensors.SerialInterface" target="pers.steve.Sensors.HardwareInteface">
@@ -52,32 +44,26 @@
     </edge>
     <edge source="pers.steve.Sensors.UWBDataElement" target="pers.steve.Sensors.SensorsDataElement">
       <point x="0.0" y="-27.5" />
-      <point x="724.5" y="153.0" />
-      <point x="801.25" y="153.0" />
+      <point x="739.0" y="153.0" />
+      <point x="815.75" y="153.0" />
       <point x="-66.75" y="64.0" />
-    </edge>
-    <edge source="pers.steve.Sensors.SensorOriginalByteEvent" target="pers.steve.Sensors.SensorDataEvent">
-      <point x="0.0" y="-40.0" />
-      <point x="174.5" y="1201.0" />
-      <point x="288.0" y="1201.0" />
-      <point x="-73.75" y="64.5" />
     </edge>
     <edge source="pers.steve.Sensors.IMUDataElement" target="pers.steve.Sensors.SensorsDataElement">
       <point x="0.0" y="-112.0" />
-      <point x="1011.5" y="153.0" />
-      <point x="934.75" y="153.0" />
+      <point x="1026.0" y="153.0" />
+      <point x="949.25" y="153.0" />
       <point x="66.75" y="64.0" />
     </edge>
     <edge source="pers.steve.Sensors.SerialInterface.SerialEventListener" target="pers.steve.Sensors.SerialInterface">
       <point x="-74.25" y="-40.0" />
-      <point x="271.75" y="572.0" />
-      <point x="204.5" y="572.0" />
+      <point x="286.25" y="572.0" />
+      <point x="219.0" y="572.0" />
       <point x="0.0" y="136.5" />
     </edge>
   </edges>
   <settings layout="Hierarchic Group" zoom="0.7527151211361738" x="701.3523862375139" y="648.5" />
   <SelectedNodes>
-    <node>pers.steve.Sensors.DataGUIEvent</node>
+    <node>pers.steve.Sensors.SensorDataListener</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>

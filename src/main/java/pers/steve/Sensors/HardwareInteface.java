@@ -35,7 +35,7 @@ public abstract class HardwareInteface{
      * @param listener
      * @return
      */
-    public boolean addListener(SensorDataListener listener) {
+    public boolean addListener(SensorOriginalDataListener listener) {
         if (null == listeners) {
             listeners = new HashSet();
         }
@@ -49,7 +49,7 @@ public abstract class HardwareInteface{
      * @param listener
      * @return
      */
-    public boolean removeListener(SensorDataListener listener) {
+    public boolean removeListener(SensorOriginalDataListener listener) {
         try {
             if (listeners != null) {
 
@@ -74,7 +74,7 @@ public abstract class HardwareInteface{
         }
         Iterator iter = listeners.iterator();
         while (iter.hasNext()) {
-            SensorDataListener listener = (SensorDataListener) iter.next();
+            SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
             Runnable task = ()->{
                 listener.SensorDataEvent(event);
             };

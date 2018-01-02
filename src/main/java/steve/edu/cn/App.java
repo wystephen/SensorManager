@@ -48,7 +48,7 @@ public class App extends Application {
         }
     }
 
-    public class SEL implements SensorDataListener{
+    public class SEL implements SensorOriginalDataListener {
 
         @Override
         public void SensorDataEvent(SensorOriginalDataEvent event) {
