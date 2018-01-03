@@ -12,7 +12,7 @@ public class WirelessDataElement extends SensorDataElement {
     protected HashMap<String, double[]> measurmentsMap = null;
 
 
-    WirelessDataElement(){
+    WirelessDataElement() {
         dataname = "WirelessSensor";
     }
 
@@ -42,7 +42,12 @@ public class WirelessDataElement extends SensorDataElement {
     }
 
 
-    protected String convertValuetoString(double[] v) {
+    /**
+     * Converte value[] to string. Never use out side.
+     * @param v double[], value of measurements.
+     * @return
+     */
+    private String convertValuetoString(double[] v) {
         StringBuilder sb = new StringBuilder();
         for (double value : v) {
             sb.append(v);

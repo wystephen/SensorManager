@@ -36,9 +36,9 @@ public class App extends Application {
 
                             System.out.println("clicked button");
                             SerialAbstract si = new SerialAbstract();
-//                            si.addListener(new SEL());
-//                            si.StartInterface();
-                            SensorJY901 sj = new SensorJY901();
+                            si.setNspeed(115200);
+
+                            SensorUWB sj = new SensorUWB();
                             sj.setInterface(si);
                             sj.startFileOutput(1);
                             sj.startSensor(1);

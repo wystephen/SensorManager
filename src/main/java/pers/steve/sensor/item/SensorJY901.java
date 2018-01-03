@@ -58,7 +58,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
         return true;
     }
 
-    public class SerialListener implements SensorOriginalDataListener {
+    class SerialListener implements SensorOriginalDataListener {
         protected ArrayBlockingQueue<Byte> byte_queue = new ArrayBlockingQueue<>(1000);
 
         /*
@@ -85,7 +85,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                             }
 
                         }
-    //                    System.out.print("after copy data");
+                        //                    System.out.print("after copy data");
                         switch (buf[1]) {
                             case 0x50:
                                 /// Time
@@ -216,7 +216,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
                                 break;
                         }
-    //                    System.out.print("after process");
+                        //                    System.out.print("after process");
                         //TODO:Adjust the sleep time auto.
                         Thread.sleep(0, 10);
                     } catch (InterruptedException e) {

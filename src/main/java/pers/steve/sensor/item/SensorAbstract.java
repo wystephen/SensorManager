@@ -22,11 +22,12 @@ public abstract class SensorAbstract<DataElementType, DataInterface> {
     protected boolean fileoutRunningFlag = false; // flag for file output thread which write data to file.
     protected boolean guiRunningFlag = false; // flag for gui thread which show the data online.
 
-    protected java.util.concurrent.SynchronousQueue<DataElementType> dataQueue = new SynchronousQueue<DataElementType>();
+//    protected java.util.concurrent.SynchronousQueue<DataElementType> dataQueue = new SynchronousQueue<DataElementType>();
     protected DataInterface dataInterfaceTool = null;
     protected HashSet<SensorDataListener<DataElementType>> listenerHashSet = null; // save listeners.
+//    protected SensorOriginalDataListener originalDataListener = null;
 
-    private Thread sensorDataAccepter;
+//    private Thread sensorDataAccepter;
     private String sensorName;
 
 
