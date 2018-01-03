@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="461.0" y="1384.0">pers.steve.Sensors.SensorOriginalOriginalByteEvent</node>
+    <node x="1458.8944875776397" y="1236.0">pers.steve.Sensors.SensorJY901</node>
+    <node x="947.9715062111802" y="601.0">pers.steve.Sensors.ISensor</node>
+    <node x="444.125" y="310.5">pers.steve.Sensors.SensorDataListener</node>
+    <node x="2346.696118012422" y="322.5">jssc</node>
+    <node x="458.0" y="661.0">pers.steve.Sensors.SensorIMU.FileListener</node>
+    <node x="2128.9144409937885" y="903.0">pers.steve.Sensors.SerialInterface</node>
+    <node x="1233.9715062111802" y="564.0">pers.steve.Sensors.SensorAbstract</node>
+    <node x="1591.7840062111802" y="939.0">pers.steve.Sensors.SensorJY901.SerialListener</node>
+    <node x="0.0" y="661.0">pers.steve.Sensors.SensorIMU.VisualListener</node>
+    <node x="1851.7444875776396" y="226.0">pers.steve.Sensors.HardwareInteface</node>
+    <node x="1312.080357142857" y="310.5">pers.steve.Sensors.UWBDataElement</node>
+    <node x="0.0" y="1384.0">pers.steve.Sensors.SensorOriginalOriginalStringEvent</node>
+    <node x="2127.2715838509316" y="648.5">pers.steve.Sensors.SerialInterface.SerialEventListener</node>
+    <node x="886.125" y="0.0">pers.steve.Sensors.SensorsDataElement</node>
+    <node x="485.3069875776396" y="939.0">pers.steve.Sensors.SensorIMU</node>
+    <node x="807.7215838509317" y="202.0">pers.steve.Sensors.IMUDataElement</node>
+    <node x="911.0" y="1384.0">libs</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pers.steve.Sensors.SensorIMU.VisualListener" target="pers.steve.Sensors.SensorIMU">
+      <point x="146.0" y="27.5" />
+      <point x="365.0" y="863.0" />
+      <point x="551.8069875776396" y="863.0" />
+      <point x="-66.5" y="-100.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901.SerialListener" target="pers.steve.Sensors.IMUDataElement">
+      <point x="0.0" y="-100.5" />
+      <point x="1795.7840062111802" y="883.0" />
+      <point x="1848.5215838509316" y="883.0" />
+      <point x="1848.5215838509316" y="504.0" />
+      <point x="1019.1215838509318" y="504.0" />
+      <point x="60.40000000000009" y="136.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901" target="pers.steve.Sensors.SensorJY901.SerialListener">
+      <point x="0.0" y="-51.5" />
+      <point x="1619.3944875776397" y="1196.0" />
+      <point x="1693.7840062111802" y="1196.0" />
+      <point x="-102.0" y="100.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.SensorAbstract">
+      <point x="93.09999999999991" y="-100.5" />
+      <point x="711.4069875776395" y="873.0" />
+      <point x="1303.0965062111802" y="873.0" />
+      <point x="-207.375" y="124.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.SensorIMU.FileListener">
+      <point x="-39.89999999999998" y="-100.5" />
+      <point x="578.4069875776396" y="853.0" />
+      <point x="531.0" y="853.0" />
+      <point x="-146.0" y="27.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface" target="pers.steve.Sensors.SerialInterface.SerialEventListener">
+      <point x="-116.85714285714266" y="-136.5" />
+      <point x="2216.557298136646" y="883.0" />
+      <point x="2176.7715838509316" y="883.0" />
+      <point x="-99.0" y="40.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.ISensor">
+      <point x="66.5" y="-100.5" />
+      <point x="684.8069875776396" y="863.0" />
+      <point x="1080.9715062111802" y="863.0" />
+      <point x="0.0" y="87.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface.SerialEventListener" target="jssc">
+      <point x="99.0" y="-40.0" />
+      <point x="2374.7715838509316" y="544.0" />
+      <point x="2405.196118012422" y="544.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901" target="pers.steve.Sensors.SensorAbstract">
+      <point x="-64.19999999999993" y="-51.5" />
+      <point x="1555.1944875776396" y="1216.0" />
+      <point x="1579.5965062111802" y="1216.0" />
+      <point x="69.125" y="124.5" />
+    </edge>
+    <edge source="jssc" target="jssc">
+      <point x="-33.428571428571445" y="15.5" />
+      <point x="2371.7675465838506" y="383.5" />
+      <point x="2316.696118012422" y="383.5" />
+      <point x="2316.696118012422" y="330.25" />
+      <point x="-58.5" y="-7.75" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface.SerialEventListener" target="pers.steve.Sensors.SerialInterface">
+      <point x="0.0" y="40.0" />
+      <point x="-58.42857142857156" y="-136.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901" target="pers.steve.Sensors.SerialInterface">
+      <point x="128.4000000000001" y="-51.5" />
+      <point x="1747.7944875776398" y="1216.0" />
+      <point x="2333.4144409937885" y="1216.0" />
+      <point x="0.0" y="136.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901.SerialListener" target="pers.steve.Sensors.SensorAbstract">
+      <point x="-136.0" y="-100.5" />
+      <point x="1659.7840062111802" y="883.0" />
+      <point x="1717.8465062111802" y="883.0" />
+      <point x="207.375" y="124.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU.VisualListener" target="pers.steve.Sensors.SensorDataListener">
+      <point x="-109.5" y="-27.5" />
+      <point x="109.5" y="524.0" />
+      <point x="485.25" y="524.0" />
+      <point x="-123.375" y="27.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.SensorIMU.VisualListener">
+      <point x="-119.69999999999993" y="-100.5" />
+      <point x="498.60698757763976" y="883.0" />
+      <point x="73.0" y="883.0" />
+      <point x="-146.0" y="27.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorAbstract" target="pers.steve.Sensors.SensorDataListener">
+      <point x="-138.25" y="-124.5" />
+      <point x="1372.2215062111802" y="524.0" />
+      <point x="649.75" y="524.0" />
+      <point x="41.125" y="27.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface" target="pers.steve.Sensors.HardwareInteface">
+      <point x="-175.28571428571422" y="-136.5" />
+      <point x="2158.1287267080743" y="883.0" />
+      <point x="2036.053260869565" y="883.0" />
+      <point x="2036.053260869565" y="544.0" />
+      <point x="1961.2444875776396" y="544.0" />
+      <point x="-109.5" y="112.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901.SerialListener" target="pers.steve.Sensors.SensorJY901">
+      <point x="102.00000000000003" y="100.5" />
+      <point x="1897.7840062111802" y="1206.0" />
+      <point x="1683.5944875776397" y="1206.0" />
+      <point x="64.20000000000005" y="-51.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.UWBDataElement" target="pers.steve.Sensors.SensorsDataElement">
+      <point x="0.0" y="-27.5" />
+      <point x="1445.580357142857" y="177.0" />
+      <point x="1108.625" y="177.0" />
+      <point x="89.0" y="76.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU.FileListener" target="pers.steve.Sensors.IMUDataElement">
+      <point x="109.5" y="-27.5" />
+      <point x="786.5" y="544.0" />
+      <point x="898.3215838509316" y="544.0" />
+      <point x="-60.40000000000009" y="136.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU" target="pers.steve.Sensors.IMUDataElement">
+      <point x="39.90000000000009" y="-100.5" />
+      <point x="658.2069875776397" y="853.0" />
+      <point x="937.4715062111802" y="853.0" />
+      <point x="937.4715062111802" y="544.0" />
+      <point x="958.7215838509317" y="544.0" />
+      <point x="0.0" y="136.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.IMUDataElement" target="pers.steve.Sensors.SensorsDataElement">
+      <point x="-75.5" y="-136.0" />
+      <point x="883.2215838509317" y="177.0" />
+      <point x="930.625" y="177.0" />
+      <point x="-89.0" y="76.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU.VisualListener" target="pers.steve.Sensors.IMUDataElement">
+      <point x="109.5" y="-27.5" />
+      <point x="328.5" y="534.0" />
+      <point x="837.9215838509317" y="534.0" />
+      <point x="-120.79999999999995" y="136.0" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface" target="jssc">
+      <point x="116.85714285714266" y="-136.5" />
+      <point x="2450.271583850931" y="883.0" />
+      <point x="2494.4587732919254" y="883.0" />
+      <point x="2494.4587732919254" y="534.0" />
+      <point x="2438.6246894409937" y="534.0" />
+      <point x="33.42857142857156" y="15.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorJY901" target="pers.steve.Sensors.SensorIMU">
+      <point x="-128.39999999999998" y="-51.5" />
+      <point x="1490.9944875776396" y="1216.0" />
+      <point x="618.3069875776396" y="1216.0" />
+      <point x="0.0" y="100.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU.FileListener" target="pers.steve.Sensors.SensorIMU">
+      <point x="146.0" y="27.5" />
+      <point x="823.0" y="843.0" />
+      <point x="631.6069875776395" y="843.0" />
+      <point x="13.299999999999955" y="-100.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SensorIMU.FileListener" target="pers.steve.Sensors.SensorDataListener">
+      <point x="-109.5" y="-27.5" />
+      <point x="-41.125" y="27.5" />
+    </edge>
+    <edge source="pers.steve.Sensors.SerialInterface.SerialEventListener" target="pers.steve.Sensors.HardwareInteface">
+      <point x="-99.0" y="-40.0" />
+      <point x="2176.7715838509316" y="544.0" />
+      <point x="2180.2444875776396" y="544.0" />
+      <point x="109.5" y="112.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.15271512113617422" x="31.01279498856502" y="1133.9026810949313" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
