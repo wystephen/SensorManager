@@ -6,32 +6,34 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public abstract class HardwareInteface{
+public abstract class HardwareInteface {
     private Collection listeners; // Collection for all listener. (HashSet in default)
 //    protected String TName = "pers.steve.Sensors.SensorOriginalDataEvent";
 
     /**
-     *  Start interface. Default parameters will be adopted without set Parameter before.
+     * Start interface. Default parameters will be adopted without set Parameter before.
+     *
      * @return
      */
     public abstract boolean StartInterface();
 
     /**
      * Stop hardware and clear the listeners.
-     * @return
-     * @throws SerialPortException
-     */
-    public abstract boolean StopInterface() ;
-
-    /**
      *
      * @return
      * @throws SerialPortException
      */
-    public abstract boolean RestartInterface() ;
+    public abstract boolean StopInterface();
+
+    /**
+     * @return
+     * @throws SerialPortException
+     */
+    public abstract boolean RestartInterface();
 
     /**
      * Add a Listener for the SensorDataArrive Event.
+     *
      * @param listener
      * @return
      */
@@ -65,6 +67,7 @@ public abstract class HardwareInteface{
 
     /**
      * Create threads run listener.SensorOriginalDataEvent in listeners.
+     *
      * @param event
      * @return
      */
@@ -75,11 +78,11 @@ public abstract class HardwareInteface{
         Iterator iter = listeners.iterator();
         while (iter.hasNext()) {
             SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
-            Runnable task = ()->{
-                try{
+            Runnable task = () -> {
+                try {
 
                     listener.SensorDataEvent(event);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             };
@@ -92,13 +95,13 @@ public abstract class HardwareInteface{
 
     /**
      * Clear all listeners.
+     *
      * @return
      */
-    public boolean clearListeners(){
-        if(null == listeners)
-        {
+    public boolean clearListeners() {
+        if (null == listeners) {
             return false;
-        }else{
+        } else {
             listeners.clear();
             return true;
         }

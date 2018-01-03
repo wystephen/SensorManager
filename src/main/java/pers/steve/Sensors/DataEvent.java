@@ -5,7 +5,7 @@ import javafx.event.EventType;
 
 import java.util.EventObject;
 
-public class DataEvent<T> extends EventObject{
+public class DataEvent<T> extends EventObject {
 
 
     public T sensorData;

@@ -47,7 +47,7 @@ public class App extends Application {
             );
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -62,8 +62,7 @@ public class App extends Application {
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         ExampleShow t_example = new ExampleShow();
         System.out.print(t_example.retureString());
 
