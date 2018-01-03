@@ -52,6 +52,9 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
     }
 
 
+    /**
+     * Listener for UWB use DAPS embedded system.
+     */
     class SerialListenerUWB implements SensorOriginalDataListener {
 
         protected ArrayBlockingQueue<String> strQueue = new ArrayBlockingQueue<>(100);
@@ -127,7 +130,7 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
                                     double[] ds = new double[2];
                                     ds[0] = Double.valueOf(X);
                                     ds[1] = Double.valueOf(Y);
-                                    if(uwbDataElement != null){
+                                    if (uwbDataElement != null) {
                                         // To avoid null pointer error.
 
                                         uwbDataElement.addMeasurement(N, ds);
@@ -141,8 +144,8 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
                                 throw new Exception("Unrecognizable sensor data" + localString);
 
                         }
-                        if(strQueue.size()<1){
-                            Thread.sleep(0,1000);
+                        if (strQueue.size() < 1) {
+                            Thread.sleep(0, 1000);
                         }
 
 
