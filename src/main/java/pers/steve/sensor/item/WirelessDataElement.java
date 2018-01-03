@@ -12,6 +12,10 @@ public class WirelessDataElement extends SensorDataElement {
     protected HashMap<String, double[]> measurmentsMap = null;
 
 
+    WirelessDataElement(){
+        dataname = "WirelessSensor";
+    }
+
     /**
      * Convert Data to String( with '\n' at the end).
      *
