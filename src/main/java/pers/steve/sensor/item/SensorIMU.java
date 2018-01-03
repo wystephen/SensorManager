@@ -1,5 +1,9 @@
 package pers.steve.sensor.item;
 
+/**
+ * for IMU.
+ * @param <DataInterfere>
+ */
 public abstract class SensorIMU<DataInterfere>
         extends SensorAbstract<IMUDataElement, DataInterfere>
         implements SensorInterface {

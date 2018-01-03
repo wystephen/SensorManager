@@ -10,6 +10,14 @@ import java.util.concurrent.SynchronousQueue;
  */
 public abstract class SensorAbstract<DataElementType, DataInterface> {
 
+    SensorAbstract(){
+        setSensorName("AbstractSensor");
+    }
+
+    SensorAbstract(String sensorName){
+        this.sensorName = sensorName;
+    }
+
     protected boolean sensorRunningFlag = false; // flag for sensor thread which read data from hardware.
     protected boolean fileoutRunningFlag = false; // flag for file output thread which write data to file.
     protected boolean guiRunningFlag = false; // flag for gui thread which show the data online.
@@ -20,6 +28,8 @@ public abstract class SensorAbstract<DataElementType, DataInterface> {
 
     private Thread sensorDataAccepter;
     private String sensorName;
+
+
 
 
     protected boolean addDataListener(SensorDataListener<DataElementType> listener) {
@@ -51,6 +61,9 @@ public abstract class SensorAbstract<DataElementType, DataInterface> {
         return true;
 
     }
+
+
+
 
     /**
      * notify all listeners in listenerHashSet.

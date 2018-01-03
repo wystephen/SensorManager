@@ -21,7 +21,7 @@ public class IMUDataElement extends SensorDataElement {
     protected double[] Temp = new double[1];//Temporary
 
 
-    IMUDataElement(int index) {
+    IMUDataElement() {
         dataname = "IMUData";
     }
 
