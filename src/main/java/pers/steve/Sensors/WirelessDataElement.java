@@ -1,6 +1,6 @@
 package pers.steve.Sensors;
 
-public class UWBDataElement extends SensorsDataElement {
+public class WirelessDataElement extends SensorsDataElement {
     /**
      * Convert Data to String( with '\n' at the end).
      *
