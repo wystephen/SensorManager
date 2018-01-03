@@ -3,7 +3,7 @@ package pers.steve.sensor.item;
 import java.sql.Timestamp;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class SensorJY901 extends SensorIMU<SerialInterface> {
+public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
 
     /**
@@ -13,18 +13,18 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
      * @return
      */
     @Override
-    public boolean StartSensor(int State) {
-        if (null == data_interface_tool) {
+    public boolean startSensor(int State) {
+        if (null == dataInterfaceTool) {
             System.out.print("data interface tool is null");
             return false;
         }
-        if (sensor_running_flag == true) {
+        if (sensorRunningFlag == true) {
             System.out.print("Sensor is running.");
             return false;
         }
-        sensor_running_flag = true;
-        data_interface_tool.addListener(new SerialListener());
-        data_interface_tool.StartInterface();
+        sensorRunningFlag = true;
+        dataInterfaceTool.addListener(new SerialListener());
+        dataInterfaceTool.StartInterface();
 
 
         return true;
@@ -35,10 +35,10 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
      * @return
      */
     @Override
-    public boolean StopSensor(int State) {
-        if (sensor_running_flag) {
-            data_interface_tool.StopInterface();
-            sensor_running_flag = false;
+    public boolean stopSensor(int State) {
+        if (sensorRunningFlag) {
+            dataInterfaceTool.StopInterface();
+            sensorRunningFlag = false;
             return true;
         } else {
             System.out.print("Sensor is not running.");
@@ -50,8 +50,8 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
 
 
     @Override
-    public boolean setInterface(SerialInterface data_interface_tool) {
-        this.data_interface_tool = data_interface_tool;
+    public boolean setInterface(SerialAbstract data_interface_tool) {
+        this.dataInterfaceTool = data_interface_tool;
         return true;
     }
 
@@ -59,7 +59,7 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
         protected ArrayBlockingQueue<Byte> byte_queue = new ArrayBlockingQueue<>(1000);
 
         /*
-        Value for runnable data_process
+        Value for runnable dataProcess
          */
         protected IMUDataElement imu_data = null;
         double current_system_time = 0.0;
@@ -67,7 +67,7 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
 
         public SerialListener() {
             super();
-            Thread t = new Thread(data_process);
+            Thread t = new Thread(dataProcess);
             t.start();
 
         }
@@ -76,7 +76,7 @@ public class SensorJY901 extends SensorIMU<SerialInterface> {
         /**
          * Process buf from serial port. And call notifyListeners.
          */
-        protected Runnable data_process = () -> {
+        protected Runnable dataProcess = () -> {
             while (true) {
 
                 try {

@@ -5,10 +5,14 @@ import javafx.event.EventType;
 
 import java.util.EventObject;
 
+/**
+ * Generic class for events of data which is processed received.
+ * @param <T> DataElement
+ */
 public class DataEvent<T> extends EventObject {
 
 
-    public T sensorData;
+    protected T sensorData; // Sensor data saved here.
 
 
     /**

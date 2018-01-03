@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import pers.steve.sensor.item.*;
 //import java.
 
 
@@ -36,13 +35,13 @@ public class App extends Application {
                         public void handle(ActionEvent event) {
 
                             System.out.println("clicked button");
-                            SerialInterface si = new SerialInterface();
+                            SerialAbstract si = new SerialAbstract();
 //                            si.addListener(new SEL());
 //                            si.StartInterface();
                             SensorJY901 sj = new SensorJY901();
                             sj.setInterface(si);
-                            sj.StartFileOutput(1);
-                            sj.StartSensor(1);
+                            sj.startFileOutput(1);
+                            sj.startSensor(1);
                         }
                     }
             );

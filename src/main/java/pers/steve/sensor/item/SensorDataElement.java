@@ -1,7 +1,7 @@
 package pers.steve.sensor.item;
 
-public abstract class SensorsDataElement {
-    protected String dataname = "SensorsDataElement"; // name of data
+public abstract class SensorDataElement {
+    protected String dataname = "SensorDataElement"; // name of data
     protected int data_index = -1; // index of data
     protected double time_stamp = 0.0; //time stamp
 

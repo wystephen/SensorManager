@@ -2,24 +2,24 @@ package pers.steve.sensor.item;
 
 public abstract class SensorIMU<DataInterfere>
         extends SensorAbstract<IMUDataElement, DataInterfere>
-        implements ISensor {
+        implements SensorInterface {
 
-    private VisualListener gui_listener;
+    private VisualListener guiListener;
     private FileListener fileListener;
 
-    public SensorIMU() {
+    SensorIMU() {
         setSensorName("GeneralIMU");
     }
 
 
     @Override
-    public boolean StartGUIOutput(int state) {
-        if (null != gui_listener) {
+    public boolean startGUIOutput(int state) {
+        if (null != guiListener) {
             System.out.print("You should shop GUI Output first.");
             return false;
         }
-        gui_listener = new VisualListener();
-        if (addDataListener(gui_listener)) {
+        guiListener = new VisualListener();
+        if (addDataListener(guiListener)) {
 
             return true;
         } else {
@@ -30,9 +30,9 @@ public abstract class SensorIMU<DataInterfere>
 
 
     @Override
-    public boolean StopGUIOutput(int state) {
-        if (removeDataListener(gui_listener)) {
-            gui_listener = null;
+    public boolean stopGUIOutput(int state) {
+        if (removeDataListener(guiListener)) {
+            guiListener = null;
             return true;
         } else {
             return false;
@@ -41,7 +41,7 @@ public abstract class SensorIMU<DataInterfere>
 
 
     @Override
-    public boolean StartFileOutput(int state) {
+    public boolean startFileOutput(int state) {
         if (null != fileListener) {
             System.out.print("You should stop File Output First");
             return false;
@@ -57,7 +57,7 @@ public abstract class SensorIMU<DataInterfere>
 
 
     @Override
-    public boolean StopFileOutput(int state) {
+    public boolean stopFileOutput(int state) {
         if(removeDataListener(fileListener)){
             return true;
         }else{

@@ -6,9 +6,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public abstract class HardwareInteface {
-    private Collection listeners; // Collection for all listener. (HashSet in default)
-//    protected String TName = "SensorOriginalDataEvent";
+/**
+ *  An abstract class of HardwareAbstract like( serial port, tcp , bluetooth...).
+ *  Provide the basic event notify interface.
+ */
+public abstract class HardwareAbstract {
+    private Collection listenerCollection; // Collection for all listener. (HashSet in default)
 
     /**
      * Start interface. Default parameters will be adopted without set Parameter before.
@@ -18,7 +21,7 @@ public abstract class HardwareInteface {
     public abstract boolean StartInterface();
 
     /**
-     * Stop hardware and clear the listeners.
+     * Stop hardware and clear the listenerCollection.
      *
      * @return
      * @throws SerialPortException
@@ -38,10 +41,10 @@ public abstract class HardwareInteface {
      * @return
      */
     public boolean addListener(SensorOriginalDataListener listener) {
-        if (null == listeners) {
-            listeners = new HashSet();
+        if (null == listenerCollection) {
+            listenerCollection = new HashSet();
         }
-        listeners.add(listener);
+        listenerCollection.add(listener);
         return true;
     }
 
@@ -53,9 +56,9 @@ public abstract class HardwareInteface {
      */
     public boolean removeListener(SensorOriginalDataListener listener) {
         try {
-            if (listeners != null) {
+            if (listenerCollection != null) {
 
-                listeners.remove(listener);
+                listenerCollection.remove(listener);
             } else {
                 return false;
             }
@@ -66,16 +69,16 @@ public abstract class HardwareInteface {
     }
 
     /**
-     * Create threads run listener.SensorOriginalDataEvent in listeners.
+     * Create threads run listener.SensorOriginalDataEvent in listenerCollection.
      *
      * @param event
      * @return
      */
     public boolean notifyListeners(SensorOriginalDataEvent event) {
-        if (null == listeners) {
+        if (null == listenerCollection) {
             return false;
         }
-        Iterator iter = listeners.iterator();
+        Iterator iter = listenerCollection.iterator();
         while (iter.hasNext()) {
             SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
             Runnable task = () -> {
@@ -94,15 +97,15 @@ public abstract class HardwareInteface {
     }
 
     /**
-     * Clear all listeners.
+     * Clear all listenerCollection.
      *
      * @return
      */
     public boolean clearListeners() {
-        if (null == listeners) {
+        if (null == listenerCollection) {
             return false;
         } else {
-            listeners.clear();
+            listenerCollection.clear();
             return true;
         }
     }

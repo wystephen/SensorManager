@@ -6,7 +6,7 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-public class SerialInterface extends HardwareInteface {
+public class SerialAbstract extends HardwareAbstract {
     /**
      * Use
      */
