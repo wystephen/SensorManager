@@ -8,7 +8,7 @@ import java.util.concurrent.SynchronousQueue;
  * @param <DataElementType>
  * @param <DataInterface>
  */
-public abstract class SensorAbstract<DataElementType, DataInterface> {
+public abstract class SensorAbstract<DataElementType extends SensorDataElement, DataInterface> {
 
     SensorAbstract(){
         setSensorName("AbstractSensor");

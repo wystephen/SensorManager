@@ -6,6 +6,6 @@ import java.util.EventListener;
  * SensorDataListener
  * @param <T> DataElement type.
  */
-public interface SensorDataListener<T> extends EventListener{
+public interface SensorDataListener<T extends SensorDataElement> extends EventListener{
     public void SensorDataEvent(DataEvent<T> event);
 }

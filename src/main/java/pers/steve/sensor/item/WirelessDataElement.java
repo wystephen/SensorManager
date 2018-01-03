@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class WirelessDataElement extends SensorDataElement {
 
 
-    protected HashMap<String, double[]> measurmentsMap = null;
+    protected HashMap<String, double[]> measurmentsMap = new HashMap<>(4);
 
 
     WirelessDataElement() {
@@ -41,6 +41,18 @@ public class WirelessDataElement extends SensorDataElement {
 
     }
 
+    public boolean addMeasurement(String mac_address, double[] data){
+        try{
+
+            measurmentsMap.put(mac_address,data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
     /**
      * Converte value[] to string. Never use out side.
@@ -50,7 +62,7 @@ public class WirelessDataElement extends SensorDataElement {
     private String convertValuetoString(double[] v) {
         StringBuilder sb = new StringBuilder();
         for (double value : v) {
-            sb.append(v);
+            sb.append(value);
             sb.append(",");
         }
         return sb.toString();

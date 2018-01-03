@@ -104,7 +104,7 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
 
                             case 'R':
                                 // range information
-                                System.out.print("Range:" + localString);
+//                                System.out.print("Range:" + localString);
                                 String[] tmp_str_array = localString.split(" ");
                                 T = tmp_str_array[0].substring(tmp_str_array[0].indexOf('[') + 1, tmp_str_array[0].indexOf(']'));
                                 A = tmp_str_array[3];
@@ -124,6 +124,14 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
 
                                 } else {
                                     // distance  measurements.
+                                    double[] ds = new double[2];
+                                    ds[0] = Double.valueOf(X);
+                                    ds[1] = Double.valueOf(Y);
+                                    if(uwbDataElement != null){
+                                        // To avoid null pointer error.
+
+                                        uwbDataElement.addMeasurement(N, ds);
+                                    }
 
                                 }
 
@@ -132,6 +140,9 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
                             default:
                                 throw new Exception("Unrecognizable sensor data" + localString);
 
+                        }
+                        if(strQueue.size()<1){
+                            Thread.sleep(0,1000);
                         }
 
 
@@ -156,6 +167,7 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
             try {
 
                 strQueue.put(new String(event.get_bytes()));
+                System.out.println("strQueue size is " + strQueue.size());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
