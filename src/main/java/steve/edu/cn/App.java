@@ -2,7 +2,7 @@ package steve.edu.cn;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import pers.steve.Sensors.*;
+import pers.steve.sensor.item.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import pers.steve.sensor.item.*;
 //import java.
 
 
