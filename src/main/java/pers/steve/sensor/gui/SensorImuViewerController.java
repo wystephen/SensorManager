@@ -1,5 +1,7 @@
 package pers.steve.sensor.gui;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableLongValue;
 import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
@@ -60,9 +62,61 @@ public class SensorImuViewerController implements Initializable {
 
 
     protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
-    protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
+    protected ObservableList<Long> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
 
-    protected ObservableLongValue speedValue ;
+    protected ObservableLongValue speedValue  = new ObservableLongValue() {
+
+
+        @Override
+        public long get() {
+            return 0;
+        }
+
+        @Override
+        public int intValue() {
+            return 0;
+        }
+
+        @Override
+        public long longValue() {
+            return 0;
+        }
+
+        @Override
+        public float floatValue() {
+            return 0;
+        }
+
+        @Override
+        public double doubleValue() {
+            return 0;
+        }
+
+        @Override
+        public void addListener(ChangeListener<? super Number> listener) {
+
+        }
+
+        @Override
+        public void removeListener(ChangeListener<? super Number> listener) {
+
+        }
+
+        @Override
+        public Number getValue() {
+            return null;
+        }
+
+        @Override
+        public void addListener(InvalidationListener listener) {
+
+        }
+
+        @Override
+        public void removeListener(InvalidationListener listener) {
+
+        }
+    };
     protected ObservableStringValue deviceNameValue;
 
 
@@ -100,9 +154,21 @@ public class SensorImuViewerController implements Initializable {
             portList = null;
         });
 
+        deviceChoice.setOnAction(event -> {
+//            deviceNameValue = event.
+            System.out.println(event);
+            System.out.println("after onAction:"+deviceNameValue.get());
+
+        });
 
         speedChoice.itemsProperty().set(speedList);
         speedChoice.valueProperty().set(speedValue);
+
+        speedChoice.setOnAction(event -> {
+            System.out.println(event);
+            System.out.println("after onAction:"+deviceNameValue.get());
+
+        });
 
 
         /**
@@ -110,16 +176,20 @@ public class SensorImuViewerController implements Initializable {
          */
         startButton.setOnAction(event -> {
 //            System.out.println(event.toString());
-            try{
-            serialInterface = new SerialAbstract();
-            serialInterface.setNspeed((int) speedValue.get());
-            serialInterface.setSerialname( deviceNameValue.getValue());
+            try {
+                serialInterface = new SerialAbstract();
+                if (deviceNameValue != null && speedValue != null) {
+                    serialInterface.setSerialname(deviceNameValue.getValue());
+                    serialInterface.setNspeed((int) speedValue.get());
+                    imuJY.setInterface(serialInterface);
+                    imuJY.startFileOutput(0);
+                    imuJY.startSensor(0);
+                } else {
+                    System.out.println("Select device name and speed first");
+                }
 
-            imuJY.setInterface(serialInterface);
-            imuJY.startFileOutput(0);
-            imuJY.stopSensor(0);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
