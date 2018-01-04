@@ -14,54 +14,59 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.scene.layout.FlowPane?>
+<FlowPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+        fx:id="mainPane"
+        fx:controller="pers.steve.sensor.gui.SensorImuViewerController">
+    <HBox >
+        <VBox>
+            <Label fx:id="nameLabel" text="Default IMU"/>
 
-<HBox xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
-      fx:controller="pers.steve.sensor.gui.SensorImuViewerController">
-    <VBox>
-        <Label fx:id="nameLabel" text="Default IMU"/>
+            <Label text="Device"/>
+            <ChoiceBox fx:id="deviceChoice"/>
 
-        <Label text="Device"/>
-        <ChoiceBox fx:id="deviceChoice"/>
+            <Label text="speed"/>
+            <ChoiceBox fx:id="speedChoice"/>
 
-        <Label text="speed"/>
-        <ChoiceBox fx:id="speedChoice"/>
+            <Button fx:id="startButton" text="Start"/>
+            <Button fx:id="stopButton" text="Stop"/>
 
-        <Button fx:id="startButton" text="Start"/>
-        <Button fx:id="stopButton" text="Stop"/>
+        </VBox>
 
-    </VBox>
+        <LineChart fx:id="accChart" >
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </LineChart>
 
-    <LineChart fx:id="accChart" GridPane.rowIndex="0" GridPane.columnIndex="3">
-        <xAxis>
-            <CategoryAxis side="BOTTOM"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT"/>
-        </yAxis>
-    </LineChart>
+        <LineChart fx:id="gyrChart" >
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
 
-    <LineChart fx:id="gyrChart" GridPane.rowIndex="0" GridPane.columnIndex="4">
-        <xAxis>
-            <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
 
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT"/>
+            </yAxis>
+        </LineChart>
+        <LineChart fx:id="magChart" >
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
 
-        </yAxis>
-    </LineChart>
-    <LineChart fx:id="magChart" GridPane.rowIndex="0" GridPane.columnIndex="5">
-        <xAxis>
-            <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
 
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT"/>
+            </yAxis>
+        </LineChart>
 
-        </yAxis>
-    </LineChart>
+    </HBox>
+</FlowPane>
 
-</HBox>
+
 
 
 
