@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import pers.steve.sensor.gui.SensorImuViewerController;
 
 import java.io.IOException;
 
@@ -27,10 +28,12 @@ public class GUITest extends Application {
 //            HBox imuBox = new HBox(new Button("info"));
 
 
-            FXMLLoader loader;
-            FlowPane imuBox = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
-                    getResource("./IMUViwerSimple.fxml")
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
+//            FlowPane imuBox = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
+//                    getResource("./IMUViwerSimple.fxml")
+//            );
+            FlowPane imuBox = loader.load();
+            SensorImuViewerController imuViewerController = loader.getController();
 
             FlowPane imuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
                     getResource("./IMUViwerSimple.fxml")

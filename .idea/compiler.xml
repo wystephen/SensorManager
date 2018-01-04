@@ -13,4 +13,9 @@
       <module name="SensorManager" target="1.8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SensorManager" options="" />
+    </option>
+  </component>
 </project>

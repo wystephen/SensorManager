@@ -62,7 +62,7 @@ public class SensorImuViewerController implements Initializable {
     protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
     protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
 
-    protected ObservableLongValue speedValue;
+    protected ObservableLongValue speedValue ;
     protected ObservableStringValue deviceNameValue;
 
 
@@ -76,10 +76,14 @@ public class SensorImuViewerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        SensorJY901 imuJY = new SensorJY901();
+        SensorJY901 imuJY = new SensorJY901();
+
 //        imuJY.setInterface()
         mainPane.setMinWidth(1600);
 
+        /**
+         * ChoiceBOX
+         */
 
         deviceChoice.itemsProperty().set(deviceNameList);
         deviceChoice.valueProperty().set(deviceNameValue);
@@ -99,6 +103,33 @@ public class SensorImuViewerController implements Initializable {
 
         speedChoice.itemsProperty().set(speedList);
         speedChoice.valueProperty().set(speedValue);
+
+
+        /**
+         * Button
+         */
+        startButton.setOnAction(event -> {
+//            System.out.println(event.toString());
+            try{
+            serialInterface = new SerialAbstract();
+            serialInterface.setNspeed((int) speedValue.get());
+            serialInterface.setSerialname( deviceNameValue.getValue());
+
+            imuJY.setInterface(serialInterface);
+            imuJY.startFileOutput(0);
+            imuJY.stopSensor(0);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        });
+
+
+        stopButton.setOnAction(event -> {
+            imuJY.stopSensor(0);
+            imuJY.stopFileOutput(0);
+        });
 
 
     }
