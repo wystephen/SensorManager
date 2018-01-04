@@ -40,11 +40,11 @@ public class GUITest extends Application {
 
             Button addImuButton = new Button("addNewImu");
             addImuButton.setOnMouseClicked(event -> {
-                try{
-                FlowPane timuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
-                        getResource("./IMUViwerSimple.fxml")
-                );
-                mainPane.add(timuBox2,0,3);
+                try {
+                    FlowPane timuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
+                            getResource("./IMUViwerSimple.fxml")
+                    );
+                    mainPane.add(timuBox2, 0, 3);
 
                 } catch (IOException e) {
                     e.printStackTrace();

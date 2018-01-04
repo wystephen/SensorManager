@@ -101,7 +101,6 @@ public class SensorImuViewerController implements Initializable {
         speedChoice.valueProperty().set(speedValue);
 
 
-
     }
 
 
