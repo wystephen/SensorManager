@@ -62,61 +62,9 @@ public class SensorImuViewerController implements Initializable {
 
 
     protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
-    protected ObservableList<Long> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
+    protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
 
-    protected ObservableLongValue speedValue  = new ObservableLongValue() {
-
-
-        @Override
-        public long get() {
-            return 0;
-        }
-
-        @Override
-        public int intValue() {
-            return 0;
-        }
-
-        @Override
-        public long longValue() {
-            return 0;
-        }
-
-        @Override
-        public float floatValue() {
-            return 0;
-        }
-
-        @Override
-        public double doubleValue() {
-            return 0;
-        }
-
-        @Override
-        public void addListener(ChangeListener<? super Number> listener) {
-
-        }
-
-        @Override
-        public void removeListener(ChangeListener<? super Number> listener) {
-
-        }
-
-        @Override
-        public Number getValue() {
-            return null;
-        }
-
-        @Override
-        public void addListener(InvalidationListener listener) {
-
-        }
-
-        @Override
-        public void removeListener(InvalidationListener listener) {
-
-        }
-    };
+    protected ObservableLongValue speedValue = new ObservalbeLongValue() ;
     protected ObservableStringValue deviceNameValue;
 
 
