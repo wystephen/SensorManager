@@ -6,13 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SensorImuViewerController implements Initializable {
     @FXML
-    protected GridPane mainGridPane;
+    protected HBox mainPane;
 
     @FXML
     protected Button startButton;
