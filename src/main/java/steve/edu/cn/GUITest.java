@@ -26,10 +26,30 @@ public class GUITest extends Application {
             GridPane mainPane = new GridPane();
 //            HBox imuBox = new HBox(new Button("info"));
 
-            FlowPane imuBox =(FlowPane)  FXMLLoader.load(getClass().getClassLoader().
+            FlowPane imuBox = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml")
+            );
+
+            FlowPane imuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
                     getResource("./IMUViwerSimple.fxml")
             );
             mainPane.add(imuBox, 0, 0);
+            mainPane.add(imuBox2, 0, 2);
+            Button addImuButton = new Button("addNewImu");
+            addImuButton.setOnMouseClicked(event -> {
+                try{
+                FlowPane timuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
+                        getResource("./IMUViwerSimple.fxml")
+                );
+                mainPane.add(timuBox2,0,3);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+//            mainPane.add(addImuButton,0,1);
+
             root.getChildren().add(mainPane);
             Scene scen = new Scene(root, imuBox.getMinWidth(), 1000);
 
