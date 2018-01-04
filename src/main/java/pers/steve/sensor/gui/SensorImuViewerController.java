@@ -101,20 +101,9 @@ public class SensorImuViewerController implements Initializable {
         speedChoice.valueProperty().set(speedValue);
 
 
-        Runnable tr = () -> {
-            System.out.print(String.format("device:%s speed:%d", deviceNameValue.getValue(), speedValue.get()));
-            try {
-                Thread.sleep(400, 1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        };
-
-        Thread t = new Thread(tr);
-        t.start();
-
 
     }
 
 
 }
+

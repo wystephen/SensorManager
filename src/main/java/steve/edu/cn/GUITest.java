@@ -26,6 +26,8 @@ public class GUITest extends Application {
             GridPane mainPane = new GridPane();
 //            HBox imuBox = new HBox(new Button("info"));
 
+
+            FXMLLoader loader;
             FlowPane imuBox = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
                     getResource("./IMUViwerSimple.fxml")
             );
@@ -35,6 +37,7 @@ public class GUITest extends Application {
             );
             mainPane.add(imuBox, 0, 0);
             mainPane.add(imuBox2, 0, 2);
+
             Button addImuButton = new Button("addNewImu");
             addImuButton.setOnMouseClicked(event -> {
                 try{
