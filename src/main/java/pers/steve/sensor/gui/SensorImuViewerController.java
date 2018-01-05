@@ -1,19 +1,13 @@
 package pers.steve.sensor.gui;
 
 import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableLongValue;
-import javafx.beans.value.ObservableStringValue;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.value.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -40,10 +34,10 @@ public class SensorImuViewerController implements Initializable {
 
 
     @FXML
-    public ChoiceBox deviceChoice;
+    public ChoiceBox<String> deviceChoice;
 
     @FXML
-    public ChoiceBox speedChoice;
+    public ChoiceBox<Integer> speedChoice;
 
     @FXML
     public LineChart accChart;
@@ -64,8 +58,8 @@ public class SensorImuViewerController implements Initializable {
     protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
     protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
 
-//    protected ObservableLongValue speedValue = new ObservalbeLongValue() ;
-//    protected ObservableStringValue deviceNameValue;
+    protected int speedInt = 460800;
+    protected String deviceNameString = "";
 
 
     /**
@@ -102,39 +96,55 @@ public class SensorImuViewerController implements Initializable {
             portList = null;
         });
 
-        deviceChoice.setOnAction(event -> {
-//            deviceNameValue = event.
-            System.out.println(event);
-//            System.out.println("after onAction:"+deviceNameValue.get());
-
+        deviceChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                deviceNameString = newValue;
+            }
         });
+
 
         speedChoice.itemsProperty().set(speedList);
 //        speedChoice.valueProperty().set(speedValue);
 
-        speedChoice.setOnAction(event -> {
-            System.out.println(event);
-//            System.out.println("after onAction:"+deviceNameValue.get());
-
+        speedChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                speedInt = newValue.intValue();
+            }
         });
 
 
         /**
          * Button
          */
+        /**
+         * Start
+         */
         startButton.setOnAction(event -> {
 //            System.out.println(event.toString());
             try {
                 serialInterface = new SerialAbstract();
-//                if (deviceNameValue != null && speedValue != null) {
-//                    serialInterface.setSerialname(deviceNameValue.getValue());
-//                    serialInterface.setNspeed((int) speedValue.get());
-//                    imuJY.setInterface(serialInterface);
-//                    imuJY.startFileOutput(0);
-//                    imuJY.startSensor(0);
 //                } else {
 //                    System.out.println("Select device name and speed first");
 //                }
+                if (deviceNameString.length() > 1 && speedInt > 9600) {
+                    serialInterface.setSerialname(deviceNameString);
+                    serialInterface.setNspeed(speedInt);
+
+                    imuJY.setInterface(serialInterface);
+                    imuJY.startSensor(0);
+                    imuJY.startFileOutput(0);
+
+                } else {
+                    Alert a = new Alert(Alert.AlertType.WARNING);
+                    a.setTitle("carefully select serial port parameters");
+                    a.setHeaderText("Error in select port parameters");
+                    a.setContentText(String.format("device:%s speed:%d \n are unacceptable!",
+                            deviceNameString, speedInt));
+                    a.show();
+
+                }
 
 
             } catch (Exception e) {

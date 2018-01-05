@@ -30,8 +30,11 @@ public class GUITest extends Application {
             GridPane mainPane = new GridPane();
 
             scrollPane.setContent(mainPane);
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
 
+            // use loader to lode fxml, prepare to interaction with @code{controller}.
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
             FlowPane imuBox = loader.load();
             SensorImuViewerController imuViewerController = loader.getController();
@@ -60,10 +63,15 @@ public class GUITest extends Application {
 //            mainPane.add(addImuButton,0,1);
 
             root.getChildren().add(scrollPane);
-            Scene scen = new Scene(root, imuBox.getMinWidth(), 1000);
+            Scene scen = new Scene(root, 1600, 1000);
 
             primaryStage.setScene(scen);
             primaryStage.show();
+
+
+
+            scrollPane.prefHeightProperty().bind(primaryStage.heightProperty());
+            scrollPane.prefWidthProperty().bind(primaryStage.widthProperty());
 
         } catch (IOException e) {
             e.printStackTrace();

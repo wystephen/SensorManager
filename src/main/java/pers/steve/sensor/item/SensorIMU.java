@@ -2,19 +2,25 @@ package pers.steve.sensor.item;
 
 /**
  * for IMU.
+ *
  * @param <DataInterfere>
  */
 public abstract class SensorIMU<DataInterfere>
         extends SensorAbstract<IMUDataElement, DataInterfere>
         implements SensorInterface {
 
-    private VisualListener guiListener;
+    private SensorDataListener<IMUDataElement> guiListener;
     private FileListener fileListener;
 
     SensorIMU() {
         setSensorName("GeneralIMU");
     }
 
+    @Override
+    public boolean setGUIEventListener(SensorDataListener<? extends SensorDataElement> listener) {
+        guiListener = (SensorDataListener<IMUDataElement>) listener;
+        return true;
+    }
 
     @Override
     public boolean startGUIOutput(int state) {
@@ -46,25 +52,31 @@ public abstract class SensorIMU<DataInterfere>
 
     @Override
     public boolean startFileOutput(int state) {
-        if (null != fileListener) {
+        if (false != fileoutRunningFlag) {
             System.out.print("You should stop File Output First");
             return false;
-        }
-        fileListener = new FileListener();
-
-        if (addDataListener(fileListener)) {
-            return true;
         } else {
-            return false;
+            fileListener = new FileListener();
+
+            if (addDataListener(fileListener)) {
+                fileoutRunningFlag = true;
+                return true;
+            } else {
+                return false;
+            }
         }
+
     }
 
 
     @Override
     public boolean stopFileOutput(int state) {
-        if(removeDataListener(fileListener)){
+        if (true == fileoutRunningFlag) {
+            removeDataListener(fileListener);
+            fileoutRunningFlag = false;
+            fileListener = null;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -82,7 +94,7 @@ public abstract class SensorIMU<DataInterfere>
         @Override
         public void SensorDataEvent(DataEvent<IMUDataElement> event) {
 //            System.out.print("Try to output file");
-            System.out.print(event.getSensorData().convertDatatoString());
+            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
 
         }
     }

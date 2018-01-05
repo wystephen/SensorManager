@@ -9,7 +9,7 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
         extends SensorAbstract<T,DataInterface>
         implements SensorInterface {
 
-    private VisualListener guiListener;
+    private SensorDataListener<T> guiListener;
     private FileListener fileListener;
 
 
@@ -18,6 +18,11 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
     }
 
 
+    @Override
+    public boolean setGUIEventListener(SensorDataListener<? extends SensorDataElement> listener) {
+        guiListener = (SensorDataListener<T>) listener;
+        return true;
+    }
 
     @Override
     public boolean startGUIOutput(int state) {
