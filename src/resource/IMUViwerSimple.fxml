@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.chart.XYChart?>
-<?import javafx.scene.chart.ScatterChart?>
-<FlowPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-          fx:id="mainPane"
+<FlowPane fx:id="mainPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="pers.steve.sensor.gui.SensorImuViewerController">
     <HBox fx:id="allBox">
-        <VBox>
+        <VBox fx:id="paraBox">
             <Label fx:id="nameLabel" text="Default IMU"/>
 
             <Label text="Device"/>
@@ -35,42 +28,49 @@
 
         </VBox>
 
-        <ScatterChart fx:id="accChart">
+        <LineChart fx:id="accChart">
             <xAxis>
-                <NumberAxis  side="BOTTOM" label="Unix Time/ S" forceZeroInRange="false"
-                           autoRanging="false" tickLabelsVisible="false" tickUnit="0.005d" />
+
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Unix Time/ S" minorTickVisible="false"
+                            side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false" tickUnit="0.005d"
+                            animated="false"/>
 
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT" label="Acc / m/s^2" autoRanging="false" lowerBound="-89.0d" upperBound="89.0d"
-                            forceZeroInRange="false"
-                />
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Acc / g" lowerBound="-5.0d"
+                            minorTickVisible="false" side="LEFT" tickMarkVisible="true" tickUnit="0.01d"
+                            upperBound="5.0d" animated="false"/>
             </yAxis>
-        </ScatterChart>
+        </LineChart>
 
         <LineChart fx:id="gyrChart">
             <xAxis>
-                <NumberAxis side="BOTTOM" label="Unix Time/ S"/>
+
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Unix Time/ S" minorTickVisible="false"
+                            side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false" tickUnit="0.005d"
+                            animated="false"/>
 
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT" label="Acc / m/s^2"/>
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Gyr" lowerBound="-5.0d"
+                            minorTickVisible="false" side="LEFT" tickMarkVisible="true" tickUnit="0.01d"
+                            upperBound="5.0d" animated="false"/>
             </yAxis>
         </LineChart>
         <LineChart fx:id="magChart">
             <xAxis>
-                <NumberAxis side="BOTTOM" label="Unix Time/ S"/>
+
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Unix Time/ S" minorTickVisible="false"
+                            side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false" tickUnit="0.005d"
+                            animated="false"/>
 
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT" label="Acc / m/s^2"/>
+                <NumberAxis autoRanging="true" forceZeroInRange="false" label="Mag" lowerBound="-5.0d"
+                            minorTickVisible="false" side="LEFT" tickMarkVisible="true" tickUnit="0.01d"
+                            upperBound="5.0d" animated="false"/>
             </yAxis>
         </LineChart>
 
     </HBox>
 </FlowPane>
-
-
-
-
-

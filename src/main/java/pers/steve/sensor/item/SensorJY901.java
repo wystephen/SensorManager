@@ -78,8 +78,8 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         for (int i = 0; i < end_num; ++i) {
                             buf[i] = byte_queue.take();
                             if (i == 0 && buf[0] != 0x55) {
-                                System.out.print("throw data");
-                                throw new Exception("Throw data");
+                                System.out.println("throw data");
+//                                throw new Exception("Throw data");
                             } else if (i == 1 && buf[1] == 0x50) {
                                 current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                             }
@@ -96,19 +96,19 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 }
                                 imu_data = new IMUDataElement();
                                 int year = 0;
-                                year = (int) (buf[2] & 0xFF);
+                                year = (int) (short) (buf[2] & 0xFF);
                                 int mon = 0;
-                                mon = (int) (buf[3] & 0xFF);
+                                mon = (int) (short) (buf[3] & 0xFF);
                                 int day = 0;
-                                day = (int) (buf[4] & 0xFF);
+                                day = (int) (short) (buf[4] & 0xFF);
                                 int hour = 0;
-                                hour = (int) (buf[5] & 0xFF);
+                                hour = (int) (short) (buf[5] & 0xFF);
                                 int min = 0;
-                                min = (int) (buf[6] & 0xFF);
+                                min = (int) (short) (buf[6] & 0xFF);
                                 int sec = 0;
-                                sec = (int) (buf[7] & 0xFF);
+                                sec = (int) (short) (buf[7] & 0xFF);
                                 int ms = 0;
-                                ms = (int) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)));
+                                ms = (int) (short) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)));
                                 Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec));
                                 long time_int = ts.getTime();
                                 imu_data.setTime_stamp((double) time_int + ((double) (ms)) / 1000.0);
@@ -122,16 +122,17 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 int ay_int = 0;
                                 int az_int = 0;
                                 int temperature_int = 0;
-                                ax_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
-                                ay_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
-                                az_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+                                ax_int = (int) (short) (((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8)));
+                                ay_int = (int) (short) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                                az_int = (int) (short) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
                                 temperature_int = (int) ((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8));
+//                                System.out.println(String.format("x:%d y:%d z:%d",ax_int,ay_int,az_int));
 
                                 double[] acc_tmp = new double[3];
                                 double[] t = new double[1];
-                                acc_tmp[0] = ((double) ax_int) / 32768.0 * 16.0;
-                                acc_tmp[1] = ((double) ay_int) / 32768.0 * 16.0;
-                                acc_tmp[2] = ((double) az_int) / 32768.0 * 16.0;
+                                acc_tmp[0] = new Double((double) ax_int) / 32768.0 * 16.0;
+                                acc_tmp[1] = new Double((double) ay_int) / 32768.0 * 16.0;
+                                acc_tmp[2] = new Double((double) az_int) / 32768.0 * 16.0;
                                 imu_data.setAcc(acc_tmp);
                                 t[0] = ((double) temperature_int) / 100.0;
                                 imu_data.setTemp(t);
@@ -143,9 +144,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 int gx_int = 0;
                                 int gy_int = 0;
                                 int gz_int = 0;
-                                gx_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
-                                gy_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
-                                gz_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+                                gx_int = (int) (short) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
+                                gy_int = (int) (short) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                                gz_int = (int) (short) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
 
                                 double tmp_gyr[] = new double[3];
                                 tmp_gyr[0] = ((double) gx_int) / 32768.0 * 2000.0;
@@ -160,9 +161,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 int angx_int = 0;
                                 int angy_int = 0;
                                 int angz_int = 0;
-                                angx_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
-                                angy_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
-                                angz_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+                                angx_int = (int) (short) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
+                                angy_int = (int) (short) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                                angz_int = (int) (short) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
 
                                 double tmp_ang[] = new double[3];
                                 tmp_ang[0] = ((double) angx_int) / 32768.0 * 180.0;
@@ -177,9 +178,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 int magx_int = 0;
                                 int magy_int = 0;
                                 int magz_int = 0;
-                                magx_int = (int) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
-                                magy_int = (int) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
-                                magz_int = (int) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
+                                magx_int = (int) (short) ((buf[2] & 0xFF) | ((buf[3] & 0xFF) << 8));
+                                magy_int = (int) (short) ((buf[4] & 0xFF) | ((buf[5] & 0xFF) << 8));
+                                magz_int = (int) (short) ((buf[6] & 0xFF) | ((buf[7] & 0xFF) << 8));
 
                                 double[] tmp_mag = new double[3];
                                 tmp_mag[0] = ((double) magx_int);

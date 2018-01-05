@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import jssc.SerialPortList;
 import pers.steve.sensor.item.*;
 
+import javax.print.attribute.standard.NumberUp;
 import java.net.URL;
 import java.util.EventListener;
 import java.util.ResourceBundle;
@@ -39,6 +40,9 @@ public class SensorImuViewerController implements Initializable {
     public HBox allBox;
 
     @FXML
+    public VBox paraBox;
+
+    @FXML
     public Button startButton;
 
     @FXML
@@ -51,52 +55,81 @@ public class SensorImuViewerController implements Initializable {
     @FXML
     public ChoiceBox<String> deviceChoice = null;
 
+    protected ObservableList<String> deviceNameList =
+            FXCollections.observableArrayList("Choice it to update");// device name list.
+
+    protected String deviceNameString = ""; // device name , need be initialize.
+
+
     @FXML
     public ChoiceBox<Integer> speedChoice = null;
 
+    protected ObservableList<Integer> speedList =
+            FXCollections.observableArrayList(115200, 1192000, 460800); // NspeedList.
+
+    protected int speedInt = 460800; // initial speed.
+
     @FXML
-    public ScatterChart<Number, Number> accChart;
+    public LineChart<Number, Number> accChart;
 
-    final private NumberAxis acc_time_axis = new NumberAxis();//;(0, 100.0, 2);
-    final private NumberAxis acc_value_axis = new NumberAxis(-20, 20, 1.0);
-
-
+    /*
+    Series and Data of acc.
+     */
     private XYChart.Series<Number, Number> serial_acc_x = new XYChart.Series<Number, Number>();
     private XYChart.Series<Number, Number> serial_acc_y = new XYChart.Series<Number, Number>();
     private XYChart.Series<Number, Number> serial_acc_z = new XYChart.Series<Number, Number>();
 
     private ObservableList<XYChart.Data<Number, Number>> accXList =
             FXCollections.observableArrayList();
-    //            FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
     private ObservableList<XYChart.Data<Number, Number>> accYList =
             FXCollections.observableArrayList();
-    //        FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
     private ObservableList<XYChart.Data<Number, Number>> accZList =
             FXCollections.observableArrayList();
-//            FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
 
-//    private ConcurrentLinkedDeque<Number> data_acc_x
 
     @FXML
     public LineChart<Number, Number> gyrChart = null;
 
+
+    /*
+    Series and Data of gyr
+     */
+    private XYChart.Series<Number, Number> serial_gyr_x = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_gyr_y = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_gyr_z = new XYChart.Series<Number, Number>();
+
+
+    private ObservableList<XYChart.Data<Number, Number>> gyrXList =
+            FXCollections.observableArrayList();
+    private ObservableList<XYChart.Data<Number, Number>> gyrYList =
+            FXCollections.observableArrayList();
+    private ObservableList<XYChart.Data<Number, Number>> gyrZList =
+            FXCollections.observableArrayList();
+
+
     @FXML
     public LineChart<Number, Number> magChart = null;
 
-//    protected FXCollections.observableArrayList speedList = new
+    /*
+    Series and Data of gyr
+     */
+    private XYChart.Series<Number, Number> serial_mag_x = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_mag_y = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_mag_z = new XYChart.Series<Number, Number>();
+
+
+    private ObservableList<XYChart.Data<Number, Number>> magXList =
+            FXCollections.observableArrayList();
+    private ObservableList<XYChart.Data<Number, Number>> magYList =
+            FXCollections.observableArrayList();
+    private ObservableList<XYChart.Data<Number, Number>> magZList =
+            FXCollections.observableArrayList();
+
 
     public SensorJY901 imuJY = new SensorJY901(); // IMU Sensor.
 
     public SerialAbstract serialInterface = new SerialAbstract();// serial reader.
 
-
-    protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
-    protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
-
-    protected int speedInt = 460800;
-    protected String deviceNameString = "";
-
-    private ExecutorService executor;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -109,70 +142,113 @@ public class SensorImuViewerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         /**
-         * Set up Chart
+         * Set up Chart Fisrt
          */
         serial_acc_x.setName("Acc_X");
         serial_acc_y.setName("Acc_Y");
         serial_acc_z.setName("Acc_Z");
-
         serial_acc_x.dataProperty().set(accXList);
         serial_acc_y.dataProperty().set(accYList);
         serial_acc_z.dataProperty().set(accZList);
 
 
-        acc_time_axis.setLabel("Time / s");
-        acc_value_axis.setLabel("acc /(m/s/s)");
-        acc_time_axis.setAutoRanging(false);
-        acc_value_axis.setAutoRanging(false);
-
-
-        accChart.getData().addAll(serial_acc_x, serial_acc_y, serial_acc_z);
-//        accChart.setAnimated(false);
+        accChart.getData().addAll(serial_acc_x,
+                serial_acc_y,
+                serial_acc_z);
+        accChart.setAnimated(false); // speed up.
+        accChart.setCreateSymbols(false); // without mark , only line.
         accChart.setTitle("Acc");
+
+        //------
+        serial_gyr_x.setName("Gyr_X");
+        serial_gyr_y.setName("Gyr_Y");
+        serial_gyr_z.setName("Gyr_Z");
+        serial_gyr_x.dataProperty().set(gyrXList);
+        serial_gyr_y.dataProperty().set(gyrYList);
+        serial_gyr_z.dataProperty().set(gyrZList);
+
+
+        gyrChart.getData().addAll(serial_gyr_x,
+                serial_gyr_y,
+                serial_gyr_z);
+        gyrChart.setAnimated(false); // speed up.
+        gyrChart.setCreateSymbols(false); // without mark , only line.
+        gyrChart.setTitle("Gyr");
+
+        //------
+        serial_mag_x.setName("Mag_X");
+        serial_mag_y.setName("Mag_Y");
+        serial_mag_z.setName("Mag_Z");
+        serial_mag_x.dataProperty().set(magXList);
+        serial_mag_y.dataProperty().set(magYList);
+        serial_mag_z.dataProperty().set(magZList);
+
+
+        magChart.getData().addAll(serial_mag_x,
+                serial_mag_y,
+                serial_mag_z);
+        magChart.setAnimated(false); // speed up.
+        magChart.setCreateSymbols(false); // without mark , only line.
+        magChart.setTitle("Mag");
 
 
         SensorJY901 imuJY = new SensorJY901();
 
         imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
 
-            int dataMaxLength = 2000;
+            int dataMaxLength = 3000;
 
             @Override
             public void SensorDataEvent(DataEvent<IMUDataElement> event) {
-//                System.out.println(event);
+//                System.out.println(event.getSensorData().convertDatatoString());
                 IMUDataElement sensorData = event.getSensorData();
-                double acc_time = new Double(sensorData.getTime_stamp()) + 0.00001;
-                double acc_x = new Double(sensorData.getAcc()[0]) + 0.00001;
-                double acc_y = new Double(sensorData.getAcc()[1]) + 0.00001;
-                double acc_z = new Double(sensorData.getAcc()[2]) + 0.00001;
+                double acc_time = new Double(sensorData.getSystem_time_stamp());
+                double acc_x = new Double(sensorData.getAcc()[0]);
+                double acc_y = new Double(sensorData.getAcc()[1]);
+                double acc_z = new Double(sensorData.getAcc()[2]);
+                double gyr_x = new Double(sensorData.getGyr()[0]);
+                double gyr_y = new Double(sensorData.getGyr()[1]);
+                double gyr_z = new Double(sensorData.getGyr()[2]);
+                double mag_x = new Double(sensorData.getMag()[0]);
+                double mag_y = new Double(sensorData.getMag()[1]);
+                double mag_z = new Double(sensorData.getMag()[2]);
+//                System.out.println(String.format);
 
 
-                double small_num = 0.00000000001;
                 Platform.runLater(() -> {
-//                    double first_time = accXList.get(0).getXValue().doubleValue();
                     accXList.add(new XYChart.Data<Number, Number>(acc_time, acc_x));
                     accYList.add(new XYChart.Data<Number, Number>(acc_time, acc_y));
                     accZList.add(new XYChart.Data<Number, Number>(acc_time, acc_z));
+                    gyrXList.add(new XYChart.Data<Number, Number>(acc_time, gyr_x));
+                    gyrYList.add(new XYChart.Data<Number, Number>(acc_time, gyr_y));
+                    gyrZList.add(new XYChart.Data<Number, Number>(acc_time, gyr_z));
+                    magXList.add(new XYChart.Data<Number, Number>(acc_time, mag_x));
+                    magYList.add(new XYChart.Data<Number, Number>(acc_time, mag_y));
+                    magZList.add(new XYChart.Data<Number, Number>(acc_time, mag_z));
 
-
-                    if (accXList.size() > 5000) {
-                        accXList.remove(0,1000);
-                        accYList.remove(0,1000);
-                        accZList.remove(0,1000);
+                    if (accXList.size() > dataMaxLength) {
+                        accXList.remove(0, 10);
+                        accYList.remove(0, 10);
+                        accZList.remove(0, 10);
+                        gyrXList.remove(0, 10);
+                        gyrYList.remove(0, 10);
+                        gyrZList.remove(0, 10);
+                        magXList.remove(0, 10);
+                        magYList.remove(0, 10);
+                        magZList.remove(0, 10);
                     }
 
 
                 });
-//
-//
             }
         });
 
 
-        mainPane.setMinWidth(1600);
+//        mainPane.setMinWidth(1800);
 
+        mainPane.setMinWidth((paraBox.widthProperty().add(accChart.widthProperty().add(gyrChart.widthProperty().add(magChart.widthProperty())))).doubleValue());
         /**
-         * ChoiceBOX
+         *  Set up ChoiceBOX
          */
 
         deviceChoice.itemsProperty().set(deviceNameList);
@@ -266,21 +342,6 @@ public class SensorImuViewerController implements Initializable {
 
     }
 
-    @FXML
-    public void testClicked(Event event) {
-        System.out.println(event.toString());
-    }
-
-    //-- Timeline gets called in the JavaFX Main thread
-    private void prepareTimeline() {
-        // Every frame to take any data from queue and add to chart
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-//                addDataToSeries();
-            }
-        }.start();
-    }
 
 }
 
