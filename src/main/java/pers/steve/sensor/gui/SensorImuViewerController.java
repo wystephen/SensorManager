@@ -83,7 +83,6 @@ public class SensorImuViewerController implements Initializable {
         });
 
 
-//        imuJY.setInterface()
         mainPane.setMinWidth(1600);
 
         /**
@@ -91,7 +90,6 @@ public class SensorImuViewerController implements Initializable {
          */
 
         deviceChoice.itemsProperty().set(deviceNameList);
-//        deviceChoice.valueProperty().set(deviceNameValue);
 
         deviceChoice.setOnMouseClicked(event -> {
             System.out.println(event);
@@ -114,7 +112,6 @@ public class SensorImuViewerController implements Initializable {
 
 
         speedChoice.itemsProperty().set(speedList);
-//        speedChoice.valueProperty().set(speedValue);
 
         speedChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
             @Override

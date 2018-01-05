@@ -89,13 +89,14 @@ public class SerialAbstract extends HardwareAbstract {
                 this.serialPort_local.openPort();
             }
             this.serialPort_local.setParams(nspeed, nbits, nstop, SerialPort.PARITY_NONE);
+            byte[] tb = this.serialPort_local.readBytes();
+            tb = null;
             this.serialPort_local.addEventListener(new SerialEventListener());
 
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
         return true;
-
 
     }
 
