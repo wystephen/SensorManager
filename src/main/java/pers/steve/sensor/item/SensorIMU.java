@@ -24,17 +24,14 @@ public abstract class SensorIMU<DataInterfere>
 
     @Override
     public boolean startGUIOutput(int state) {
-        if (null != guiListener) {
-            System.out.print("You should shop GUI Output first.");
-            return false;
-        }
-        if (addDataListener(guiListener)) {
+            if (addDataListener(guiListener)) {
 
-            return true;
-        } else {
+                return true;
+            } else {
 
-            return false;
-        }
+                return false;
+            }
+
     }
 
 

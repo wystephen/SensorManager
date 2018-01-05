@@ -1,13 +1,20 @@
 package pers.steve.sensor.gui;
 
+import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.value.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -17,11 +24,19 @@ import jssc.SerialPortList;
 import pers.steve.sensor.item.*;
 
 import java.net.URL;
+import java.util.EventListener;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class SensorImuViewerController implements Initializable {
     @FXML
     public FlowPane mainPane;
+
+    @FXML
+    public HBox allBox;
 
     @FXML
     public Button startButton;
@@ -34,19 +49,39 @@ public class SensorImuViewerController implements Initializable {
 
 
     @FXML
-    public ChoiceBox<String> deviceChoice;
+    public ChoiceBox<String> deviceChoice = null;
 
     @FXML
-    public ChoiceBox<Integer> speedChoice;
+    public ChoiceBox<Integer> speedChoice = null;
 
     @FXML
-    public LineChart accChart;
+    public ScatterChart<Number, Number> accChart;
+
+    final private NumberAxis acc_time_axis = new NumberAxis();//;(0, 100.0, 2);
+    final private NumberAxis acc_value_axis = new NumberAxis(-20, 20, 1.0);
+
+
+    private XYChart.Series<Number, Number> serial_acc_x = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_acc_y = new XYChart.Series<Number, Number>();
+    private XYChart.Series<Number, Number> serial_acc_z = new XYChart.Series<Number, Number>();
+
+    private ObservableList<XYChart.Data<Number, Number>> accXList =
+            FXCollections.observableArrayList();
+    //            FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
+    private ObservableList<XYChart.Data<Number, Number>> accYList =
+            FXCollections.observableArrayList();
+    //        FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
+    private ObservableList<XYChart.Data<Number, Number>> accZList =
+            FXCollections.observableArrayList();
+//            FXCollections.observableArrayList(new XYChart.Data<>(0.0, 0.0));
+
+//    private ConcurrentLinkedDeque<Number> data_acc_x
 
     @FXML
-    public LineChart gyrChart;
+    public LineChart<Number, Number> gyrChart = null;
 
     @FXML
-    public LineChart magChart;
+    public LineChart<Number, Number> magChart = null;
 
 //    protected FXCollections.observableArrayList speedList = new
 
@@ -61,6 +96,7 @@ public class SensorImuViewerController implements Initializable {
     protected int speedInt = 460800;
     protected String deviceNameString = "";
 
+    private ExecutorService executor;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -72,13 +108,63 @@ public class SensorImuViewerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /**
+         * Set up Chart
+         */
+        serial_acc_x.setName("Acc_X");
+        serial_acc_y.setName("Acc_Y");
+        serial_acc_z.setName("Acc_Z");
+
+        serial_acc_x.dataProperty().set(accXList);
+        serial_acc_y.dataProperty().set(accYList);
+        serial_acc_z.dataProperty().set(accZList);
+
+
+        acc_time_axis.setLabel("Time / s");
+        acc_value_axis.setLabel("acc /(m/s/s)");
+        acc_time_axis.setAutoRanging(false);
+        acc_value_axis.setAutoRanging(false);
+
+
+        accChart.getData().addAll(serial_acc_x, serial_acc_y, serial_acc_z);
+//        accChart.setAnimated(false);
+        accChart.setTitle("Acc");
+
+
         SensorJY901 imuJY = new SensorJY901();
 
         imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
+
+            int dataMaxLength = 2000;
+
             @Override
             public void SensorDataEvent(DataEvent<IMUDataElement> event) {
+//                System.out.println(event);
+                IMUDataElement sensorData = event.getSensorData();
+                double acc_time = new Double(sensorData.getTime_stamp()) + 0.00001;
+                double acc_x = new Double(sensorData.getAcc()[0]) + 0.00001;
+                double acc_y = new Double(sensorData.getAcc()[1]) + 0.00001;
+                double acc_z = new Double(sensorData.getAcc()[2]) + 0.00001;
 
 
+                double small_num = 0.00000000001;
+                Platform.runLater(() -> {
+//                    double first_time = accXList.get(0).getXValue().doubleValue();
+                    accXList.add(new XYChart.Data<Number, Number>(acc_time, acc_x));
+                    accYList.add(new XYChart.Data<Number, Number>(acc_time, acc_y));
+                    accZList.add(new XYChart.Data<Number, Number>(acc_time, acc_z));
+
+
+                    if (accXList.size() > 5000) {
+                        accXList.remove(0,1000);
+                        accYList.remove(0,1000);
+                        accZList.remove(0,1000);
+                    }
+
+
+                });
+//
+//
             }
         });
 
@@ -135,6 +221,9 @@ public class SensorImuViewerController implements Initializable {
                     imuJY.setInterface(serialInterface);
                     imuJY.startSensor(0);
 //                    imuJY.startFileOutput(0);
+                    accXList.clear();
+                    accYList.clear();
+                    accZList.clear();
                     imuJY.startGUIOutput(0);
 
                 } else {
@@ -177,6 +266,21 @@ public class SensorImuViewerController implements Initializable {
 
     }
 
+    @FXML
+    public void testClicked(Event event) {
+        System.out.println(event.toString());
+    }
+
+    //-- Timeline gets called in the JavaFX Main thread
+    private void prepareTimeline() {
+        // Every frame to take any data from queue and add to chart
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+//                addDataToSeries();
+            }
+        }.start();
+    }
 
 }
 

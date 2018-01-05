@@ -82,7 +82,11 @@ public abstract class SensorAbstract<DataElementType extends SensorDataElement, 
                 SensorDataListener<DataElementType> listener =
                         (SensorDataListener<DataElementType>) iter.next();
                 Runnable task = () -> {
-                    listener.SensorDataEvent(event);
+                    try {
+                        listener.SensorDataEvent(event);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 };
                 Thread t = new Thread(task);
                 t.start();

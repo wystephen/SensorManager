@@ -15,10 +15,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.chart.XYChart?>
+<?import javafx.scene.chart.ScatterChart?>
 <FlowPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-        fx:id="mainPane"
-        fx:controller="pers.steve.sensor.gui.SensorImuViewerController">
-    <HBox >
+          fx:id="mainPane"
+          fx:controller="pers.steve.sensor.gui.SensorImuViewerController">
+    <HBox fx:id="allBox">
         <VBox>
             <Label fx:id="nameLabel" text="Default IMU"/>
 
@@ -33,33 +35,35 @@
 
         </VBox>
 
-        <LineChart fx:id="accChart" >
+        <ScatterChart fx:id="accChart">
             <xAxis>
-                <CategoryAxis side="BOTTOM"/>
+                <NumberAxis  side="BOTTOM" label="Unix Time/ S" forceZeroInRange="false"
+                           autoRanging="false" tickLabelsVisible="false" tickUnit="0.005d" />
+
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT"/>
+                <NumberAxis side="LEFT" label="Acc / m/s^2" autoRanging="false" lowerBound="-89.0d" upperBound="89.0d"
+                            forceZeroInRange="false"
+                />
+            </yAxis>
+        </ScatterChart>
+
+        <LineChart fx:id="gyrChart">
+            <xAxis>
+                <NumberAxis side="BOTTOM" label="Unix Time/ S"/>
+
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT" label="Acc / m/s^2"/>
             </yAxis>
         </LineChart>
-
-        <LineChart fx:id="gyrChart" >
+        <LineChart fx:id="magChart">
             <xAxis>
-                <CategoryAxis side="BOTTOM"/>
+                <NumberAxis side="BOTTOM" label="Unix Time/ S"/>
 
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT"/>
-
-            </yAxis>
-        </LineChart>
-        <LineChart fx:id="magChart" >
-            <xAxis>
-                <CategoryAxis side="BOTTOM"/>
-
-            </xAxis>
-            <yAxis>
-                <NumberAxis side="LEFT"/>
-
+                <NumberAxis side="LEFT" label="Acc / m/s^2"/>
             </yAxis>
         </LineChart>
 
