@@ -126,15 +126,15 @@ public class SensorImuViewerController implements Initializable {
 //            System.out.println(event.toString());
             try {
                 serialInterface = new SerialAbstract();
-                if (deviceNameValue != null && speedValue != null) {
-                    serialInterface.setSerialname(deviceNameValue.getValue());
-                    serialInterface.setNspeed((int) speedValue.get());
-                    imuJY.setInterface(serialInterface);
-                    imuJY.startFileOutput(0);
-                    imuJY.startSensor(0);
-                } else {
-                    System.out.println("Select device name and speed first");
-                }
+//                if (deviceNameValue != null && speedValue != null) {
+//                    serialInterface.setSerialname(deviceNameValue.getValue());
+//                    serialInterface.setNspeed((int) speedValue.get());
+//                    imuJY.setInterface(serialInterface);
+//                    imuJY.startFileOutput(0);
+//                    imuJY.startSensor(0);
+//                } else {
+//                    System.out.println("Select device name and speed first");
+//                }
 
 
             } catch (Exception e) {

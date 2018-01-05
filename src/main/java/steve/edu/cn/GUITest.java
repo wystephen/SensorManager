@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import pers.steve.sensor.gui.SensorImuViewerController;
@@ -24,20 +25,22 @@ public class GUITest extends Application {
     public void start(Stage primaryStage) {
         try {
             Group root = new Group();
+            ScrollPane scrollPane = new ScrollPane();
+
             GridPane mainPane = new GridPane();
-//            HBox imuBox = new HBox(new Button("info"));
+
+            scrollPane.setContent(mainPane);
 
 
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
-//            FlowPane imuBox = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
-//                    getResource("./IMUViwerSimple.fxml")
-//            );
             FlowPane imuBox = loader.load();
             SensorImuViewerController imuViewerController = loader.getController();
 
-            FlowPane imuBox2 = (FlowPane) FXMLLoader.load(getClass().getClassLoader().
-                    getResource("./IMUViwerSimple.fxml")
-            );
+            FXMLLoader loader2 = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
+            FlowPane imuBox2 = loader2.load();
+            SensorImuViewerController imuViewerController2 = loader2.getController();
+
+
             mainPane.add(imuBox, 0, 0);
             mainPane.add(imuBox2, 0, 2);
 
@@ -56,7 +59,7 @@ public class GUITest extends Application {
             });
 //            mainPane.add(addImuButton,0,1);
 
-            root.getChildren().add(mainPane);
+            root.getChildren().add(scrollPane);
             Scene scen = new Scene(root, imuBox.getMinWidth(), 1000);
 
             primaryStage.setScene(scen);
