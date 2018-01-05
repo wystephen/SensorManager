@@ -3,6 +3,7 @@ package pers.steve.sensor.gui;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortList;
-import pers.steve.sensor.item.SensorJY901;
-import pers.steve.sensor.item.SerialAbstract;
+import pers.steve.sensor.item.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -74,6 +74,15 @@ public class SensorImuViewerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         SensorJY901 imuJY = new SensorJY901();
 
+        imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
+            @Override
+            public void SensorDataEvent(DataEvent<IMUDataElement> event) {
+
+
+            }
+        });
+
+
 //        imuJY.setInterface()
         mainPane.setMinWidth(1600);
 
@@ -118,34 +127,29 @@ public class SensorImuViewerController implements Initializable {
         /**
          * Button
          */
-        /**
-         * Start
-         */
         startButton.setOnAction(event -> {
-//            System.out.println(event.toString());
             try {
                 serialInterface = new SerialAbstract();
-//                } else {
-//                    System.out.println("Select device name and speed first");
-//                }
                 if (deviceNameString.length() > 1 && speedInt > 9600) {
+                    // device name and speed determined.
                     serialInterface.setSerialname(deviceNameString);
                     serialInterface.setNspeed(speedInt);
 
                     imuJY.setInterface(serialInterface);
                     imuJY.startSensor(0);
-                    imuJY.startFileOutput(0);
+//                    imuJY.startFileOutput(0);
+                    imuJY.startGUIOutput(0);
 
                 } else {
+                    // device name and speed error.
                     Alert a = new Alert(Alert.AlertType.WARNING);
                     a.setTitle("carefully select serial port parameters");
                     a.setHeaderText("Error in select port parameters");
-                    a.setContentText(String.format("device:%s speed:%d \n are unacceptable!",
+                    a.setContentText(String.format("device:%s \nspeed:%d \n are unacceptable!",
                             deviceNameString, speedInt));
                     a.show();
 
                 }
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,8 +159,22 @@ public class SensorImuViewerController implements Initializable {
 
 
         stopButton.setOnAction(event -> {
-            imuJY.stopSensor(0);
-            imuJY.stopFileOutput(0);
+            // Insure
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to stop sensor?\n" +
+                            "Stop this process will cause a unusual\n situation of mouse!");
+            a.showAndWait().ifPresent(response -> {
+
+                if (response == ButtonType.OK) {
+                    imuJY.stopSensor(0);
+//                    System.out.print("button type is: " + response.toString());
+//                    imuJY.stopFileOutput(0);
+                    imuJY.stopGUIOutput(0);
+
+                } else {
+//                    System.out.print("button type is: " + response.toString());
+                }
+            });
         });
 
 

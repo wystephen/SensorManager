@@ -248,7 +248,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
             for (byte tb : bytes) {
                 byte_queue.put(tb);
             }
-            System.out.println("byte queue size: " + byte_queue.size());
+//            System.out.println("byte queue size: " + byte_queue.size());
 
 
         }

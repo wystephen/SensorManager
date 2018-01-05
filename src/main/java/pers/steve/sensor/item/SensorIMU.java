@@ -28,7 +28,6 @@ public abstract class SensorIMU<DataInterfere>
             System.out.print("You should shop GUI Output first.");
             return false;
         }
-        guiListener = new VisualListener();
         if (addDataListener(guiListener)) {
 
             return true;
@@ -41,12 +40,21 @@ public abstract class SensorIMU<DataInterfere>
 
     @Override
     public boolean stopGUIOutput(int state) {
-        if (removeDataListener(guiListener)) {
-            guiListener = null;
-            return true;
+        if (guiRunningFlag == true) {
+            if (removeDataListener(guiListener)) {
+//                guiListener = null;
+                guiRunningFlag = false;
+                return true;
+            } else {
+                return false;
+            }
+
         } else {
             return false;
+
         }
+
+
     }
 
 
