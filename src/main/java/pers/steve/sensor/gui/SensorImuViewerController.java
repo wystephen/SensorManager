@@ -64,8 +64,8 @@ public class SensorImuViewerController implements Initializable {
     protected ObservableList<String> deviceNameList = FXCollections.observableArrayList("Choice it to update");
     protected ObservableList<Integer> speedList = FXCollections.observableArrayList(115200, 1192000, 460800);
 
-    protected ObservableLongValue speedValue = new ObservalbeLongValue() ;
-    protected ObservableStringValue deviceNameValue;
+//    protected ObservableLongValue speedValue = new ObservalbeLongValue() ;
+//    protected ObservableStringValue deviceNameValue;
 
 
     /**
@@ -88,7 +88,7 @@ public class SensorImuViewerController implements Initializable {
          */
 
         deviceChoice.itemsProperty().set(deviceNameList);
-        deviceChoice.valueProperty().set(deviceNameValue);
+//        deviceChoice.valueProperty().set(deviceNameValue);
 
         deviceChoice.setOnMouseClicked(event -> {
             System.out.println(event);
@@ -105,16 +105,16 @@ public class SensorImuViewerController implements Initializable {
         deviceChoice.setOnAction(event -> {
 //            deviceNameValue = event.
             System.out.println(event);
-            System.out.println("after onAction:"+deviceNameValue.get());
+//            System.out.println("after onAction:"+deviceNameValue.get());
 
         });
 
         speedChoice.itemsProperty().set(speedList);
-        speedChoice.valueProperty().set(speedValue);
+//        speedChoice.valueProperty().set(speedValue);
 
         speedChoice.setOnAction(event -> {
             System.out.println(event);
-            System.out.println("after onAction:"+deviceNameValue.get());
+//            System.out.println("after onAction:"+deviceNameValue.get());
 
         });
 
