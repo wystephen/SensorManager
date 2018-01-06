@@ -152,6 +152,68 @@ public class SensorImuViewerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        imuJY = new SensorJY901();
+
+        imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
+
+            int dataMaxLength = 100;
+            int counter=0;
+            int skip_num = 40;
+
+            @Override
+            public void SensorDataEvent(DataEvent<IMUDataElement> event) {
+                counter++;
+                if(counter%skip_num!=0){
+
+                    return;
+                }else{
+                    counter=0;
+                }
+//                System.out.println(event.getSensorData().convertDatatoString());
+                IMUDataElement sensorData = event.getSensorData();
+                double acc_time = new Double(sensorData.getSystem_time_stamp());
+                double acc_x = new Double(sensorData.getAcc()[0]);
+                double acc_y = new Double(sensorData.getAcc()[1]);
+                double acc_z = new Double(sensorData.getAcc()[2]);
+                double gyr_x = new Double(sensorData.getGyr()[0]);
+                double gyr_y = new Double(sensorData.getGyr()[1]);
+                double gyr_z = new Double(sensorData.getGyr()[2]);
+                double mag_x = new Double(sensorData.getMag()[0]);
+                double mag_y = new Double(sensorData.getMag()[1]);
+                double mag_z = new Double(sensorData.getMag()[2]);
+//                System.out.println(String.format);
+
+
+                Platform.runLater(() -> {
+                    accXList.add(new XYChart.Data<Number, Number>(acc_time, acc_x));
+                    accYList.add(new XYChart.Data<Number, Number>(acc_time, acc_y));
+                    accZList.add(new XYChart.Data<Number, Number>(acc_time, acc_z));
+                    gyrXList.add(new XYChart.Data<Number, Number>(acc_time, gyr_x));
+                    gyrYList.add(new XYChart.Data<Number, Number>(acc_time, gyr_y));
+                    gyrZList.add(new XYChart.Data<Number, Number>(acc_time, gyr_z));
+                    magXList.add(new XYChart.Data<Number, Number>(acc_time, mag_x));
+                    magYList.add(new XYChart.Data<Number, Number>(acc_time, mag_y));
+                    magZList.add(new XYChart.Data<Number, Number>(acc_time, mag_z));
+
+                    if (accXList.size() > dataMaxLength) {
+                        accXList.remove(0, 10);
+                        accYList.remove(0, 10);
+                        accZList.remove(0, 10);
+                        gyrXList.remove(0, 10);
+                        gyrYList.remove(0, 10);
+                        gyrZList.remove(0, 10);
+                        magXList.remove(0, 10);
+                        magYList.remove(0, 10);
+                        magZList.remove(0, 10);
+                    }
+
+
+                });
+            }
+        });
+
+
         /**
          * Set up Chart Fisrt
          */
@@ -203,56 +265,7 @@ public class SensorImuViewerController implements Initializable {
         magChart.setTitle("Mag");
 
 
-        SensorJY901 imuJY = new SensorJY901();
 
-        imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
-
-            int dataMaxLength = 3000;
-
-            @Override
-            public void SensorDataEvent(DataEvent<IMUDataElement> event) {
-//                System.out.println(event.getSensorData().convertDatatoString());
-                IMUDataElement sensorData = event.getSensorData();
-                double acc_time = new Double(sensorData.getSystem_time_stamp());
-                double acc_x = new Double(sensorData.getAcc()[0]);
-                double acc_y = new Double(sensorData.getAcc()[1]);
-                double acc_z = new Double(sensorData.getAcc()[2]);
-                double gyr_x = new Double(sensorData.getGyr()[0]);
-                double gyr_y = new Double(sensorData.getGyr()[1]);
-                double gyr_z = new Double(sensorData.getGyr()[2]);
-                double mag_x = new Double(sensorData.getMag()[0]);
-                double mag_y = new Double(sensorData.getMag()[1]);
-                double mag_z = new Double(sensorData.getMag()[2]);
-//                System.out.println(String.format);
-
-
-                Platform.runLater(() -> {
-                    accXList.add(new XYChart.Data<Number, Number>(acc_time, acc_x));
-                    accYList.add(new XYChart.Data<Number, Number>(acc_time, acc_y));
-                    accZList.add(new XYChart.Data<Number, Number>(acc_time, acc_z));
-                    gyrXList.add(new XYChart.Data<Number, Number>(acc_time, gyr_x));
-                    gyrYList.add(new XYChart.Data<Number, Number>(acc_time, gyr_y));
-                    gyrZList.add(new XYChart.Data<Number, Number>(acc_time, gyr_z));
-                    magXList.add(new XYChart.Data<Number, Number>(acc_time, mag_x));
-                    magYList.add(new XYChart.Data<Number, Number>(acc_time, mag_y));
-                    magZList.add(new XYChart.Data<Number, Number>(acc_time, mag_z));
-
-                    if (accXList.size() > dataMaxLength) {
-                        accXList.remove(0, 10);
-                        accYList.remove(0, 10);
-                        accZList.remove(0, 10);
-                        gyrXList.remove(0, 10);
-                        gyrYList.remove(0, 10);
-                        gyrZList.remove(0, 10);
-                        magXList.remove(0, 10);
-                        magYList.remove(0, 10);
-                        magZList.remove(0, 10);
-                    }
-
-
-                });
-            }
-        });
 
 
 //        mainPane.setMinWidth(1800);
