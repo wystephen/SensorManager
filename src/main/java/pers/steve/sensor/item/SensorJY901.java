@@ -1,6 +1,7 @@
 package pers.steve.sensor.item;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -77,9 +78,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         int end_num = 11;
                         for (int i = 0; i < end_num; ++i) {
                             buf[i] = byte_queue.take();
-                            if (i == 0 && buf[0] != 0x55) {
+                            if (i == 0 && (buf[0]&0xFF) != 0x55) {
                                 System.out.println("throw data");
-//                                throw new Exception("Throw data");
+                                throw new Exception("Throw data");
                             } else if (i == 1 && buf[1] == 0x50) {
                                 current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                             }
@@ -246,7 +247,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
         @Override
         public void SensorDataEvent(SensorOriginalDataEvent event) throws InterruptedException {
             byte[] bytes = event.get_bytes();
+//            System.out.println(Arrays.toString(bytes));
             for (byte tb : bytes) {
+//                System.out.println(Integer.toHexString(tb & 0xFF));
                 byte_queue.put(tb);
             }
 //            System.out.println("byte queue size: " + byte_queue.size());

@@ -280,7 +280,7 @@ public class SensorImuViewerController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 deviceNameString = newValue;
-                System.out.println("DeviceName change to :"+ deviceNameString);
+                System.out.println("DeviceName change to :" + deviceNameString);
             }
         });
 
@@ -304,7 +304,7 @@ public class SensorImuViewerController implements Initializable {
                                 @Override
                                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                                     nameOfImu = newValue;
-                                    Platform.runLater(()->{
+                                    Platform.runLater(() -> {
                                         nameLabel.setText(nameOfImu);
                                     });
 
@@ -333,6 +333,12 @@ public class SensorImuViewerController implements Initializable {
                     accXList.clear();
                     accYList.clear();
                     accZList.clear();
+                    gyrXList.clear();
+                    gyrYList.clear();
+                    gyrZList.clear();
+                    magXList.clear();
+                    magYList.clear();
+                    magZList.clear();
                     imuJY.startGUIOutput(0);
 
                 } else {
