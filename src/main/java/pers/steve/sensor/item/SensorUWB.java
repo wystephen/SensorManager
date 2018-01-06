@@ -171,7 +171,7 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
             try {
 
                 strQueue.put(new String(event.get_bytes()));
-                System.out.println("strQueue size is " + strQueue.size());
+//                System.out.println("strQueue size is " + strQueue.size());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

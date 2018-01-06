@@ -20,7 +20,9 @@ import pers.steve.sensor.item.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SensorUWBViewerController implements Initializable {
+public class SensorUWBViewerController
+        extends SensorWriteFileInterface
+        implements Initializable {
 
 
     @FXML
@@ -235,6 +237,37 @@ public class SensorUWBViewerController implements Initializable {
 //        uwbDataList.itemsProperty().set(uwbDataObservableList);
 
 
+    }
+
+    /**
+     * Set name of directory.
+     *
+     * @param dirName String directory name.
+     * @return
+     */
+    @Override
+    public boolean setDirectoryName(String dirName) {
+        return false;
+    }
+
+    /**
+     * Start write to files.
+     *
+     * @return
+     */
+    @Override
+    public boolean startWrite() {
+        return false;
+    }
+
+    /**
+     * Stop write to files.
+     *
+     * @return
+     */
+    @Override
+    public boolean stopWrite() {
+        return false;
     }
 }
 

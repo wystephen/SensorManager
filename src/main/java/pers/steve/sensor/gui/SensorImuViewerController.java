@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-public class SensorImuViewerController implements Initializable {
+public class SensorImuViewerController extends SensorWriteFileInterface implements Initializable {
     @FXML
     public FlowPane mainPane;
 
@@ -400,5 +400,36 @@ public class SensorImuViewerController implements Initializable {
     }
 
 
+    /**
+     * Set name of directory.
+     *
+     * @param dirName String directory name.
+     * @return
+     */
+    @Override
+    public boolean setDirectoryName(String dirName) {
+        return false;
+
+    }
+
+    /**
+     * Start write to files.
+     *
+     * @return
+     */
+    @Override
+    public boolean startWrite() {
+        return false;
+    }
+
+    /**
+     * Stop write to files.
+     *
+     * @return
+     */
+    @Override
+    public boolean stopWrite() {
+        return false;
+    }
 }
 
