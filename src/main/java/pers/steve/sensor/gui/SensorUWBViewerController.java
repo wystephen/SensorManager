@@ -75,8 +75,10 @@ public class SensorUWBViewerController implements Initializable {
 
 
     @FXML
-    public TextField uwbDataText;
-    StringProperty uwbDataString = new SimpleStringProperty();
+    private ListView<String> uwbDataList ;//=null;//new ListView<>();
+
+    final ObservableList<String> uwbDataObservableList =
+            FXCollections.observableArrayList("Empty");
 
 
     /**
@@ -95,7 +97,17 @@ public class SensorUWBViewerController implements Initializable {
             @Override
             public void SensorDataEvent(DataEvent<WirelessDataElement> event) {
                 WirelessDataElement dataElement = event.getSensorData();
-                System.out.print(dataElement.convertDatatoString());
+//                uwbDataString.set
+//                uwbDataString.setValue(dataElement.convertDatatoString());
+//                uwbDataString.setValue(dataElement.convertDatatoString());
+                String tmp_str=dataElement.convertDatatoString();
+                Platform.runLater(()->{
+
+                    uwbDataObservableList.add(tmp_str);
+                    if(uwbDataObservableList.size()>10){
+                        uwbDataObservableList.remove(0,1);
+                    }
+                });
 
             }
         });
@@ -104,7 +116,7 @@ public class SensorUWBViewerController implements Initializable {
         /**
          * Set up uwbDataText
          */
-        uwbDataString.bindBidirectional(uwbDataText.textProperty());
+        uwbDataList.setItems(uwbDataObservableList);
 
 
         /**
@@ -219,6 +231,8 @@ public class SensorUWBViewerController implements Initializable {
                 }
             });
         });
+
+//        uwbDataList.itemsProperty().set(uwbDataObservableList);
 
 
     }
