@@ -68,9 +68,9 @@ public class SensorUWBViewerController
     ChoiceBox<String> nameChoice = null;
     protected ObservableList<String> nameList =
             FXCollections.observableArrayList("HEAD_UWB","LEFT_SHOULDER_UWB",
-                    "RIGHT_SHOULDER_UWB");
+                    "RIGHT_SHOULDER_UWB","Default");
 
-    protected String nameOfUwB = "HEAD";
+    protected String nameOfUwB = "Default";
 
 
     public SensorUWB uwbBlack = new SensorUWB(); // IMU Sensor.
@@ -248,7 +248,7 @@ public class SensorUWBViewerController
      */
     @Override
     public boolean setDirectoryFile(File dirFile) {
-        if( nameOfUwB.indexOf("Default")>=0){
+        if( nameOfUwB.indexOf("Default")<0){
             File f = new File(dirFile,nameOfUwB+".data");
             try{
                f.createNewFile();

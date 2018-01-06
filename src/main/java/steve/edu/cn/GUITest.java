@@ -30,7 +30,7 @@ public class GUITest extends Application {
 
     private DirectoryChooser dirChooser = new DirectoryChooser();
 
-    private boolean saveRunningFlag  = false;
+    private boolean saveRunningFlag = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -55,7 +55,7 @@ public class GUITest extends Application {
             menuFile.getItems().add(startSaveItem);
             menuFile.getItems().add(stopSaveItem);
             startSaveItem.setOnAction(event -> {
-                if(saveRunningFlag){
+                if (saveRunningFlag) {
                     Alert a = new Alert(Alert.AlertType.ERROR,
                             "Save File threads is running.");
                     a.show();
@@ -70,32 +70,30 @@ public class GUITest extends Application {
                 File[] filelistDigit = dirFile.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String name) {
-                        if(Pattern.matches("\\d{4}", name)){
+                        if (Pattern.matches("\\d{4}", name)) {
                             return true;
-                        }else{
+                        } else {
                             return false;
                         }
                     }
                 });
 
-                for(File tf:filelistDigit){
+                for (File tf : filelistDigit) {
                     String ts = tf.getName();
-                    max_number = Math.max(max_number,Integer.valueOf(ts));
+                    max_number = Math.max(max_number, Integer.valueOf(ts));
                 }
 
-                max_number+=1;
+                max_number += 1;
 
-                File saveDirFile = new File(dirFile.getAbsolutePath(),String.format("%04d",max_number));
+                File saveDirFile = new File(dirFile.getAbsolutePath(), String.format("%04d", max_number));
                 saveDirFile.mkdir();
                 System.out.println(saveDirFile.getAbsolutePath());
 
 
                 for (SensorWriteFileInterface writer : controllerHashSet) {
-                    if(writer.setDirectoryFile(saveDirFile)){
+                    if (writer.setDirectoryFile(saveDirFile)) {
 
                         writer.startWrite();
-                    }else{
-                        continue;
                     }
                 }
 
@@ -103,12 +101,12 @@ public class GUITest extends Application {
             });
 
             stopSaveItem.setOnAction(event -> {
-                if(!saveRunningFlag){
+                if (!saveRunningFlag) {
                     new Alert(Alert.AlertType.WARNING,
                             "Saving threads isn't running.").show();
-                    return ;
+                    return;
                 }
-                saveRunningFlag=false;
+                saveRunningFlag = false;
                 // Stop save file.
                 for (SensorWriteFileInterface writer : controllerHashSet) {
                     writer.stopWrite();

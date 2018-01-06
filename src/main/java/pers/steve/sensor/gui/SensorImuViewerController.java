@@ -67,7 +67,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
     public ChoiceBox<Integer> speedChoice = null;
 
     protected ObservableList<Integer> speedList =
-            FXCollections.observableArrayList(115200, 1192000, 460800); // NspeedList.
+            FXCollections.observableArrayList(115200, 1192000, 460800,9600); // NspeedList.
 
     protected int speedInt = 460800; // initial speed.
 
@@ -78,7 +78,8 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
             FXCollections.observableArrayList("LEFT_FOOT", "RIGHT_FOOT",
                     "HEAD",
                     "LEFT_HAND", "RIGHT_HAND",
-                    "LEFT_SHOULDER", "RIGHT_SHOULDER");
+                    "LEFT_SHOULDER", "RIGHT_SHOULDER",
+                    "Default IMU");
 
     protected String nameOfImu = "LEFT_FOOT";
 
@@ -338,7 +339,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
             try {
                 serialInterface = null;
                 serialInterface = new SerialAbstract();
-                if (deviceNameString.length() > 1 && speedInt > 9600) {
+                if (deviceNameString.length() > 1 && speedInt >= 9600) {
                     // device name and speed determined.
                     serialInterface.setSerialname(deviceNameString);
                     serialInterface.setNspeed(speedInt);
@@ -405,12 +406,12 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
      */
     @Override
     public boolean setDirectoryFile(File dirFile) {
-        if (true || nameOfImu.indexOf("Default") >= 0) {
+        if (nameOfImu.indexOf("Default") < 0) {
             File f = new File(dirFile, nameOfImu + ".data");
-            try{
+            try {
 
                 f.createNewFile();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
