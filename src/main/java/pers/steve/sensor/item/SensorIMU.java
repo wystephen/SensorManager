@@ -1,5 +1,8 @@
 package pers.steve.sensor.item;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * for IMU.
  *
@@ -24,13 +27,13 @@ public abstract class SensorIMU<DataInterfere>
 
     @Override
     public boolean startGUIOutput(int state) {
-            if (addDataListener(guiListener)) {
+        if (addDataListener(guiListener)) {
 
-                return true;
-            } else {
+            return true;
+        } else {
 
-                return false;
-            }
+            return false;
+        }
 
     }
 
@@ -77,6 +80,11 @@ public abstract class SensorIMU<DataInterfere>
     @Override
     public boolean stopFileOutput(int state) {
         if (true == fileoutRunningFlag) {
+            try{
+                fileListener.fileWriter.flush();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
             removeDataListener(fileListener);
             fileoutRunningFlag = false;
             fileListener = null;
@@ -96,10 +104,32 @@ public abstract class SensorIMU<DataInterfere>
 
     class FileListener implements SensorDataListener<IMUDataElement> {
 
+
+        public FileWriter fileWriter;
+
+        FileListener() {
+
+            try{
+
+                fileWriter = new FileWriter(dataSaveFile.toString());
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
         @Override
         public void SensorDataEvent(DataEvent<IMUDataElement> event) {
 //            System.out.print("Try to output file");
-            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
+//            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
+            try{
+
+
+                fileWriter.write(event.sensorData.convertDatatoString());
+                fileWriter.flush();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
 
         }
     }

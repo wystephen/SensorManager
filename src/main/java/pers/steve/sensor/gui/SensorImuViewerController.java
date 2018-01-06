@@ -24,6 +24,8 @@ import jssc.SerialPortList;
 import pers.steve.sensor.item.*;
 
 import javax.print.attribute.standard.NumberUp;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.EventListener;
 import java.util.ResourceBundle;
@@ -158,7 +160,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
         imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
 
             int dataMaxLength = 100; // max length of sensorData List.
-            int counter=0;
+            int counter = 0;
             int skip_num = 40; //
 
             @Override
@@ -168,11 +170,11 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
             public void SensorDataEvent(DataEvent<IMUDataElement> event) {
 
                 counter++;
-                if(counter%skip_num!=0){
+                if (counter % skip_num != 0) {
 
                     return;
-                }else{
-                    counter=0;
+                } else {
+                    counter = 0;
                 }
 //                System.out.println(event.getSensorData().convertDatatoString());
                 IMUDataElement sensorData = event.getSensorData();
@@ -267,9 +269,6 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
         magChart.setAnimated(false); // speed up.
         magChart.setCreateSymbols(false); // without mark , only line.
         magChart.setTitle("Mag");
-
-
-
 
 
 //        mainPane.setMinWidth(1800);
@@ -401,15 +400,27 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
 
 
     /**
-     * Set name of directory.
-     *
-     * @param dirName String directory name.
+     * @param dirFile File of directory name.
      * @return
      */
     @Override
-    public boolean setDirectoryName(String dirName) {
-        return false;
+    public boolean setDirectoryFile(File dirFile) {
+        if (true || nameOfImu.indexOf("Default") >= 0) {
+            File f = new File(dirFile, nameOfImu + ".data");
+            try{
 
+                f.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+
+            imuJY.setDataSaveFile(f);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -419,7 +430,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
      */
     @Override
     public boolean startWrite() {
-        return false;
+        return imuJY.startFileOutput(1);
     }
 
     /**
@@ -429,7 +440,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
      */
     @Override
     public boolean stopWrite() {
-        return false;
+        return imuJY.stopFileOutput(0);
     }
 }
 

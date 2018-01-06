@@ -1,19 +1,25 @@
 package pers.steve.sensor.item;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * For Wireless sensors like wifi,ble, uwb.
+ *
  * @param <T>
  * @param <DataInterface>
  */
-public abstract class SensorWireless<T extends WirelessDataElement,DataInterface>
-        extends SensorAbstract<T,DataInterface>
+public abstract class SensorWireless<T extends WirelessDataElement, DataInterface>
+        extends SensorAbstract<T, DataInterface>
         implements SensorInterface {
 
     private SensorDataListener<T> guiListener;
     private FileListener fileListener;
 
 
-    SensorWireless(){
+    SensorWireless() {
         setSensorName("GeneralWireless");
     }
 
@@ -23,8 +29,6 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
         guiListener = (SensorDataListener<T>) listener;
         return true;
     }
-
-
 
 
     @Override
@@ -49,6 +53,12 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
     public boolean stopFileOutput(int state) {
         if (true == fileoutRunningFlag) {
             removeDataListener(fileListener);
+            try {
+
+                fileListener.fileWriter.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             fileoutRunningFlag = false;
             fileListener = null;
             return true;
@@ -56,6 +66,7 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
             return false;
         }
     }
+
     @Override
     public boolean startGUIOutput(int state) {
         if (addDataListener(guiListener)) {
@@ -85,7 +96,7 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
         }
     }
 
-    class VisualListener implements SensorDataListener<T>{
+    class VisualListener implements SensorDataListener<T> {
 
         @Override
         public void SensorDataEvent(DataEvent<T> event) {
@@ -93,18 +104,36 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
         }
     }
 
-    class FileListener implements SensorDataListener<T>{
+    class FileListener implements SensorDataListener<T> {
+
+        public FileWriter fileWriter;
+
+        FileListener() {
+
+            try {
+
+                fileWriter = new FileWriter(dataSaveFile.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         public void SensorDataEvent(DataEvent<T> event) {
-            System.out.print(event.getSensorData().convertDatatoString());
+//            System.out.print("Try to output file");
+//            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
+            try {
+
+
+                fileWriter.write(event.sensorData.convertDatatoString());
+                fileWriter.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
     }
-
-
-
-
 
 
 }

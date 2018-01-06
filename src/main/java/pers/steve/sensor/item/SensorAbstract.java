@@ -1,5 +1,6 @@
 package pers.steve.sensor.item;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.SynchronousQueue;
@@ -31,6 +32,18 @@ public abstract class SensorAbstract<DataElementType extends SensorDataElement, 
     private String sensorName;
 
 
+
+    protected File dataSaveFile=null;// file use to save
+
+
+    public File getDataSaveFile() {
+        return dataSaveFile;
+    }
+
+    public void setDataSaveFile(File dataSaveFile) {
+        System.out.println("set File:"+dataSaveFile.toString());
+        this.dataSaveFile = dataSaveFile;
+    }
 
 
     protected boolean addDataListener(SensorDataListener<DataElementType> listener) {

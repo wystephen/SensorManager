@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import jssc.SerialPortList;
 import pers.steve.sensor.item.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -240,14 +242,25 @@ public class SensorUWBViewerController
     }
 
     /**
-     * Set name of directory.
      *
-     * @param dirName String directory name.
+     * @param dirFile File of directory name.
      * @return
      */
     @Override
-    public boolean setDirectoryName(String dirName) {
-        return false;
+    public boolean setDirectoryFile(File dirFile) {
+        if( nameOfUwB.indexOf("Default")>=0){
+            File f = new File(dirFile,nameOfUwB+".data");
+            try{
+               f.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            uwbBlack.setDataSaveFile(f);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
@@ -257,7 +270,8 @@ public class SensorUWBViewerController
      */
     @Override
     public boolean startWrite() {
-        return false;
+
+        return uwbBlack.startFileOutput(0);
     }
 
     /**
@@ -267,7 +281,7 @@ public class SensorUWBViewerController
      */
     @Override
     public boolean stopWrite() {
-        return false;
+        return uwbBlack.stopFileOutput(0);
     }
 }
 

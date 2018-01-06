@@ -30,6 +30,8 @@ public class GUITest extends Application {
 
     private DirectoryChooser dirChooser = new DirectoryChooser();
 
+    private boolean saveRunningFlag  = false;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -53,18 +55,21 @@ public class GUITest extends Application {
             menuFile.getItems().add(startSaveItem);
             menuFile.getItems().add(stopSaveItem);
             startSaveItem.setOnAction(event -> {
+                if(saveRunningFlag){
+                    Alert a = new Alert(Alert.AlertType.ERROR,
+                            "Save File threads is running.");
+                    a.show();
+                    return;
+                }
+                saveRunningFlag = true;
                 // Start save file
-//                dirChooser.showOpenMultipleDialog(primaryStage);
                 String dirString = dirChooser.showDialog(primaryStage).getAbsolutePath();
                 dirChooser.setInitialDirectory(new File(dirString));
-//                Alert a = new Alert(Alert.AlertType.WARNING,dirString);
-//                a.show();
                 File dirFile = new File(dirString);
                 int max_number = -1;
                 File[] filelistDigit = dirFile.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String name) {
-//                        System.out.println("file:" + dir.getAbsolutePath() + " name:" + name);
                         if(Pattern.matches("\\d{4}", name)){
                             return true;
                         }else{
@@ -75,27 +80,35 @@ public class GUITest extends Application {
 
                 for(File tf:filelistDigit){
                     String ts = tf.getName();
-//                    System.out.println(ts);
                     max_number = Math.max(max_number,Integer.valueOf(ts));
                 }
 
                 max_number+=1;
 
-//                dirFile.mkdir(new File(String.format("%04d",max_number)));
                 File saveDirFile = new File(dirFile.getAbsolutePath(),String.format("%04d",max_number));
                 saveDirFile.mkdir();
                 System.out.println(saveDirFile.getAbsolutePath());
 
 
                 for (SensorWriteFileInterface writer : controllerHashSet) {
-                    writer.setDirectoryName(dirString);
-                    writer.startWrite();
+                    if(writer.setDirectoryFile(saveDirFile)){
+
+                        writer.startWrite();
+                    }else{
+                        continue;
+                    }
                 }
 
 
             });
 
             stopSaveItem.setOnAction(event -> {
+                if(!saveRunningFlag){
+                    new Alert(Alert.AlertType.WARNING,
+                            "Saving threads isn't running.").show();
+                    return ;
+                }
+                saveRunningFlag=false;
                 // Stop save file.
                 for (SensorWriteFileInterface writer : controllerHashSet) {
                     writer.stopWrite();
