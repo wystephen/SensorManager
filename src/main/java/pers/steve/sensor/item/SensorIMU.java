@@ -39,7 +39,7 @@ public abstract class SensorIMU<DataInterfere>
     public boolean stopGUIOutput(int state) {
         if (guiRunningFlag == true) {
             if (removeDataListener(guiListener)) {
-//                guiListener = null;
+                guiListener = null;
                 guiRunningFlag = false;
                 return true;
             } else {

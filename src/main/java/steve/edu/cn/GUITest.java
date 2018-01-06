@@ -47,6 +47,10 @@ public class GUITest extends Application {
             mainPane.add(imuBox, 0, 0);
             mainPane.add(imuBox2, 0, 2);
 
+            mainPane.prefWidthProperty().bindBidirectional(imuBox.prefWidthProperty());
+            mainPane.prefWidthProperty().bindBidirectional(imuBox2.prefWidthProperty());
+//            mainPane.prefWidthProperty().bindBidirectional(scrollPane.prefWidthProperty());
+
             Button addImuButton = new Button("addNewImu");
             addImuButton.setOnMouseClicked(event -> {
                 try {
@@ -63,7 +67,7 @@ public class GUITest extends Application {
 //            mainPane.add(addImuButton,0,1);
 
             root.getChildren().add(scrollPane);
-            Scene scen = new Scene(root, 1600, 1000);
+            Scene scen = new Scene(root, 1800, 1000);
 
             primaryStage.setScene(scen);
             primaryStage.show();

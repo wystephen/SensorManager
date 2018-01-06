@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+
+import javax.sql.rowset.serial.SerialJavaObject;
 //import java.
 
 
@@ -36,12 +38,22 @@ public class App extends Application {
 
                             System.out.println("clicked button");
                             SerialAbstract si = new SerialAbstract();
-                            si.setNspeed(115200);
+                            si.setNspeed(460800);
 
-                            SensorUWB sj = new SensorUWB();
+                            SensorJY901 sj = new SensorJY901();
                             sj.setInterface(si);
                             sj.startFileOutput(1);
                             sj.startSensor(1);
+
+
+                            SerialAbstract si2 = new SerialAbstract();
+                            si2.setNspeed(460800);
+                            si2.setSerialname("/dev/ttyUSB1");
+                            SensorJY901 sj2 = new SensorJY901();
+                            sj2.setInterface(si2);
+                            sj2.startFileOutput(1);
+                            sj2.startSensor(1);
+
                         }
                     }
             );

@@ -69,6 +69,17 @@ public class SensorImuViewerController implements Initializable {
 
     protected int speedInt = 460800; // initial speed.
 
+
+    @FXML
+    ChoiceBox<String> nameChoice = null;
+    protected ObservableList<String> nameList =
+            FXCollections.observableArrayList("LEFT_FOOT", "RIGHT_FOOT",
+                    "HEAD",
+                    "LEFT_HAND", "RIGHT_HAND",
+                    "LEFT_SHOULDER", "RIGHT_SHOULDER");
+
+    protected String nameOfImu = "LEFT_FOOT";
+
     @FXML
     public LineChart<Number, Number> accChart;
 
@@ -254,7 +265,7 @@ public class SensorImuViewerController implements Initializable {
         deviceChoice.itemsProperty().set(deviceNameList);
 
         deviceChoice.setOnMouseClicked(event -> {
-            System.out.println(event);
+//            System.out.println(event);
             SerialPortList portList = new SerialPortList();
             String[] name_list = portList.getPortNames();
             deviceNameList.clear();
@@ -269,11 +280,13 @@ public class SensorImuViewerController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 deviceNameString = newValue;
+                System.out.println("DeviceName change to :"+ deviceNameString);
             }
         });
 
 
         speedChoice.itemsProperty().set(speedList);
+
 
         speedChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -283,11 +296,31 @@ public class SensorImuViewerController implements Initializable {
         });
 
 
+        nameChoice.itemsProperty().set(nameList);
+
+        nameChoice.getSelectionModel().
+                selectedItemProperty().
+                addListener(new ChangeListener<String>() {
+                                @Override
+                                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                                    nameOfImu = newValue;
+                                    Platform.runLater(()->{
+                                        nameLabel.setText(nameOfImu);
+                                    });
+
+                                }
+                            }
+
+                );
+
+
         /**
          * Button
          */
+        // Start sensor and GUI thread
         startButton.setOnAction(event -> {
             try {
+                serialInterface = null;
                 serialInterface = new SerialAbstract();
                 if (deviceNameString.length() > 1 && speedInt > 9600) {
                     // device name and speed determined.
@@ -320,6 +353,7 @@ public class SensorImuViewerController implements Initializable {
         });
 
 
+        // stop sensor and GUI thread
         stopButton.setOnAction(event -> {
             // Insure
             Alert a = new Alert(Alert.AlertType.CONFIRMATION,
