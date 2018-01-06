@@ -15,9 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import jssc.SerialPortList;
-import pers.steve.sensor.item.SensorJY901;
-import pers.steve.sensor.item.SensorUWB;
-import pers.steve.sensor.item.SerialAbstract;
+import pers.steve.sensor.item.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -91,7 +89,18 @@ public class SensorUWBViewerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        mainPane.setMinWidth((paraBox.widthProperty().add(accChart.widthProperty().add(gyrChart.widthProperty().add(magChart.widthProperty())))).doubleValue());
+
+        uwbBlack = new SensorUWB();
+        uwbBlack.setGUIEventListener(new SensorDataListener<WirelessDataElement>() {
+            @Override
+            public void SensorDataEvent(DataEvent<WirelessDataElement> event) {
+                WirelessDataElement dataElement = event.getSensorData();
+                System.out.print(dataElement.convertDatatoString());
+
+            }
+        });
+
+
         /**
          * Set up uwbDataText
          */

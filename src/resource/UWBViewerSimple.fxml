@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -18,10 +9,14 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.text.Text?>
-<FlowPane fx:id="mainPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+
+<?import javafx.scene.control.TextField?>
+<FlowPane fx:id="mainPane"
+          xmlns="http://javafx.com/javafx/8.0.121"
+          xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="pers.steve.sensor.gui.SensorUWBViewerController">
+
     <HBox fx:id="allBox">
         <VBox fx:id="paraBox">
             <Label fx:id="nameLabel" text="Default IMU"/>
@@ -40,8 +35,11 @@
 
 
         <VBox>
-            <Label>text="UWBDATA"</Label>
-            <TextField fx:id="uwbDataText" text="Empty."/>
+            <Label>UWBDATA</Label>
+            <TextField fx:id="uwbDataText"
+                       text="Empty."
+                       prefColumnCount="10"
+                       editable="false"/>
         </VBox>
 
 

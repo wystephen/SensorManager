@@ -48,5 +48,5 @@ public interface SensorInterface {
     public abstract boolean stopGUIOutput(int state);
 
 
-    public abstract boolean setGUIEventListener(SensorDataListener<? extends SensorDataElement> listener);
+    public abstract boolean setGUIEventListener(SensorDataListener<? extends SensorDataElement> liste);
 }

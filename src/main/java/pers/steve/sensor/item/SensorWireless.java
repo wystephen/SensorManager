@@ -24,13 +24,40 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
         return true;
     }
 
+
+
+
     @Override
-    public boolean startGUIOutput(int state) {
-        if (null != guiListener) {
-            System.out.print("You should shop GUI Output first.");
+    public boolean startFileOutput(int state) {
+        if (false != fileoutRunningFlag) {
+            System.out.print("You should stop File Output First");
+            return false;
+        } else {
+            fileListener = new FileListener();
+
+            if (addDataListener(fileListener)) {
+                fileoutRunningFlag = true;
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+    @Override
+    public boolean stopFileOutput(int state) {
+        if (true == fileoutRunningFlag) {
+            removeDataListener(fileListener);
+            fileoutRunningFlag = false;
+            fileListener = null;
+            return true;
+        } else {
             return false;
         }
-        guiListener = new VisualListener();
+    }
+    @Override
+    public boolean startGUIOutput(int state) {
         if (addDataListener(guiListener)) {
 
             return true;
@@ -43,40 +70,20 @@ public abstract class SensorWireless<T extends WirelessDataElement,DataInterface
 
     @Override
     public boolean stopGUIOutput(int state) {
-        if (removeDataListener(guiListener)) {
-            guiListener = null;
-            return true;
+        if (guiRunningFlag == true) {
+            if (removeDataListener(guiListener)) {
+                guiListener = null;
+                guiRunningFlag = false;
+                return true;
+            } else {
+                return false;
+            }
+
         } else {
             return false;
+
         }
     }
-
-
-    @Override
-    public boolean startFileOutput(int state) {
-        if (null != fileListener) {
-            System.out.print("You should stop File Output First");
-            return false;
-        }
-        fileListener = new FileListener();
-
-        if (addDataListener(fileListener)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    @Override
-    public boolean stopFileOutput(int state) {
-        if(removeDataListener(fileListener)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
 
     class VisualListener implements SensorDataListener<T>{
 

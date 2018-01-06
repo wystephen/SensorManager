@@ -11,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import pers.steve.sensor.gui.SensorImuViewerController;
+import pers.steve.sensor.gui.SensorUWBViewerController;
 
 import java.io.IOException;
 
@@ -35,21 +36,27 @@ public class GUITest extends Application {
 
 
             // use loader to lode fxml, prepare to interaction with @code{controller}.
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml"));
             FlowPane imuBox = loader.load();
-            SensorImuViewerController imuViewerController = loader.getController();
+            SensorImuViewerController imuViewerController = loader.
+                    getController();
 
-            FXMLLoader loader2 = new FXMLLoader(getClass().getClassLoader().getResource("./IMUViwerSimple.fxml"));
+            FXMLLoader loader2 = new FXMLLoader(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml"));
             FlowPane imuBox2 = loader2.load();
             SensorImuViewerController imuViewerController2 = loader2.getController();
 
+            FXMLLoader uwbLoader = new FXMLLoader(getClass().getClassLoader()
+                    .getResource("./UWBViewerSimple.fxml"));
+            FlowPane uwbBox = uwbLoader.load();
+            SensorUWBViewerController uwbViewerController = uwbLoader.getController();
+
 
             mainPane.add(imuBox, 0, 0);
-            mainPane.add(imuBox2, 0, 2);
+            mainPane.add(imuBox2, 0, 1);
+            mainPane.add(uwbBox, 0, 2);
 
-            mainPane.prefWidthProperty().bindBidirectional(imuBox.prefWidthProperty());
-            mainPane.prefWidthProperty().bindBidirectional(imuBox2.prefWidthProperty());
-//            mainPane.prefWidthProperty().bindBidirectional(scrollPane.prefWidthProperty());
 
             Button addImuButton = new Button("addNewImu");
             addImuButton.setOnMouseClicked(event -> {
@@ -71,7 +78,6 @@ public class GUITest extends Application {
 
             primaryStage.setScene(scen);
             primaryStage.show();
-
 
 
             scrollPane.prefHeightProperty().bind(primaryStage.heightProperty());

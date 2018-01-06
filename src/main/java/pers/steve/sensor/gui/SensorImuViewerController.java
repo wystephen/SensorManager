@@ -157,12 +157,16 @@ public class SensorImuViewerController implements Initializable {
 
         imuJY.setGUIEventListener(new SensorDataListener<IMUDataElement>() {
 
-            int dataMaxLength = 100;
+            int dataMaxLength = 100; // max length of sensorData List.
             int counter=0;
-            int skip_num = 40;
+            int skip_num = 40; //
 
             @Override
+            /**
+             * Put sensor data into ObservableList.
+             */
             public void SensorDataEvent(DataEvent<IMUDataElement> event) {
+
                 counter++;
                 if(counter%skip_num!=0){
 
