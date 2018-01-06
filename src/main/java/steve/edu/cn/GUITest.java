@@ -6,19 +6,20 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pers.steve.sensor.gui.SensorImuViewerController;
 import pers.steve.sensor.gui.SensorUWBViewerController;
 import pers.steve.sensor.gui.SensorWriteFileInterface;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 public class GUITest extends Application {
 
@@ -27,7 +28,7 @@ public class GUITest extends Application {
 
     private MenuBar menuBar = new MenuBar();
 
-    private FileChooser fileChooser = new FileChooser();
+    private DirectoryChooser dirChooser = new DirectoryChooser();
 
     public static void main(String[] args) {
         launch(args);
@@ -45,13 +46,68 @@ public class GUITest extends Application {
             // Menu
             Menu menuFile = new Menu("File");
             Menu menuEdit = new Menu("Edit");
-            menuBar.getMenus().addAll(menuFile, menuEdit);
 
+            MenuItem startSaveItem = new MenuItem("Start Save File");
+            MenuItem stopSaveItem = new MenuItem("Stop Save File");
+
+            menuFile.getItems().add(startSaveItem);
+            menuFile.getItems().add(stopSaveItem);
+            startSaveItem.setOnAction(event -> {
+                // Start save file
+//                dirChooser.showOpenMultipleDialog(primaryStage);
+                String dirString = dirChooser.showDialog(primaryStage).getAbsolutePath();
+                dirChooser.setInitialDirectory(new File(dirString));
+//                Alert a = new Alert(Alert.AlertType.WARNING,dirString);
+//                a.show();
+                File dirFile = new File(dirString);
+                int max_number = -1;
+                File[] filelistDigit = dirFile.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+//                        System.out.println("file:" + dir.getAbsolutePath() + " name:" + name);
+                        if(Pattern.matches("\\d{4}", name)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                });
+
+                for(File tf:filelistDigit){
+                    String ts = tf.getName();
+//                    System.out.println(ts);
+                    max_number = Math.max(max_number,Integer.valueOf(ts));
+                }
+
+                max_number+=1;
+
+//                dirFile.mkdir(new File(String.format("%04d",max_number)));
+                File saveDirFile = new File(dirFile.getAbsolutePath(),String.format("%04d",max_number));
+                saveDirFile.mkdir();
+                System.out.println(saveDirFile.getAbsolutePath());
+
+
+                for (SensorWriteFileInterface writer : controllerHashSet) {
+                    writer.setDirectoryName(dirString);
+                    writer.startWrite();
+                }
+
+
+            });
+
+            stopSaveItem.setOnAction(event -> {
+                // Stop save file.
+                for (SensorWriteFileInterface writer : controllerHashSet) {
+                    writer.stopWrite();
+                }
+
+            });
+
+            menuBar.getMenus().addAll(menuFile, menuEdit);
             root.getChildren().add(menuBar);
 
             // file chooser
-            fileChooser.setTitle("Choice Directory for save");
-//            root.getChildren().add(fileChooser);
+            dirChooser.setTitle("Choice Directory for save");
 
 
             //SensorPane
