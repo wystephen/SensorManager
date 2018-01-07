@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<FlowPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="pers.steve.sensor.gui.SmartPhoneSimpleController"
+          fx:id="mainPane"
+            >
+    <HBox fx:id="allBox">
+        <VBox fx:id="paraBox">
+            <Label fx:id="nameLabel" text="DefaultSmartPhone"/>
+            <ChoiceBox fx:id="nameChoice"/>
+
+            <Label text="port:"/>
+
+            <ChoiceBox fx:id="portChoice"/>
+            <Button fx:id="startButton" text="start TCPServer"/>
+            <Button fx:id="stopButton" text="stop TCPServer"/>
+        </VBox>
+        <VBox>
+            <Label>BLE Data</Label>
+            <ListView fx:id="bleDataList" prefWidth="1000" prefHeight="270">
+                <items>
+                    <String fx:value="Empty"/>
+                </items>
+            </ListView>
+        </VBox>
+    </HBox>
+
+
+</FlowPane>
