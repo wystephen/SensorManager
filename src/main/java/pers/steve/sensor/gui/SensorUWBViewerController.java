@@ -67,8 +67,8 @@ public class SensorUWBViewerController
     @FXML
     ChoiceBox<String> nameChoice = null;
     protected ObservableList<String> nameList =
-            FXCollections.observableArrayList("HEAD_UWB","LEFT_SHOULDER_UWB",
-                    "RIGHT_SHOULDER_UWB","Default");
+            FXCollections.observableArrayList("HEAD_UWB", "LEFT_SHOULDER_UWB",
+                    "RIGHT_SHOULDER_UWB", "Default");
 
     protected String nameOfUwB = "Default";
 
@@ -79,7 +79,7 @@ public class SensorUWBViewerController
 
 
     @FXML
-    private ListView<String> uwbDataList ;//=null;//new ListView<>();
+    private ListView<String> uwbDataList;//=null;//new ListView<>();
 
     final ObservableList<String> uwbDataObservableList =
             FXCollections.observableArrayList("Empty");
@@ -104,12 +104,12 @@ public class SensorUWBViewerController
 //                uwbDataString.set
 //                uwbDataString.setValue(dataElement.convertDatatoString());
 //                uwbDataString.setValue(dataElement.convertDatatoString());
-                String tmp_str=dataElement.convertDatatoString();
-                Platform.runLater(()->{
+                String tmp_str = dataElement.convertDatatoString();
+                Platform.runLater(() -> {
 
                     uwbDataObservableList.add(tmp_str);
-                    if(uwbDataObservableList.size()>10){
-                        uwbDataObservableList.remove(0,1);
+                    if (uwbDataObservableList.size() > 10) {
+                        uwbDataObservableList.remove(0, 1);
                     }
                 });
 
@@ -242,23 +242,22 @@ public class SensorUWBViewerController
     }
 
     /**
-     *
      * @param dirFile File of directory name.
      * @return
      */
     @Override
     public boolean setDirectoryFile(File dirFile) {
-        if( nameOfUwB.indexOf("Default")<0){
-            File f = new File(dirFile,nameOfUwB+".data");
-            try{
-               f.createNewFile();
-            }catch (IOException e){
+        if (nameOfUwB.indexOf("Default") < 0) {
+            File f = new File(dirFile, nameOfUwB + ".data");
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
             uwbBlack.setDataSaveFile(f);
             return true;
-        }else {
+        } else {
             return false;
         }
     }

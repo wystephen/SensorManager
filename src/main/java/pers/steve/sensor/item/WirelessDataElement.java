@@ -24,7 +24,7 @@ public class WirelessDataElement extends SensorDataElement {
     @Override
     public String convertDatatoString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%15.03f,%15.03f,", time_stamp, system_time_stamp));
+        sb.append(String.format("%.03f,%15.03f,", time_stamp, system_time_stamp));
 
         if (measurmentsMap != null) {
             for (String key : measurmentsMap.keySet()) {

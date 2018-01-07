@@ -120,8 +120,6 @@ public abstract class SensorWireless<T extends WirelessDataElement, DataInterfac
 
         @Override
         public void SensorDataEvent(DataEvent<T> event) {
-//            System.out.print("Try to output file");
-//            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
             try {
 
 

@@ -3,10 +3,25 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="0.0" y="0.0">pers.steve.sensor.gui.SensorImuViewerSimple</node>
+    <node x="259.0" y="81.0">pers.steve.sensor.gui.SensorUWBViewerController</node>
+    <node x="141.5" y="0.0">pers.steve.sensor.gui.SensorWriteFileInterface</node>
+    <node x="0.0" y="81.0">pers.steve.sensor.gui.SensorImuViewerController</node>
   </nodes>
   <notes />
-  <edges />
+  <edges>
+    <edge source="pers.steve.sensor.gui.SensorUWBViewerController" target="pers.steve.sensor.gui.SensorWriteFileInterface">
+      <point x="0.0" y="-15.5" />
+      <point x="382.5" y="56.0" />
+      <point x="305.75" y="56.0" />
+      <point x="54.75" y="15.5" />
+    </edge>
+    <edge source="pers.steve.sensor.gui.SensorImuViewerController" target="pers.steve.sensor.gui.SensorWriteFileInterface">
+      <point x="0.0" y="-15.5" />
+      <point x="119.5" y="56.0" />
+      <point x="196.25" y="56.0" />
+      <point x="-54.75" y="15.5" />
+    </edge>
+  </edges>
   <settings layout="Hierarchic Group" zoom="1.0" x="0.0" y="0.0" />
   <SelectedNodes />
   <Categories />
