@@ -13,9 +13,7 @@ import pers.steve.sensor.item.IMUDataElement;
 import pers.steve.sensor.item.SensorDataListener;
 import pers.steve.sensor.item.WirelessDataElement;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -206,11 +204,15 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
         @Override
         public void run() {
             try {
-                DataInputStream input = new DataInputStream(socket.getInputStream());
+//                DataInputStream input = new DataInputStream(socket.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                socket.
+                StringBuffer sb = new StringBuffer();
 
                 while (socket.isConnected()) {
-                    if (input.available() > 0) {
+                    if (reader.ready()) {
 
+                        String s = reader.readLine();
                     }
 
                 }
