@@ -117,6 +117,7 @@ public abstract class SensorIMU<DataInterfere>
             }
         }
 
+        int writedCounter = 0;
         @Override
         public void SensorDataEvent(DataEvent<IMUDataElement> event) {
 //            System.out.print("Try to output file");
@@ -126,7 +127,11 @@ public abstract class SensorIMU<DataInterfere>
 
                 synchronized (this) {
                     fileWriter.write(event.sensorData.convertDatatoString());
-                    fileWriter.flush();
+                    writedCounter++;
+                    if(writedCounter>100){
+
+                        fileWriter.flush();
+                    }
                 }
 
             } catch (IOException e) {
