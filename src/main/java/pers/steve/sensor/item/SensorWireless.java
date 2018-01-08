@@ -118,6 +118,8 @@ public abstract class SensorWireless<T extends WirelessDataElement, DataInterfac
             }
         }
 
+        int writedCounter = 0;
+
         @Override
         public void SensorDataEvent(DataEvent<T> event) {
             try {
@@ -125,7 +127,11 @@ public abstract class SensorWireless<T extends WirelessDataElement, DataInterfac
 
                 synchronized (this) {
                     fileWriter.write(event.sensorData.convertDatatoString());
-                    fileWriter.flush();
+                    writedCounter++;
+                    if (writedCounter > 3) {
+
+                        fileWriter.flush();
+                    }
                 }
 
             } catch (IOException e) {
