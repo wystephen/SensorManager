@@ -1,8 +1,5 @@
 package pers.steve.sensor.gui;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,13 +21,14 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
         implements Initializable {
 
     @FXML
-    FlowPane mainPane;
+    public FlowPane mainPane;
 
     @FXML
-    Label nameLabel;
+    public Label nameLabel;
 
     @FXML
-    ChoiceBox nameChoice;
+    public ChoiceBox nameChoice;
+
     protected ObservableList<String> nameList =
             FXCollections.observableArrayList("HAND_SMARTPHONE", "Default");
 
@@ -38,28 +36,28 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
     String nameString = "Default";
 
     @FXML
-    ChoiceBox portChoice;
+    public ChoiceBox portChoice;
+
     protected ObservableList<Integer> portList =
             FXCollections.observableArrayList(6666, 6667, 6668, 6669, 6670);
     int port = 6666;
 
 
     @FXML
-    Button startButton;
+    public Button startButton;
 
     @FXML
-    Button stopButton;
+    public Button stopButton;
 
     @FXML
-    ListView<String> belDataList;
-    ObservableList<String> bleDataObservableList =
-            FXCollections.observableArrayList();
+    ListView<String> bleDataList;
+    ObservableList<String> bleDataObservableList;
 
     HashSet<SensorDataListener<IMUDataElement>> imuListeners = new HashSet<>();
     HashSet<SensorDataListener<WirelessDataElement>> bleListeners = new HashSet<>();
 
     Thread socketServerThread = null;
-    ServerSocket serverSocket = null;//new ServerSocket()
+    ServerSocket serverSocket = null;
     boolean serverRunningFlag = false;
 
 
@@ -73,80 +71,82 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        belDataList.setItems(bleDataObservableList);
+
+        bleDataObservableList = FXCollections.observableArrayList("Empty");
+        bleDataList.setItems(bleDataObservableList);
 
         /**
          * Set up Choice Box
          */
 
-        nameChoice.itemsProperty().set(nameList);
-        nameChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            /**
-             * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
-             *
-             * @param observable The {@code ObservableValue} which value changed
-             * @param oldValue   The old value
-             * @param newValue
-             */
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                nameString = newValue;
-                Platform.runLater(() -> {
-                    nameLabel.setText(nameString);
-                });
+//        nameChoice.itemsProperty().set(nameList);
+//        nameChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+//            /**
+//             * This method needs to be provided by an implementation of
+//             * {@code ChangeListener}. It is called if the value of an
+//             * {@link ObservableValue} changes.
+//             * <p>
+//             * In general is is considered bad practice to modify the observed value in
+//             * this method.
+//             *
+//             * @param observable The {@code ObservableValue} which value changed
+//             * @param oldValue   The old value
+//             * @param newValue
+//             */
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                nameString = newValue;
+//                Platform.runLater(() -> {
+//                    nameLabel.setText(nameString);
+//                });
+//
+//            }
+//        });
 
-            }
-        });
 
-
-        portChoice.itemsProperty().set(portList);
-        portChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                port = newValue.intValue();
-
-            }
-        });
+//        portChoice.itemsProperty().set(portList);
+//        portChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                port = newValue.intValue();
+//
+//            }
+//        });
 
         /**
          * Button
          */
-        startButton.setOnAction(event -> {
-            if (serverRunningFlag == false) {
-                try {
-                    if (port > 1000) {
-                        serverSocket = new ServerSocket(port);
-                        socketServerThread = new Thread(() -> {
-                            while (serverSocket != null) {
-                                try {
-                                    Socket client = serverSocket.accept();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        socketServerThread.start();
-
-                    } else {
-                        System.out.println("port is :" + port);
-                    }
-
-
-                } catch (Exception e) {
-
-                }
-            } else {
-                new Alert(Alert.AlertType.WARNING, "server is running now").show();
-
-            }
-
-
-        });
+//        startButton.setOnAction(event -> {
+//            if (serverRunningFlag == false) {
+//                try {
+//                    if (port > 1000) {
+//                        serverSocket = new ServerSocket(port);
+//                        socketServerThread = new Thread(() -> {
+//                            while (serverSocket != null) {
+//                                try {
+//                                    Socket client = serverSocket.accept();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                        socketServerThread.start();
+//
+//                    } else {
+//                        System.out.println("port is :" + port);
+//                    }
+//
+//
+//                } catch (Exception e) {
+//
+//                }
+//            } else {
+//                new Alert(Alert.AlertType.WARNING, "server is running now").show();
+//
+//            }
+//
+//
+//        });
 
 
     }

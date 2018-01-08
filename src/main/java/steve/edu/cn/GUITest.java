@@ -1,6 +1,7 @@
 package steve.edu.cn;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import pers.steve.sensor.gui.SensorImuViewerController;
 import pers.steve.sensor.gui.SensorUWBViewerController;
 import pers.steve.sensor.gui.SensorWriteFileInterface;
+import pers.steve.sensor.gui.SmartPhoneSimpleController;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -153,15 +155,23 @@ public class GUITest extends Application {
             SensorUWBViewerController uwbViewerController = uwbLoader.getController();
 
 
+            FXMLLoader smartPhoneLoader = new FXMLLoader(getClass().getClassLoader()
+            .getResource("./SmartPhoneSimple.fxml"));
+            FlowPane smartPhoneBox = smartPhoneLoader.load();
+            SmartPhoneSimpleController smartPhoneSimpleController = smartPhoneLoader.getController();
+
+
             sensorsPane.add(imuBox, 0, 0);
             sensorsPane.add(imuBox2, 0, 1);
             sensorsPane.add(uwbBox, 0, 2);
             sensorsPane.add(imuBox3, 0, 3);
+            sensorsPane.add(smartPhoneBox,0,4);
 
             controllerHashSet.add(imuViewerController);
             controllerHashSet.add(imuViewerController2);
             controllerHashSet.add(imuViewerController3);
             controllerHashSet.add(uwbViewerController);
+            controllerHashSet.add(smartPhoneSimpleController);
 
 
 //            Button addImuButton = new Button("addNewImu");

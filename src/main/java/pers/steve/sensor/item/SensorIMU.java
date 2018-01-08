@@ -80,9 +80,9 @@ public abstract class SensorIMU<DataInterfere>
     @Override
     public boolean stopFileOutput(int state) {
         if (true == fileoutRunningFlag) {
-            try{
+            try {
                 fileListener.fileWriter.flush();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             removeDataListener(fileListener);
@@ -109,10 +109,10 @@ public abstract class SensorIMU<DataInterfere>
 
         FileListener() {
 
-            try{
+            try {
 
                 fileWriter = new FileWriter(dataSaveFile.toString());
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -121,12 +121,15 @@ public abstract class SensorIMU<DataInterfere>
         public void SensorDataEvent(DataEvent<IMUDataElement> event) {
 //            System.out.print("Try to output file");
 //            System.out.print("sensor file out runing:" + event.getSensorData().convertDatatoString());
-            try{
+            try {
 
 
-                fileWriter.write(event.sensorData.convertDatatoString());
-                fileWriter.flush();
-            }catch (IOException e){
+                synchronized (this) {
+                    fileWriter.write(event.sensorData.convertDatatoString());
+                    fileWriter.flush();
+                }
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

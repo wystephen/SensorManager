@@ -26,9 +26,6 @@
         <VBox>
             <Label>BLE Data</Label>
             <ListView fx:id="bleDataList" prefWidth="1000" prefHeight="270">
-                <items>
-                    <String fx:value="Empty"/>
-                </items>
             </ListView>
         </VBox>
     </HBox>

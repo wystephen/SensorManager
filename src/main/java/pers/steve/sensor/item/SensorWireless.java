@@ -123,8 +123,11 @@ public abstract class SensorWireless<T extends WirelessDataElement, DataInterfac
             try {
 
 
-                fileWriter.write(event.sensorData.convertDatatoString());
-                fileWriter.flush();
+                synchronized (this) {
+                    fileWriter.write(event.sensorData.convertDatatoString());
+                    fileWriter.flush();
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
