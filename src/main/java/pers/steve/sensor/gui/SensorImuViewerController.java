@@ -321,6 +321,9 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
                                 @Override
                                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                                     nameOfImu = newValue;
+                                    if (imuJY != null) {
+                                        imuJY.setSensorName(nameOfImu);
+                                    }
                                     Platform.runLater(() -> {
                                         nameLabel.setText(nameOfImu);
                                     });

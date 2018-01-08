@@ -82,7 +82,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         for (int i = 0; i < end_num; ++i) {
                             buf[i] = byte_queue.take();
                             if (i == 0 && (buf[0] & 0xFF) != 0x55) {
-                                throw new Exception("Throw data");
+                                throw new Exception(getSensorName()+"Throw data");
                             } else if (i == 1 && buf[1] == 0x50) {
                                 current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                             }
@@ -113,7 +113,8 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 ms = (int) (short) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)));
                                 try {
 
-                                    Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec));
+                                    Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d",
+                                            year, mon, day, hour, min, sec));
                                     long time_int = ts.getTime();
                                     imu_data.setTime_stamp(((double) time_int) / 1000.0 + ((double) (ms)) / 1000.0);
                                 } catch (Exception e) {
