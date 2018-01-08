@@ -81,7 +81,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
                     "LEFT_SHOULDER", "RIGHT_SHOULDER",
                     "Default IMU");
 
-    protected String nameOfImu = "LEFT_FOOT";
+    protected String nameOfImu = "Default_IMU";
 
     @FXML
     public LineChart<Number, Number> accChart;

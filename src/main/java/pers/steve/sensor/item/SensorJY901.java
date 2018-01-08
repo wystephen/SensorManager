@@ -73,20 +73,21 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
             super();
             dataProcess = () -> {
                 while (true) {
-
                     try {
                         int end_num = 11;
+                        if (byte_queue.size() <= end_num) {
+                            Thread.sleep(1);
+                            continue;
+                        }
                         for (int i = 0; i < end_num; ++i) {
                             buf[i] = byte_queue.take();
                             if (i == 0 && (buf[0] & 0xFF) != 0x55) {
-                                System.out.println("throw data");
                                 throw new Exception("Throw data");
                             } else if (i == 1 && buf[1] == 0x50) {
                                 current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                             }
 
                         }
-                        //                    System.out.print("after copy data");
                         switch (buf[1]) {
                             case 0x50:
                                 /// Time
@@ -110,9 +111,17 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                 sec = (int) (short) (buf[7] & 0xFF);
                                 int ms = 0;
                                 ms = (int) (short) (((buf[8] & 0xFF) | ((buf[9] & 0xFF) << 8)));
-                                Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec));
-                                long time_int = ts.getTime();
-                                imu_data.setTime_stamp((double) time_int + ((double) (ms)) / 1000.0);
+                                try {
+
+                                    Timestamp ts = Timestamp.valueOf(String.format("20%02d-%02d-%02d %02d:%02d:%02d", year, mon, day, hour, min, sec));
+                                    long time_int = ts.getTime();
+                                    imu_data.setTime_stamp(((double) time_int) / 1000.0 + ((double) (ms)) / 1000.0);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    System.out.println(String.format("20%02d-%02d-%02d %02d:%02d:%02d",
+                                            year, mon, day, hour, min, sec));
+                                }
+
                                 imu_data.setSystem_time_stamp(current_system_time);
 
                                 break;
@@ -131,9 +140,9 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
                                 double[] acc_tmp = new double[3];
                                 double[] t = new double[1];
-                                acc_tmp[0] = new Double((double) ax_int) / 32768.0 * 16.0;
-                                acc_tmp[1] = new Double((double) ay_int) / 32768.0 * 16.0;
-                                acc_tmp[2] = new Double((double) az_int) / 32768.0 * 16.0;
+                                acc_tmp[0] = ((double) ax_int) / 32768.0 * 16.0;
+                                acc_tmp[1] = ((double) ay_int) / 32768.0 * 16.0;
+                                acc_tmp[2] = ((double) az_int) / 32768.0 * 16.0;
                                 if (imu_data != null) {
                                     imu_data.setAcc(acc_tmp);
                                     t[0] = ((double) temperature_int) / 100.0;
@@ -234,7 +243,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         }
                         //                    System.out.print("after process");
                         //TODO:Adjust the sleep time auto.
-                        Thread.sleep(0, 10);
+//                        Thread.sleep(0, 10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         continue;
@@ -263,10 +272,11 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
             byte[] bytes = event.get_bytes();
 //            System.out.println(Arrays.toString(bytes));
             for (byte tb : bytes) {
-//                System.out.println(Integer.toHexString(tb & 0xFF));
                 byte_queue.put(tb);
             }
-//            System.out.println("byte queue size: " + byte_queue.size());
+//            if(byte_queue.size()>1000){
+//                System.out.println("byte queue size is:"+byte_queue.size());
+//            }
 
 
         }
