@@ -67,7 +67,7 @@ public class SensorImuViewerController extends SensorWriteFileInterface implemen
     public ChoiceBox<Integer> speedChoice = null;
 
     protected ObservableList<Integer> speedList =
-            FXCollections.observableArrayList(115200, 1192000, 460800,9600); // NspeedList.
+            FXCollections.observableArrayList(115200, 1192000, 460800, 9600); // NspeedList.
 
     protected int speedInt = 460800; // initial speed.
 
