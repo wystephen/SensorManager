@@ -226,9 +226,8 @@ public class SensorUWBViewerController
 
                 if (response == ButtonType.OK) {
                     uwbBlack.stopSensor(0);
-//                    System.out.print("button type is: " + response.toString());
-//                    imuJY.stopFileOutput(0);
                     uwbBlack.stopGUIOutput(0);
+
 
                 } else {
 //                    System.out.print("button type is: " + response.toString());

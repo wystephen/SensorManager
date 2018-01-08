@@ -52,7 +52,6 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
     }
 
 
-
     /**
      * Listener for UWB use DAPS embedded system.
      */
@@ -142,7 +141,7 @@ public class SensorUWB extends SensorWireless<UWBDataElement, SerialAbstract> {
 
                                 break;
                             default:
-                                throw new Exception("Unrecognizable sensor data" + localString);
+                                throw new Exception("Unrecognizable sensor data: " + localString);
 
                         }
                         if (strQueue.size() < 1) {
