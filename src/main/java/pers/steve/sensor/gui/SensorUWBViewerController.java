@@ -59,7 +59,7 @@ public class SensorUWBViewerController
     public ChoiceBox<Integer> speedChoice = null;
 
     protected ObservableList<Integer> speedList =
-            FXCollections.observableArrayList(115200, 916200, 1192000, 460800); // NspeedList.
+            FXCollections.observableArrayList(115200, 921600, 1192000, 460800); // NspeedList.
 
     protected int speedInt = 460800; // initial speed.
 
