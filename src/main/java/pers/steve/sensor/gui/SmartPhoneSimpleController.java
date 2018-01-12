@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import pers.steve.sensor.item.DataEvent;
 import pers.steve.sensor.item.IMUDataElement;
 import pers.steve.sensor.item.SensorDataListener;
 import pers.steve.sensor.item.WirelessDataElement;
@@ -20,7 +19,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class SmartPhoneSimpleController extends SensorWriteFileInterface
         implements Initializable {
@@ -64,6 +62,13 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
     Thread socketServerThread = null;
     ServerSocket serverSocket = null;
     boolean serverRunningFlag = false;
+
+    //tmp queue for data
+//    ArrayBlockingQueue<String> imu_file_queue; // queue
+//    ArrayBlockingQueue<String> ble_file_queue; // queue
+    FileWriter imuWriter = null;
+    FileWriter bleWriter = null;
+    File the_file = null;
 
 
     /**
@@ -166,6 +171,7 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean setDirectoryFile(File dirFile) {
+        the_file = dirFile;
 
         return false;
     }
@@ -177,7 +183,22 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean startWrite() {
-        return false;
+        try {
+            File imu_file = new File(the_file, nameString + "_IMU.data");
+            imu_file.createNewFile();
+            imuWriter = new FileWriter(imu_file.toString());
+            File ble_file = new File(the_file, nameString + "_BLE.data");
+            ble_file.createNewFile();
+            bleWriter = new FileWriter(ble_file.toString());
+
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
     }
 
     /**
@@ -187,13 +208,25 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean stopWrite() {
-        return false;
+        try {
+            imuWriter.flush();
+            imuWriter.close();
+            imuWriter = null;
+            bleWriter.flush();
+            bleWriter.close();
+            bleWriter = null;
+            return true;
+        } catch (IOException e) {
+
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     class HandlerThread implements Runnable {
         private Socket socket;
-        ArrayBlockingQueue<String> imu_file_queue; // queue
-        ArrayBlockingQueue<String> ble_file_queue; // queue
+
 
         HandlerThread(Socket s) {
             this.socket = s;
@@ -222,6 +255,8 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                     if (reader.ready()) {
 
                         String s = reader.readLine();
+
+
 //                        if(bleDataObservableList)
                         if (s.indexOf("{") > 0) {
                             Platform.runLater(() -> {
@@ -230,9 +265,18 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                                     bleDataObservableList.remove(0);
                                 }
                             });
+                            if (bleWriter != null) {
+                                bleWriter.write(s);
+                            }
+
+                        } else {
+                            if (imuWriter != null) {
+                                imuWriter.write(s);
+                            }
 
                         }
-                        System.out.println(s);
+//                        System.out.println(s);
+
                     }
 
                 }
