@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import pers.steve.sensor.item.DataEvent;
 import pers.steve.sensor.item.IMUDataElement;
 import pers.steve.sensor.item.SensorDataListener;
 import pers.steve.sensor.item.WirelessDataElement;
@@ -19,6 +20,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class SmartPhoneSimpleController extends SensorWriteFileInterface
         implements Initializable {
@@ -128,6 +130,8 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                             while (serverSocket != null) {
                                 try {
                                     Socket client = serverSocket.accept();
+                                        HandlerThread ht = new HandlerThread(client);
+                                        new Thread(ht).start();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -188,6 +192,8 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
 
     class HandlerThread implements Runnable {
         private Socket socket;
+        ArrayBlockingQueue<String> imu_file_queue; // queue
+        ArrayBlockingQueue<String> ble_file_queue; // queue
 
         HandlerThread(Socket s) {
             this.socket = s;
@@ -216,6 +222,7 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                     if (reader.ready()) {
 
                         String s = reader.readLine();
+                        System.out.println(s);
                     }
 
                 }
@@ -225,6 +232,8 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
             }
         }
     }
+
+
 
 
 }
