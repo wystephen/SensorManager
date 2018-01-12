@@ -130,8 +130,8 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                             while (serverSocket != null) {
                                 try {
                                     Socket client = serverSocket.accept();
-                                        HandlerThread ht = new HandlerThread(client);
-                                        new Thread(ht).start();
+                                    HandlerThread ht = new HandlerThread(client);
+                                    new Thread(ht).start();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -222,6 +222,16 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                     if (reader.ready()) {
 
                         String s = reader.readLine();
+//                        if(bleDataObservableList)
+                        if (s.indexOf("{") > 0) {
+                            Platform.runLater(() -> {
+                                bleDataObservableList.add(s);
+                                if (bleDataObservableList.size() > 10) {
+                                    bleDataObservableList.remove(0);
+                                }
+                            });
+
+                        }
                         System.out.println(s);
                     }
 
@@ -232,8 +242,6 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
             }
         }
     }
-
-
 
 
 }
