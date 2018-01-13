@@ -173,7 +173,7 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
     public boolean setDirectoryFile(File dirFile) {
         the_file = dirFile;
 
-        return false;
+        return true;
     }
 
     /**
@@ -254,7 +254,22 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                 while (socket.isConnected()) {
                     if (reader.ready()) {
 
-                        String s = reader.readLine();
+//                        String s = reader.readLine();
+//                        if(s.lastIndexOf("\n")<0){
+//                            s = s + "\n";
+//                        }
+                        StringBuilder lineStringBuilder = new StringBuilder(reader.readLine());
+//                        lineStringBuilder
+                        if(lineStringBuilder.lastIndexOf("\n")<0){
+                            lineStringBuilder.append("\n");
+                        }
+                        int first_comma = lineStringBuilder.indexOf(",");
+                        int second_comma = lineStringBuilder.indexOf(",",first_comma+1);
+                        lineStringBuilder.replace(first_comma+1,second_comma,String.format("%15.03f",
+                                ((double)System.currentTimeMillis())/1000.0));
+
+
+                        String s = lineStringBuilder.toString();
 
 
 //                        if(bleDataObservableList)

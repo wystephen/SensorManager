@@ -69,6 +69,7 @@ public class GUITest extends Application {
                 dirChooser.setInitialDirectory(new File(dirString));
                 File dirFile = new File(dirString);
                 int max_number = -1;
+                // obtain all dir name fulfill "\\d{4}"
                 File[] filelistDigit = dirFile.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String name) {
@@ -79,7 +80,7 @@ public class GUITest extends Application {
                         }
                     }
                 });
-
+                // find the max index of dir.
                 for (File tf : filelistDigit) {
                     String ts = tf.getName();
                     max_number = Math.max(max_number, Integer.valueOf(ts));
