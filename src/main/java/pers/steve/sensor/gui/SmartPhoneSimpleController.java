@@ -1,5 +1,8 @@
 package pers.steve.sensor.gui;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,6 +63,13 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
     ServerSocket serverSocket = null;
     boolean serverRunningFlag = false;
 
+    //tmp queue for data
+//    ArrayBlockingQueue<String> imu_file_queue; // queue
+//    ArrayBlockingQueue<String> ble_file_queue; // queue
+    FileWriter imuWriter = null;
+    FileWriter bleWriter = null;
+    File the_file = null;
+
 
     /**
      * Called to initialize a controller after its root element has been
@@ -79,74 +89,76 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
          * Set up Choice Box
          */
 
-//        nameChoice.itemsProperty().set(nameList);
-//        nameChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-//            /**
-//             * This method needs to be provided by an implementation of
-//             * {@code ChangeListener}. It is called if the value of an
-//             * {@link ObservableValue} changes.
-//             * <p>
-//             * In general is is considered bad practice to modify the observed value in
-//             * this method.
-//             *
-//             * @param observable The {@code ObservableValue} which value changed
-//             * @param oldValue   The old value
-//             * @param newValue
-//             */
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                nameString = newValue;
-//                Platform.runLater(() -> {
-//                    nameLabel.setText(nameString);
-//                });
-//
-//            }
-//        });
+        nameChoice.itemsProperty().set(nameList);
+        nameChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            /**
+             * This method needs to be provided by an implementation of
+             * {@code ChangeListener}. It is called if the value of an
+             * {@link ObservableValue} changes.
+             * <p>
+             * In general is is considered bad practice to modify the observed value in
+             * this method.
+             *
+             * @param observable The {@code ObservableValue} which value changed
+             * @param oldValue   The old value
+             * @param newValue
+             */
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                nameString = newValue;
+                Platform.runLater(() -> {
+                    nameLabel.setText(nameString);
+                });
 
-
-//        portChoice.itemsProperty().set(portList);
-//        portChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                port = newValue.intValue();
+            }
+        });
 //
-//            }
-//        });
+//
+        portChoice.itemsProperty().set(portList);
+        portChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                port = newValue.intValue();
+
+            }
+        });
 
         /**
          * Button
          */
-//        startButton.setOnAction(event -> {
-//            if (serverRunningFlag == false) {
-//                try {
-//                    if (port > 1000) {
-//                        serverSocket = new ServerSocket(port);
-//                        socketServerThread = new Thread(() -> {
-//                            while (serverSocket != null) {
-//                                try {
-//                                    Socket client = serverSocket.accept();
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        });
-//                        socketServerThread.start();
-//
-//                    } else {
-//                        System.out.println("port is :" + port);
-//                    }
-//
-//
-//                } catch (Exception e) {
-//
-//                }
-//            } else {
-//                new Alert(Alert.AlertType.WARNING, "server is running now").show();
-//
-//            }
-//
-//
-//        });
+        startButton.setOnAction(event -> {
+            if (serverRunningFlag == false) {
+                try {
+                    if (port > 1000) {
+                        serverSocket = new ServerSocket(port);
+                        socketServerThread = new Thread(() -> {
+                            while (serverSocket != null) {
+                                try {
+                                    Socket client = serverSocket.accept();
+                                    HandlerThread ht = new HandlerThread(client);
+                                    new Thread(ht).start();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        socketServerThread.start();
+
+                    } else {
+                        System.out.println("port is :" + port);
+                    }
+
+
+                } catch (Exception e) {
+
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "server is running now").show();
+
+            }
+
+
+        });
 
 
     }
@@ -159,8 +171,9 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean setDirectoryFile(File dirFile) {
+        the_file = dirFile;
 
-        return false;
+        return true;
     }
 
     /**
@@ -170,7 +183,22 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean startWrite() {
-        return false;
+        try {
+            File imu_file = new File(the_file, nameString + "_IMU.data");
+            imu_file.createNewFile();
+            imuWriter = new FileWriter(imu_file.toString());
+            File ble_file = new File(the_file, nameString + "_BLE.data");
+            ble_file.createNewFile();
+            bleWriter = new FileWriter(ble_file.toString());
+
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
     }
 
     /**
@@ -180,11 +208,25 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
      */
     @Override
     public boolean stopWrite() {
-        return false;
+        try {
+            imuWriter.flush();
+            imuWriter.close();
+            imuWriter = null;
+            bleWriter.flush();
+            bleWriter.close();
+            bleWriter = null;
+            return true;
+        } catch (IOException e) {
+
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     class HandlerThread implements Runnable {
         private Socket socket;
+
 
         HandlerThread(Socket s) {
             this.socket = s;
@@ -212,7 +254,44 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
                 while (socket.isConnected()) {
                     if (reader.ready()) {
 
-                        String s = reader.readLine();
+//                        String s = reader.readLine();
+//                        if(s.lastIndexOf("\n")<0){
+//                            s = s + "\n";
+//                        }
+                        StringBuilder lineStringBuilder = new StringBuilder(reader.readLine());
+//                        lineStringBuilder
+                        if(lineStringBuilder.lastIndexOf("\n")<0){
+                            lineStringBuilder.append("\n");
+                        }
+                        int first_comma = lineStringBuilder.indexOf(",");
+                        int second_comma = lineStringBuilder.indexOf(",",first_comma+1);
+                        lineStringBuilder.replace(first_comma+1,second_comma,String.format("%15.03f",
+                                ((double)System.currentTimeMillis())/1000.0));
+
+
+                        String s = lineStringBuilder.toString();
+
+
+//                        if(bleDataObservableList)
+                        if (s.indexOf("{") > 0) {
+                            Platform.runLater(() -> {
+                                bleDataObservableList.add(s);
+                                if (bleDataObservableList.size() > 10) {
+                                    bleDataObservableList.remove(0);
+                                }
+                            });
+                            if (bleWriter != null) {
+                                bleWriter.write(s);
+                            }
+
+                        } else {
+                            if (imuWriter != null) {
+                                imuWriter.write(s);
+                            }
+
+                        }
+//                        System.out.println(s);
+
                     }
 
                 }
