@@ -51,7 +51,6 @@ public class SensorUWBViewerController
 
     protected ObservableList<String> deviceNameList =
             FXCollections.observableArrayList("Choice it to update");// device name list.
-
     protected String deviceNameString = ""; // device name , need be initialize.
 
 
