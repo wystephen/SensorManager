@@ -249,6 +249,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         e.printStackTrace();
                         continue;
                     } catch (Exception e) {
+                        System.out.print(Integer.toHexString((int)(short)(buf[0]&0xFF)));
                         e.printStackTrace();
                         continue;
                     }
