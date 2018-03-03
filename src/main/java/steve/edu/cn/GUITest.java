@@ -157,7 +157,7 @@ public class GUITest extends Application {
 
 
             FXMLLoader smartPhoneLoader = new FXMLLoader(getClass().getClassLoader()
-            .getResource("./SmartPhoneSimple.fxml"));
+                    .getResource("./SmartPhoneSimple.fxml"));
             FlowPane smartPhoneBox = smartPhoneLoader.load();
             SmartPhoneSimpleController smartPhoneSimpleController = smartPhoneLoader.getController();
 
@@ -166,7 +166,7 @@ public class GUITest extends Application {
             sensorsPane.add(imuBox2, 0, 1);
             sensorsPane.add(uwbBox, 0, 2);
             sensorsPane.add(imuBox3, 0, 3);
-            sensorsPane.add(smartPhoneBox,0,4);
+            sensorsPane.add(smartPhoneBox, 0, 4);
 
             controllerHashSet.add(imuViewerController);
             controllerHashSet.add(imuViewerController2);
