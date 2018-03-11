@@ -78,21 +78,24 @@ public abstract class HardwareAbstract {
         if (null == listenerCollection) {
             return false;
         }
-        Iterator iter = listenerCollection.iterator();
-        while (iter.hasNext()) {
-            SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
-            Runnable task = () -> {
-                try {
+        synchronized (this){
+            Iterator iter = listenerCollection.iterator();
+            while (iter.hasNext()) {
+                SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
+                Runnable task = () -> {
+                    try {
 
-                    listener.SensorDataEvent(event);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
+                        listener.SensorDataEvent(event);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                };
 //            listener.SensorOriginalDataEvent(event);
-            Thread t = new Thread(task);
-            t.start();
+                Thread t = new Thread(task);
+                t.start();
+            }
         }
+
         return true;
     }
 

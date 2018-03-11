@@ -76,13 +76,13 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                     try {
                         int end_num = 11;
                         if (byte_queue.size() <= end_num) {
-                            Thread.sleep(1);
+                            Thread.sleep(0, 1);
                             continue;
-                        }else {
+                        } else {
                             for (int i = 0; i < end_num; ++i) {
                                 buf[i] = byte_queue.take();
                                 if (i == 0 && (buf[0] & 0xFF) != 0x55) {
-                                    throw new Exception(getSensorName() + "Throw data");
+                                    throw new Exception(getSensorName() + "Throw data"+byte_queue.size());
                                 } else if (i == 1 && buf[1] == 0x50) {
                                     current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                                 }
@@ -250,7 +250,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         e.printStackTrace();
                         continue;
                     } catch (Exception e) {
-                        System.out.print(Integer.toHexString((int)(short)(buf[0]&0xFF)));
+//                        System.out.print(Integer.toHexString((int) (short) (buf[0] & 0xFF)));
                         e.printStackTrace();
                         continue;
                     }
@@ -272,13 +272,20 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
         @Override
         public void SensorDataEvent(SensorOriginalDataEvent event) throws InterruptedException {
-            byte[] bytes = event.get_bytes();
-//            System.out.println(Arrays.toString(bytes));
-            for (byte tb : bytes) {
-                byte_queue.put(tb);
-            }
-            if(byte_queue.size()>1000){
-                System.out.println("byte queue size is:"+byte_queue.size());
+            synchronized (this) {
+                byte[] bytes = event.get_bytes();
+//                System.out.println(Arrays.toString(bytes));
+                String h= "";
+                for (byte tb : bytes) {
+
+//                    h = h+ " " + Integer.toHexString(tb&0xFF);
+
+                    byte_queue.put(tb);
+                }
+//                System.out.println('-'+h+'-');
+                if (byte_queue.size() > 1000) {
+                    System.out.println("byte queue size is:" + byte_queue.size());
+                }
             }
 
 
