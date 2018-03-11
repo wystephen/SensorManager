@@ -82,7 +82,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                             for (int i = 0; i < end_num; ++i) {
                                 buf[i] = byte_queue.take();
                                 if (i == 0 && (buf[0] & 0xFF) != 0x55) {
-                                    throw new Exception(getSensorName() + "Throw data"+byte_queue.size());
+                                    throw new Exception(getSensorName() + "Throw data"+byte_queue.size()+imu_data.convertDatatoString());
                                 } else if (i == 1 && buf[1] == 0x50) {
                                     current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                                 }

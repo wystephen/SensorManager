@@ -158,7 +158,7 @@ public class SerialAbstract extends HardwareAbstract {
                     try {
                         int buflength = serialPortEvent.getEventValue();
 
-                        while (buflength > 40) {
+                        while (buflength > 140) {
 
 //                        bytes = new byte[buflength];
 //                        bytes = serialPort_local.readBytes(buflength);
