@@ -76,7 +76,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                     try {
                         int end_num = 11;
                         if (byte_queue.size() <= end_num) {
-                            Thread.sleep(0, 1);
+                            Thread.sleep(10, 1);
                             continue;
                         } else {
                             for (int i = 0; i < end_num; ++i) {

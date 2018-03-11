@@ -151,32 +151,31 @@ public class SerialAbstract extends HardwareAbstract {
          */
         public void serialEvent(SerialPortEvent serialPortEvent) {
 
+            synchronized (this) {
+                if (serialPortEvent.isRXCHAR()) {
 
-            if (serialPortEvent.isRXCHAR()) {
-
-                synchronized (this) {
                     try {
                         int buflength = serialPortEvent.getEventValue();
+                        while (buflength > 43) {
 
-                        while (buflength > 140) {
-
-//                        bytes = new byte[buflength];
-//                        bytes = serialPort_local.readBytes(buflength);
+//                            bytes = new byte[buflength];
+//                            bytes = serialPort_local.readBytes(buflength);
                             byte buffer[] = serialPort_local.readBytes();
-
                             notifyListeners(new SensorOriginalDataEvent(this, buffer));
+//                            notifyListeners(new SensorOriginalDataEvent(this, bytes));
 
                             buflength = 0;
                         }
 
+
                     } catch (SerialPortException e) {
                         e.printStackTrace();
                     }
+
+
+                } else {
+                    System.out.println("other event" + serialPortEvent.getEventType());
                 }
-
-
-            }else{
-                System.out.println("other event"+serialPortEvent.getEventType());
             }
         }
 
