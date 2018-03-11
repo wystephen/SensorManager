@@ -134,21 +134,21 @@ public class GUITest extends Application {
             root.getChildren().add(scrollPane);
 
             // Load Pane and controller. Add controller to HashSet.
-//            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().
-//                    getResource("./IMUViwerSimple.fxml"));
-//            FlowPane imuBox = loader.load();
-//            SensorImuViewerController imuViewerController = loader.
-//                    getController();
-//
-//            FXMLLoader loader2 = new FXMLLoader(getClass().getClassLoader().
-//                    getResource("./IMUViwerSimple.fxml"));
-//            FlowPane imuBox2 = loader2.load();
-//            SensorImuViewerController imuViewerController2 = loader2.getController();
-//
-//            FXMLLoader loader3 = new FXMLLoader(getClass().getClassLoader().
-//                    getResource("./IMUViwerSimple.fxml"));
-//            FlowPane imuBox3 = loader3.load();
-//            SensorImuViewerController imuViewerController3 = loader3.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml"));
+            FlowPane imuBox = loader.load();
+            SensorImuViewerController imuViewerController = loader.
+                    getController();
+
+            FXMLLoader loader2 = new FXMLLoader(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml"));
+            FlowPane imuBox2 = loader2.load();
+            SensorImuViewerController imuViewerController2 = loader2.getController();
+
+            FXMLLoader loader3 = new FXMLLoader(getClass().getClassLoader().
+                    getResource("./IMUViwerSimple.fxml"));
+            FlowPane imuBox3 = loader3.load();
+            SensorImuViewerController imuViewerController3 = loader3.getController();
 
             FXMLLoader uwbLoader = new FXMLLoader(getClass().getClassLoader()
                     .getResource("./UWBViewerSimple.fxml"));
@@ -156,23 +156,23 @@ public class GUITest extends Application {
             SensorUWBViewerController uwbViewerController = uwbLoader.getController();
 
 
-//            FXMLLoader smartPhoneLoader = new FXMLLoader(getClass().getClassLoader()
-//                    .getResource("./SmartPhoneSimple.fxml"));
-//            FlowPane smartPhoneBox = smartPhoneLoader.load();
-//            SmartPhoneSimpleController smartPhoneSimpleController = smartPhoneLoader.getController();
+            FXMLLoader smartPhoneLoader = new FXMLLoader(getClass().getClassLoader()
+                    .getResource("./SmartPhoneSimple.fxml"));
+            FlowPane smartPhoneBox = smartPhoneLoader.load();
+            SmartPhoneSimpleController smartPhoneSimpleController = smartPhoneLoader.getController();
 
 
-//            sensorsPane.add(imuBox, 0, 0);
-//            sensorsPane.add(imuBox2, 0, 1);
+            sensorsPane.add(imuBox, 0, 0);
+            sensorsPane.add(imuBox2, 0, 1);
             sensorsPane.add(uwbBox, 0, 2);
-//            sensorsPane.add(imuBox3, 0, 3);
-//            sensorsPane.add(smartPhoneBox, 0, 4);
+            sensorsPane.add(imuBox3, 0, 3);
+            sensorsPane.add(smartPhoneBox, 0, 4);
 
-//            controllerHashSet.add(imuViewerController);
-//            controllerHashSet.add(imuViewerController2);
-//            controllerHashSet.add(imuViewerController3);
+            controllerHashSet.add(imuViewerController);
+            controllerHashSet.add(imuViewerController2);
+            controllerHashSet.add(imuViewerController3);
             controllerHashSet.add(uwbViewerController);
-//            controllerHashSet.add(smartPhoneSimpleController);
+            controllerHashSet.add(smartPhoneSimpleController);
 
 
 //            Button addImuButton = new Button("addNewImu");
