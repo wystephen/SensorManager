@@ -258,6 +258,7 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
 //                        if(s.lastIndexOf("\n")<0){
 //                            s = s + "\n";
 //                        }
+
                         StringBuilder lineStringBuilder = new StringBuilder(reader.readLine());
 //                        lineStringBuilder
                         if(lineStringBuilder.lastIndexOf("\n")<0){
