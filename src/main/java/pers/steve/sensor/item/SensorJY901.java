@@ -76,6 +76,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
         public SerialListener() {
             super();
             dataProcess = () -> {
+                int error_counter = 0;
                 while (true) {
                     try {
                         int end_num = 11;
@@ -84,15 +85,16 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 //                            continue;
 
                         } else {
-//                            tmp_byte_queue.clear();
-//                            byte_queue.drainTo(tmp_byte_queue,end_num);
+                            tmp_byte_queue.clear();
+                            byte_queue.drainTo(tmp_byte_queue,end_num);
 //                            tmp_byte_queue.toArray(buf);
 //                            System.out.println(tmp_byte_queue.size());
                             for (int i = 0; i < end_num; ++i) {
                                 buf[i] = byte_queue.take();
-//                                buf[i] = tmp_byte_queue.get(i);
+                                buf[i] = tmp_byte_queue.get(i);
                                 if (i == 0 && (buf[0] & 0xFF) != 0x55) {
-                                    throw new Exception(getSensorName() + "Throw data"+byte_queue.size()+imu_data.convertDatatoString());
+                                    error_counter++;
+                                    throw new Exception(getSensorName()+"times:" + error_counter + "Throw data"+byte_queue.size()+imu_data.convertDatatoString());
                                 } else if (i == 1 && buf[1] == 0x50) {
                                     current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                                 }
