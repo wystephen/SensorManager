@@ -153,7 +153,7 @@ public class SerialAbstract extends HardwareAbstract {
             Runnable data_process = () -> {
                 while (true) {
                     try {
-                        if (byte_queue.size() > 10) {
+                        if (byte_queue.size() > 0) {
                             int byte_size = byte_queue.size();
                             ArrayList<Byte> tmp_buf_array = new ArrayList<>(byte_size);
                             byte_queue.drainTo(tmp_buf_array, byte_size);
