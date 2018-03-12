@@ -6,6 +6,9 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+
 public class SerialAbstract extends HardwareAbstract {
     /**
      * Use
@@ -142,6 +145,40 @@ public class SerialAbstract extends HardwareAbstract {
     public class SerialEventListener implements SerialPortEventListener {
 
         private byte[] bytes = null; // Save data here temporarily.
+        protected ArrayBlockingQueue<Byte> byte_queue = new ArrayBlockingQueue<>(5000);
+
+
+        public SerialEventListener(){
+            super();
+            Runnable data_process= ()->{
+                while(true){
+                    try{
+                        if( byte_queue.size() > 40){
+                            int byte_size = byte_queue.size();
+//                            ArrayList<Byte> tmp_buf_array = new ArrayList<>(byte_size);
+//                            byte_queue.drainTo(tmp_buf_array,byte_size);
+                            bytes = new byte[byte_size];
+                            for( int i= 0;i<byte_size;++i){
+//                               bytes[i] = tmp_buf_array.get(i);
+                                bytes[i] =byte_queue.take();
+                            }
+                            notifyListeners(new SensorOriginalDataEvent(this, bytes));
+
+                        }else{
+                            Thread.sleep(0,1);
+//                            continue;
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+            };
+            Thread t = new Thread(data_process);
+            t.start();
+
+        }
 
 
         /**
@@ -149,19 +186,30 @@ public class SerialAbstract extends HardwareAbstract {
          *
          * @param serialPortEvent
          */
-        synchronized public void serialEvent(SerialPortEvent serialPortEvent) {
+        public void serialEvent(SerialPortEvent serialPortEvent) {
 
-                if (serialPortEvent.isRXCHAR()) {
+            if (serialPortEvent.isRXCHAR()) {
+
+                synchronized (this) {
 
                     try {
                         int buflength = serialPortEvent.getEventValue();
-                        if (buflength > 10) {
+                        if (buflength > 0) {
 
 //                            bytes = new byte[buflength];
 //                            bytes = serialPort_local.readBytes(buflength);
-                            byte buffer[] = serialPort_local.readBytes();
-                            notifyListeners(new SensorOriginalDataEvent(this, buffer));
-//                            notifyListeners(new SensorOriginalDataEvent(this, bytes));
+                            byte buffer[] = serialPort_local.readBytes(buflength);
+//                            serialPort_local.getInputBufferBytesCount();
+//                            notifyListeners(new SensorOriginalDataEvent(this, buffer));
+                            try {
+                                for (byte tb : buffer) {
+                                    byte_queue.put(tb);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+//                            notifyListeners(new SensorOriginalDataEvent(this, buffer));
 
                         }
 
@@ -169,11 +217,12 @@ public class SerialAbstract extends HardwareAbstract {
                     } catch (SerialPortException e) {
                         e.printStackTrace();
                     }
-
-
-                } else {
-                    System.out.println("other event" + serialPortEvent.getEventType());
                 }
+
+
+            } else {
+                System.out.println("other event" + serialPortEvent.getEventType());
+            }
         }
 
     }

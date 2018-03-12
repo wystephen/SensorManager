@@ -1,7 +1,10 @@
 package pers.steve.sensor.item;
 
 import java.sql.Timestamp;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -67,6 +70,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
          */
         protected IMUDataElement imu_data = null;
         double current_system_time = 0.0;
+        ArrayList<Byte> tmp_byte_queue = new ArrayList<>(11);
         byte[] buf = new byte[11];
 
         public SerialListener() {
@@ -77,10 +81,16 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                         int end_num = 11;
                         if (byte_queue.size() <= end_num) {
                             Thread.sleep(10, 1);
-                            continue;
+//                            continue;
+
                         } else {
+//                            tmp_byte_queue.clear();
+//                            byte_queue.drainTo(tmp_byte_queue,end_num);
+//                            tmp_byte_queue.toArray(buf);
+//                            System.out.println(tmp_byte_queue.size());
                             for (int i = 0; i < end_num; ++i) {
                                 buf[i] = byte_queue.take();
+//                                buf[i] = tmp_byte_queue.get(i);
                                 if (i == 0 && (buf[0] & 0xFF) != 0x55) {
                                     throw new Exception(getSensorName() + "Throw data"+byte_queue.size()+imu_data.convertDatatoString());
                                 } else if (i == 1 && buf[1] == 0x50) {
