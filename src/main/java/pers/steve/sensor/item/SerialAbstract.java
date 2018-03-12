@@ -149,14 +149,13 @@ public class SerialAbstract extends HardwareAbstract {
          *
          * @param serialPortEvent
          */
-        public void serialEvent(SerialPortEvent serialPortEvent) {
+        synchronized public void serialEvent(SerialPortEvent serialPortEvent) {
 
-            synchronized (this) {
                 if (serialPortEvent.isRXCHAR()) {
 
                     try {
                         int buflength = serialPortEvent.getEventValue();
-                        while (buflength > 43) {
+                        if (buflength > 10) {
 
 //                            bytes = new byte[buflength];
 //                            bytes = serialPort_local.readBytes(buflength);
@@ -164,7 +163,6 @@ public class SerialAbstract extends HardwareAbstract {
                             notifyListeners(new SensorOriginalDataEvent(this, buffer));
 //                            notifyListeners(new SensorOriginalDataEvent(this, bytes));
 
-                            buflength = 0;
                         }
 
 
@@ -176,7 +174,6 @@ public class SerialAbstract extends HardwareAbstract {
                 } else {
                     System.out.println("other event" + serialPortEvent.getEventType());
                 }
-            }
         }
 
     }
