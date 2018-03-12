@@ -153,7 +153,7 @@ public class SerialAbstract extends HardwareAbstract {
             Runnable data_process = () -> {
                 while (true) {
                     try {
-                        if (byte_queue.size() > 100) {
+                        if (byte_queue.size() > 10) {
                             int byte_size = byte_queue.size();
                             ArrayList<Byte> tmp_buf_array = new ArrayList<>(byte_size);
                             byte_queue.drainTo(tmp_buf_array, byte_size);
@@ -194,7 +194,7 @@ public class SerialAbstract extends HardwareAbstract {
                 try {
                     synchronized (this) {
                         int buflength = serialPortEvent.getEventValue();
-                        if (buflength > 10) {
+                        if (buflength > 0) {
 
 //                            bytes = new byte[buflength];
 //                            bytes = serialPort_local.readBytes(buflength);

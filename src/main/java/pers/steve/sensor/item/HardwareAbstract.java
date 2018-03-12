@@ -91,8 +91,14 @@ public abstract class HardwareAbstract {
                     }
                 };
 //            listener.SensorOriginalDataEvent(event);
-                Thread t = new Thread(task);
+                try{
+                 Thread t = new Thread(task);
                 t.start();
+                t.join();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         }
 

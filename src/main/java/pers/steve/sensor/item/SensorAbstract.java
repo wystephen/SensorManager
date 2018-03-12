@@ -1,6 +1,7 @@
 package pers.steve.sensor.item;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.SynchronousQueue;
@@ -91,6 +92,7 @@ public abstract class SensorAbstract<DataElementType extends SensorDataElement, 
                 return false;
             }
             Iterator iter = listenerHashSet.iterator();
+            ArrayList<Thread> thread_list = new ArrayList<>(listenerHashSet.size());
             while (iter.hasNext()) {
                 SensorDataListener<DataElementType> listener =
                         (SensorDataListener<DataElementType>) iter.next();
@@ -103,6 +105,12 @@ public abstract class SensorAbstract<DataElementType extends SensorDataElement, 
                 };
                 Thread t = new Thread(task);
                 t.start();
+                thread_list.add(t);
+
+            }
+
+            for(Thread t:thread_list){
+                t.join();
             }
 
         } catch (Exception e) {

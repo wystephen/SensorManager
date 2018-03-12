@@ -5,6 +5,7 @@ import java.util.EventObject;
 public class SensorOriginalDataEvent extends EventObject {
 
     protected byte[] b_data = null;
+    public double time_stampe=0;
 
     SensorOriginalDataEvent(){
         super(new String());
@@ -15,6 +16,8 @@ public class SensorOriginalDataEvent extends EventObject {
     SensorOriginalDataEvent(Object source, byte[] b_data){
         super(source);
         this.b_data = b_data;
+        time_stampe = System.currentTimeMillis();
+
     }
 
     public byte[] get_bytes(){

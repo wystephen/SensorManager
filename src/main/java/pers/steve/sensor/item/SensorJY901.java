@@ -64,6 +64,7 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
     class SerialListener implements SensorOriginalDataListener {
         protected ArrayBlockingQueue<Byte> byte_queue = new ArrayBlockingQueue<>(1000);
+        protected ArrayBlockingQueue<SensorOriginalDataEvent> sensor_event_queue = new ArrayBlockingQueue<>(10);
 
         /*
         Value for runnable dataProcess
@@ -77,24 +78,26 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
             super();
             dataProcess = () -> {
                 int error_counter = 0;
+                double last_time = 0;
                 while (true) {
                     try {
                         int end_num = 11;
-                        if (byte_queue.size() <= end_num) {
-                            Thread.sleep(10, 1);
+                        if (byte_queue.size() < end_num) {
+                            Thread.sleep(0, 10);
 //                            continue;
 
                         } else {
-                            tmp_byte_queue.clear();
-                            byte_queue.drainTo(tmp_byte_queue,end_num);
+//                            tmp_byte_queue.clear();
+//                            byte_queue.drainTo(tmp_byte_queue,end_num);
 //                            tmp_byte_queue.toArray(buf);
 //                            System.out.println(tmp_byte_queue.size());
                             for (int i = 0; i < end_num; ++i) {
                                 buf[i] = byte_queue.take();
-                                buf[i] = tmp_byte_queue.get(i);
+//                                buf[i] = tmp_byte_queue.get(1);
                                 if (i == 0 && (buf[0] & 0xFF) != 0x55) {
                                     error_counter++;
-                                    throw new Exception(getSensorName()+"times:" + error_counter + "Throw data"+byte_queue.size()+imu_data.convertDatatoString());
+//                                    continue;
+                                    throw new Exception(getSensorName() + "times:" + error_counter + "Throw data" + byte_queue.size() + imu_data.convertDatatoString());
                                 } else if (i == 1 && buf[1] == 0x50) {
                                     current_system_time = ((double) System.currentTimeMillis()) / 1000.0;
                                 }
@@ -129,6 +132,10 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
                                                 year, mon, day, hour, min, sec));
                                         long time_int = ts.getTime();
                                         imu_data.setTime_stamp(((double) time_int) / 1000.0 + ((double) (ms)) / 1000.0);
+                                        if(imu_data.getTime_stamp()<last_time){
+                                            System.out.println("Time error: last is "+last_time+" current is: " + imu_data.getTime_stamp());
+                                        }
+                                        last_time = imu_data.getTime_stamp();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         System.out.println(String.format("20%02d-%02d-%02d %02d:%02d:%02d",
@@ -271,6 +278,36 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
 
 
             };
+            Runnable event_process = () -> {
+                double last_event_time = 0;
+                while(true){
+
+                    try{
+                        if(sensor_event_queue.size()>0){
+                            SensorOriginalDataEvent te = sensor_event_queue.take();
+                            if(te.time_stampe<last_event_time){
+                                System.out.println("Error: last time:"+ last_event_time+" current event tiem:"+te.time_stampe);
+                            }
+                            last_event_time=te.time_stampe;
+                            byte[] bytes_array = te.get_bytes();
+                            for(byte tb :bytes_array){
+                                byte_queue.put(tb);
+                            }
+
+                        }else{
+                            Thread.sleep(0,10);
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+
+            };
+            Thread e_t = new Thread(event_process);
+            e_t.start();
+
             Thread t = new Thread(dataProcess);
             t.start();
 
@@ -281,23 +318,28 @@ public class SensorJY901 extends SensorIMU<SerialAbstract> {
          * Process buf from serial port. And call notifyListeners.
          */
         protected Runnable dataProcess;
-
+        double last_rec_event_time = 0;
         @Override
         public void SensorDataEvent(SensorOriginalDataEvent event) throws InterruptedException {
             synchronized (this) {
-                byte[] bytes = event.get_bytes();
-//                System.out.println(Arrays.toString(bytes));
-                String h= "";
-                for (byte tb : bytes) {
-
-//                    h = h+ " " + Integer.toHexString(tb&0xFF);
-
-                    byte_queue.put(tb);
+//                byte[] bytes = event.get_bytes();
+////                System.out.println(Arrays.toString(bytes));
+////                String h= "";
+//                for (byte tb : bytes) {
+//
+////                    h = h+ " " + Integer.toHexString(tb&0xFF);
+//
+//                    byte_queue.put(tb);
+//                }
+////                System.out.println('-'+h+'-');
+//                if (byte_queue.size() > 1000) {
+//                    System.out.println("byte queue size is:" + byte_queue.size());
+//                }
+                if(last_rec_event_time>event.time_stampe){
+                    System.out.println("Error Receive: last time:"+ last_rec_event_time+" current event tiem:"+event.time_stampe);
                 }
-//                System.out.println('-'+h+'-');
-                if (byte_queue.size() > 1000) {
-                    System.out.println("byte queue size is:" + byte_queue.size());
-                }
+                last_rec_event_time = event.time_stampe;
+                sensor_event_queue.put(event);
             }
 
 
