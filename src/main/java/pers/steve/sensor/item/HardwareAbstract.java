@@ -2,6 +2,7 @@ package pers.steve.sensor.item;
 
 import jssc.SerialPortException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -80,6 +81,7 @@ public abstract class HardwareAbstract {
         }
         synchronized (this){
             Iterator iter = listenerCollection.iterator();
+            ArrayList<Thread> thread_list = new ArrayList<Thread>();
             while (iter.hasNext()) {
                 SensorOriginalDataListener listener = (SensorOriginalDataListener) iter.next();
                 Runnable task = () -> {
@@ -94,11 +96,22 @@ public abstract class HardwareAbstract {
                 try{
                  Thread t = new Thread(task);
                 t.start();
-                t.join();
+//                t.join();
+                    thread_list.add(t);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
 
+            }
+
+
+            for(Thread t:thread_list){
+                try{
+
+                    t.join();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
 
