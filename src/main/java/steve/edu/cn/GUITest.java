@@ -115,6 +115,10 @@ public class GUITest extends Application {
                     writer.stopWrite();
                 }
 
+                new Alert(Alert.AlertType.WARNING,
+                        "Saving thread stopped.").show();
+
+
             });
 
             menuBar.getMenus().addAll(menuFile, menuEdit);
