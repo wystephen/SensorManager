@@ -33,7 +33,7 @@ public class SmartPhoneSimpleController extends SensorWriteFileInterface
     public ChoiceBox nameChoice;
 
     protected ObservableList<String> nameList =
-            FXCollections.observableArrayList("HAND_SMARTPHONE", "Default");
+            FXCollections.observableArrayList("HAND_SMARTPHONE","SMARTPHONE2","SMARTPHONE3", "Default");
 
 
     String nameString = "Default";

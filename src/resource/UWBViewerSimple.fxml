@@ -29,6 +29,7 @@
             <ChoiceBox fx:id="deviceChoice"/>
 
             <Label text="speed"/>
+            <Label text="old 115200"/>
             <ChoiceBox fx:id="speedChoice"/>
 
             <Button fx:id="startButton" text="StartSensor"/>
