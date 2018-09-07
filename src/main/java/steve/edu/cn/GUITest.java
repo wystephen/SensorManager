@@ -165,18 +165,26 @@ public class GUITest extends Application {
             FlowPane smartPhoneBox = smartPhoneLoader.load();
             SmartPhoneSimpleController smartPhoneSimpleController = smartPhoneLoader.getController();
 
+            FXMLLoader smartPhoneLoader2 = new FXMLLoader(getClass().getClassLoader()
+                    .getResource("./SmartPhoneSimple.fxml"));
+            FlowPane smartPhoneBox2 = smartPhoneLoader2.load();
+            SmartPhoneSimpleController smartPhoneSimpleController2 = smartPhoneLoader2.getController();
+
+
 
             sensorsPane.add(imuBox, 0, 0);
             sensorsPane.add(imuBox2, 0, 1);
-            sensorsPane.add(uwbBox, 0, 2);
-            sensorsPane.add(imuBox3, 0, 3);
+            sensorsPane.add(imuBox3, 0, 2);
+            sensorsPane.add(uwbBox, 0, 3);
             sensorsPane.add(smartPhoneBox, 0, 4);
+            sensorsPane.add(smartPhoneBox2,0,5);
 
             controllerHashSet.add(imuViewerController);
             controllerHashSet.add(imuViewerController2);
             controllerHashSet.add(imuViewerController3);
             controllerHashSet.add(uwbViewerController);
             controllerHashSet.add(smartPhoneSimpleController);
+            controllerHashSet.add(smartPhoneSimpleController2);
 
 
 //            Button addImuButton = new Button("addNewImu");
