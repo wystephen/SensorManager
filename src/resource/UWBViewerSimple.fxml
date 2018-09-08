@@ -22,7 +22,7 @@
 
     <HBox fx:id="allBox">
         <VBox fx:id="paraBox">
-            <Label fx:id="nameLabel" text="Default IMU"/>
+            <Label fx:id="nameLabel" text="Default UWB Pane"/>
             <ChoiceBox fx:id="nameChoice"/>
 
             <Label text="Device"/>
@@ -40,7 +40,7 @@
 
         <VBox>
             <Label>UWBDATA</Label>
-            <ListView fx:id="uwbDataList" prefWidth="1000" prefHeight="270" >
+            <ListView fx:id="uwbDataList" prefWidth="1000" prefHeight="270">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Empty"/>
