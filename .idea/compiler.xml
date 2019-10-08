@@ -9,8 +9,8 @@
         <module name="SensorManager" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8">
-      <module name="SensorManager" target="1.8" />
+    <bytecodeTargetLevel target="11">
+      <module name="SensorManager" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
